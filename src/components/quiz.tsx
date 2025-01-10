@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../services/firebase";
+import { IData } from "../interfaces/data.interfaces";
 
-interface Sentence {
-  id: string;
-  sentence: string;
-  pronunciation: string;
-  meaning: string;
-  options: string[];
-}
 
 const Quiz: React.FC = () => {
-  const [currentSentence, setCurrentSentence] = useState<Sentence | null>(null);
+  const [currentSentence, setCurrentSentence] = useState<IData | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
@@ -21,10 +15,11 @@ const Quiz: React.FC = () => {
 
   const fetchRandomSentence = async () => {
     const querySnapshot = await getDocs(collection(db, "sentences"));
-    const sentences: Sentence[] = [];
+    const sentences: IData[] = [];
     querySnapshot.forEach((doc) => {
-      sentences.push({ id: doc.id, ...doc.data() } as Sentence);
+      sentences.push({ id: doc.id, ...doc.data() } as IData);
     });
+    console.log(sentences)
     const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
     setCurrentSentence(randomSentence);
     setSelectedOption(null);
@@ -40,10 +35,10 @@ const Quiz: React.FC = () => {
 
   return (
     <div>
-      <h1>{currentSentence.sentence}</h1>
+      <h1>{currentSentence.text}</h1>
       <p>{currentSentence.pronunciation}</p>
       <div>
-        {currentSentence.options.map((option, index) => (
+        {currentSentence.examples?.map((option, index) => (
           <button
             key={index}
             onClick={() => handleOptionClick(option)}

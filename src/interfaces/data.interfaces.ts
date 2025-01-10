@@ -4,6 +4,7 @@ export enum DataTypeEnum {
 }
 
 export interface IData {
+  id?: string;
   type: DataTypeEnum;
   text: string;
   meaning: string;
