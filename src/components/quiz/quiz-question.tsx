@@ -1,5 +1,6 @@
 // components/QuizQuestion.tsx
-import { Sentence } from "../services/sentence.service";
+
+import { Sentence } from "../../services/sentence.service";
 
 interface QuizQuestionProps {
   sentence: Sentence;
@@ -30,13 +31,12 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
             key={index}
             onClick={() => handleOptionClick(option)}
             disabled={selectedOption !== null}
-            className={`w-full p-2 rounded ${
-              selectedOption === option
+            className={`w-full p-2 rounded ${selectedOption === option
                 ? selectedOption === (isMeaningQuestion ? sentence.meaning : sentence.text)
                   ? "bg-green-500"
                   : "bg-red-500"
                 : "bg-blue-500 hover:bg-blue-700"
-            } text-white`}
+              } text-white`}
           >
             {option}
           </button>

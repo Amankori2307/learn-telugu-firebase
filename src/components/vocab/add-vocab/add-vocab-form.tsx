@@ -1,58 +1,49 @@
 // src/components/AddVocabForm.tsx
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-// Define the schema for validation
-const schema = yup.object().shape({
-    type: yup.string().required("Type is required"),
-    text: yup.string().required("Text is required"),
-    meaning: yup.string().required("Meaning is required"),
-    pronunciation: yup.string().required("Pronunciation is required"),
-    examples: yup.array().of(yup.string()).optional(), // Make this optional
+// Define the validation schema using Yup
+const validationSchema = Yup.object({
+    type: Yup.string().required("Type is required"),
+    text: Yup.string().required("Text is required"),
+    meaning: Yup.string().required("Meaning is required"),
+    pronunciation: Yup.string().required("Pronunciation is required"),
+    examples: Yup.array().of(Yup.string().required("Example cannot be empty")),
 });
 
-type FormData = {
-    type: string;
-    text: string;
-    meaning: string;
-    pronunciation: string;
-    examples?: string[]; // Make this optional
-};
-
 const AddVocabForm = () => {
-    const {
-        control,
-        handleSubmit,
-        register,
-        formState: { errors },
-    } = useForm<FormData>({
-        resolver: yupResolver(schema),
-        defaultValues: {
+    const formik = useFormik({
+        initialValues: {
             type: "sentence",
-            examples: [], // Explicitly set to an empty array
+            text: "",
+            meaning: "",
+            pronunciation: "",
+            examples: [""], // Initialize with one empty example
+        },
+        validationSchema,
+        onSubmit: (values) => {
+            console.log(values); // Handle form submission (e.g., send to an API)
+            alert("Vocab added successfully!");
         },
     });
 
-    const onSubmit = (data: FormData) => {
-        console.log(data); // Handle form submission (e.g., send to an API)
-        alert("Vocab added successfully!");
-    };
-
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={formik.handleSubmit} className="space-y-6">
             {/* Type Field */}
             <div>
                 <label className="block text-sm font-medium text-gray-700">Type</label>
                 <select
-                    {...register("type")}
-                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                    name="type"
+                    value={formik.values.type}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 >
                     <option value="sentence">Sentence</option>
                     <option value="word">Word</option>
                 </select>
-                {errors.type && (
-                    <p className="text-red-500 text-sm mt-1">{errors.type.message}</p>
+                {formik.touched.type && formik.errors.type && (
+                    <p className="text-red-500 text-sm mt-1">{formik.errors.type}</p>
                 )}
             </div>
 
@@ -61,11 +52,15 @@ const AddVocabForm = () => {
                 <label className="block text-sm font-medium text-gray-700">Text</label>
                 <input
                     type="text"
-                    {...register("text")}
-                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                    name="text"
+                    value={formik.values.text}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Enter the text"
                 />
-                {errors.text && (
-                    <p className="text-red-500 text-sm mt-1">{errors.text.message}</p>
+                {formik.touched.text && formik.errors.text && (
+                    <p className="text-red-500 text-sm mt-1">{formik.errors.text}</p>
                 )}
             </div>
 
@@ -76,11 +71,15 @@ const AddVocabForm = () => {
                 </label>
                 <input
                     type="text"
-                    {...register("meaning")}
-                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                    name="meaning"
+                    value={formik.values.meaning}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Enter the meaning"
                 />
-                {errors.meaning && (
-                    <p className="text-red-500 text-sm mt-1">{errors.meaning.message}</p>
+                {formik.touched.meaning && formik.errors.meaning && (
+                    <p className="text-red-500 text-sm mt-1">{formik.errors.meaning}</p>
                 )}
             </div>
 
@@ -91,12 +90,16 @@ const AddVocabForm = () => {
                 </label>
                 <input
                     type="text"
-                    {...register("pronunciation")}
-                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
+                    name="pronunciation"
+                    value={formik.values.pronunciation}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Enter the pronunciation"
                 />
-                {errors.pronunciation && (
+                {formik.touched.pronunciation && formik.errors.pronunciation && (
                     <p className="text-red-500 text-sm mt-1">
-                        {errors.pronunciation.message}
+                        {formik.errors.pronunciation}
                     </p>
                 )}
             </div>
@@ -104,26 +107,44 @@ const AddVocabForm = () => {
             {/* Examples Field */}
             <div>
                 <label className="block text-sm font-medium text-gray-700">
-                    Examples (Optional)
+                    Examples
                 </label>
-                <Controller
-                    name="examples"
-                    control={control}
-                    defaultValue={[]} // Set default value to an empty array
-                    render={({ field }) => (
-                        <textarea
-                            {...field}
-                            className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
-                            placeholder="Enter examples, one per line"
-                            rows={4}
-                            onChange={(e) =>
-                                field.onChange(e.target.value.split("\n").filter(Boolean))
-                            }
+                {formik.values.examples.map((example, index) => (
+                    <div key={index} className="flex space-x-2 mb-2">
+                        <input
+                            name={`examples[${index}]`}
+                            value={example}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className="flex-1 p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            placeholder={`Example ${index + 1}`}
                         />
-                    )}
-                />
-                {errors.examples && (
-                    <p className="text-red-500 text-sm mt-1">{errors.examples.message}</p>
+                        {index > 0 && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const newExamples = [...formik.values.examples];
+                                    newExamples.splice(index, 1);
+                                    formik.setFieldValue("examples", newExamples);
+                                }}
+                                className="p-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                            >
+                                Remove
+                            </button>
+                        )}
+                    </div>
+                ))}
+                <button
+                    type="button"
+                    onClick={() => {
+                        formik.setFieldValue("examples", [...formik.values.examples, ""]);
+                    }}
+                    className="mt-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                >
+                    + Add Example
+                </button>
+                {formik.touched.examples && formik.errors.examples && (
+                    <p className="text-red-500 text-sm mt-1">{formik.errors.examples}</p>
                 )}
             </div>
 
@@ -131,7 +152,7 @@ const AddVocabForm = () => {
             <div>
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+                    className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 >
                     Add Vocab
                 </button>

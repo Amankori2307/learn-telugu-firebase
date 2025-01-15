@@ -1,6 +1,6 @@
 export enum DataTypeEnum {
-  Sentence = 'sentence',
-  Word = 'word',
+  Sentence = "sentence",
+  Word = "word",
 }
 
 export interface IData {
@@ -12,11 +12,3 @@ export interface IData {
   examples?: Array<string>;
   pronunciation?: string;
 }
-
-type FormData = {
-  type: string;
-  text: string;
-  meaning: string;
-  pronunciation: string;
-  examples?: string[]; // Make this optional
-};
