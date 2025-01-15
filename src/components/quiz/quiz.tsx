@@ -1,6 +1,6 @@
 // components/Quiz.tsx
 import { useEffect, useState } from "react";
-import { fetchSentences, Sentence } from "../services/sentence.service";
+import { fetchSentences, Sentence } from "../../services/sentence.service";
 import QuizQuestion from "./quiz-question";
 import QuizResult from "./quiz-result";
 
