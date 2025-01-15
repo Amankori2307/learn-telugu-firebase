@@ -1,10 +1,11 @@
-import './App.css'
 import Quiz from './components/quiz'
 
 function App() {
 
   return (
-   <Quiz />
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <Quiz />
+  </div>
   )
 }
 
