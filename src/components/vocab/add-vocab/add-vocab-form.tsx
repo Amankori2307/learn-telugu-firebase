@@ -1,6 +1,7 @@
 // src/components/AddVocabForm.tsx
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { saveVocab, Sentence } from "../../../services/sentence.service";
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object({
@@ -21,9 +22,21 @@ const AddVocabForm = () => {
             examples: [""], // Initialize with one empty example
         },
         validationSchema,
-        onSubmit: (values) => {
-            console.log(values); // Handle form submission (e.g., send to an API)
-            alert("Vocab added successfully!");
+        onSubmit: async (values) => {
+            try {
+                // Save the vocab data to Firebase
+                console.log(values)
+                await saveVocab({
+                    ...values as Sentence,
+                    isReviewed: false, // Set isReviewed to false by default
+                });
+
+                alert("Vocab added successfully!");
+                formik.resetForm(); // Reset the form after submission
+            } catch (error) {
+                console.error("Error saving vocab: ", error);
+                alert("Failed to save vocab. Please try again.");
+            }
         },
     });
 
