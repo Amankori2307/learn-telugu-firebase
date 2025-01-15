@@ -30,7 +30,9 @@ async function uploadData() {
         meaning: item.meaning,
         text: item.text,
         type: item.type,
-        examples: item.examples,
+        examples: item.examples || [], 
+      }, {
+        ignoreUndefinedProperties: true
       });
       console.log(`Uploaded document with auto-generated ID: ${docRef.id}`);
     }

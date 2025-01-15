@@ -1,44 +1,82 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../services/firebase";
-import { IData } from "../interfaces/data.interfaces";
 
+interface Sentence {
+  id: string;
+  pronunciation: string;
+  meaning: string;
+  text: string;
+  type: string;
+  examples: string[];
+}
 
 const Quiz: React.FC = () => {
-  const [currentSentence, setCurrentSentence] = useState<IData | null>(null);
+  const [sentences, setSentences] = useState<Sentence[]>([]);
+  const [currentSentence, setCurrentSentence] = useState<Sentence | null>(null);
+  const [options, setOptions] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [showExamples, setShowExamples] = useState<boolean>(false);
+  const [isMeaningQuestion, setIsMeaningQuestion] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchRandomSentence();
+    fetchSentences();
   }, []);
 
-  const fetchRandomSentence = async () => {
+  const fetchSentences = async () => {
     const querySnapshot = await getDocs(collection(db, "sentences"));
-    const sentences: IData[] = [];
+    const sentencesData: Sentence[] = [];
     querySnapshot.forEach((doc) => {
-      sentences.push({ id: doc.id, ...doc.data() } as IData);
+      sentencesData.push({ id: doc.id, ...doc.data() } as Sentence);
     });
-    console.log(sentences)
-    const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
+    setSentences(sentencesData);
+    loadRandomQuestion(sentencesData);
+  };
+
+  const loadRandomQuestion = (sentencesData: Sentence[]) => {
+    const randomIndex = Math.floor(Math.random() * sentencesData.length);
+    const randomSentence = sentencesData[randomIndex];
+
+    // Randomly decide whether to show a sentence or a meaning
+    const isMeaningQuestion = Math.random() < 0.5;
+    setIsMeaningQuestion(isMeaningQuestion);
+
+    // Set the correct answer
+    const correctAnswer = isMeaningQuestion ? randomSentence.meaning : randomSentence.text;
+
+    // Get 3 random incorrect options
+    const incorrectOptions = sentencesData
+      .filter((s) => s.id !== randomSentence.id)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+      .map((s) => (isMeaningQuestion ? s.meaning : s.text));
+
+    // Combine correct and incorrect options and shuffle them
+    const allOptions = [correctAnswer, ...incorrectOptions].sort(() => Math.random() - 0.5);
+
     setCurrentSentence(randomSentence);
+    setOptions(allOptions);
     setSelectedOption(null);
     setIsCorrect(null);
+    setShowExamples(false);
   };
 
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
-    setIsCorrect(option === currentSentence?.meaning);
+    const correctAnswer = isMeaningQuestion ? currentSentence?.meaning : currentSentence?.text;
+    setIsCorrect(option === correctAnswer);
+    setShowExamples(true);
   };
 
   if (!currentSentence) return <div>Loading...</div>;
 
   return (
     <div>
-      <h1>{currentSentence.text}</h1>
-      <p>{currentSentence.pronunciation}</p>
+      <h1>{isMeaningQuestion ? currentSentence.text : currentSentence.meaning}</h1>
+      <p>{isMeaningQuestion ? "Select the correct meaning:" : "Select the correct sentence:"}</p>
       <div>
-        {currentSentence.examples?.map((option, index) => (
+        {options.map((option, index) => (
           <button
             key={index}
             onClick={() => handleOptionClick(option)}
@@ -51,8 +89,18 @@ const Quiz: React.FC = () => {
       {selectedOption !== null && (
         <div>
           <p>{isCorrect ? "Correct!" : "Incorrect!"}</p>
-          <p>Correct Answer: {currentSentence.meaning}</p>
-          <button onClick={fetchRandomSentence}>Next</button>
+          <p>Correct Answer: {isMeaningQuestion ? currentSentence.meaning : currentSentence.text}</p>
+          {showExamples && (
+            <div>
+              <h3>Examples:</h3>
+              <ul>
+                {currentSentence.examples.map((example, index) => (
+                  <li key={index}>{example}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <button onClick={() => loadRandomQuestion(sentences)}>Next</button>
         </div>
       )}
     </div>
