@@ -624,7 +624,20 @@ const data = [
     meaning: 'I went and came',
     pronunciation: 'wel-le-see o-cha',
   },
+  {
+    type: "word",
+    text: "Ila",
+    meaning: "Like this",
+    pronunciation: "ee-laa",
+    examples: [
+      "Ila cheyyi (Do it like this)",
+      "Ila undi (It is like this)",
+      "Ila matladu (Speak like this)",
+      "Ila raayi (Write like this)",
+      "Ila chudu (Look like this)",
+    ],
+  }
 ];
 
 
-module.exports =  data;
+module.exports = data;

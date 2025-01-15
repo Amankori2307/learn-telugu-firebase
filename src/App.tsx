@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Quiz from './components/quiz/quiz'
 import AddVocab from './components/vocab/add-vocab/add-vocab'
 import Header from './components/header/header'
+import ReviewSentences from './components/vocab/review/review-sentences'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
 
           <Route path="/" element={<Quiz />} />
           <Route path="/add-vocab" element={<AddVocab />} />
+          <Route path="/review" element={<ReviewSentences />} />
         </Routes>
       </div>
     </BrowserRouter>

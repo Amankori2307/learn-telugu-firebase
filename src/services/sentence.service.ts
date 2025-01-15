@@ -1,4 +1,13 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "../services/firebase";
 
 export interface Sentence {
@@ -11,12 +20,14 @@ export interface Sentence {
   isReviewed?: boolean;
 }
 
-export const fetchSentences = async (): Promise<Sentence[]> => {
+export const fetchSentences = async (
+  isReviewed = true
+): Promise<Sentence[]> => {
   try {
     // Create a query to fetch only reviewed sentences
     const q = query(
       collection(db, "sentences"),
-      where("isReviewed", "==", true) // Filter by isReviewed = true
+      where("isReviewed", "==", isReviewed) // Filter by isReviewed = true
     );
 
     const querySnapshot = await getDocs(q);
@@ -43,6 +54,30 @@ export const saveVocab = async (vocabData: Sentence) => {
     return docRef.id; // Return the document ID (optional)
   } catch (error) {
     console.error("Error saving vocab: ", error);
+    throw error;
+  }
+};
+
+// Mark a sentence as reviewed
+export const markAsReviewed = async (id: string) => {
+  try {
+    const sentenceRef = doc(db, "sentences", id);
+    await updateDoc(sentenceRef, { isReviewed: true });
+    console.log(`Sentence ${id} marked as reviewed.`);
+  } catch (error) {
+    console.error("Error marking sentence as reviewed: ", error);
+    throw error;
+  }
+};
+
+// Delete a sentence
+export const deleteSentence = async (id: string) => {
+  try {
+    const sentenceRef = doc(db, "sentences", id);
+    await deleteDoc(sentenceRef);
+    console.log(`Sentence ${id} deleted.`);
+  } catch (error) {
+    console.error("Error deleting sentence: ", error);
     throw error;
   }
 };
