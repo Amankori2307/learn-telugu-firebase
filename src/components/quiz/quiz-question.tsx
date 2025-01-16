@@ -1,13 +1,12 @@
 // components/QuizQuestion.tsx
-
 import { Sentence } from "../../services/sentence.service";
 
 interface QuizQuestionProps {
   sentence: Sentence;
   isMeaningQuestion: boolean;
-  options: string[];
-  selectedOption: string | null;
-  handleOptionClick: (option: string) => void;
+  options: Sentence[];
+  selectedOption: Sentence | null;
+  handleOptionClick: (option: Sentence) => void;
 }
 
 const QuizQuestion: React.FC<QuizQuestionProps> = ({
@@ -17,10 +16,40 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   selectedOption,
   handleOptionClick,
 }) => {
+  // Format the sentence text and pronunciation
+  const formattedQuestion = (value: Sentence) => {
+    return `${value.text} (${value.pronunciation})`;
+  };
+
+  // Get the display value for the question or option
+  const getDisplayValue = (value: Sentence, isOption: boolean) => {
+    if (isOption) return isMeaningQuestion ? value.meaning : formattedQuestion(value);
+    else return isMeaningQuestion ? formattedQuestion(value) : value.meaning;
+  };
+
+  // Get the style for a specific option
+  const getStyle = (option: Sentence) => {
+    if (!selectedOption) return "bg-blue-500 hover:bg-blue-700";
+    const currentValue = isMeaningQuestion ? option.meaning : option.text;
+    const selectedValue = isMeaningQuestion ? selectedOption.meaning : selectedOption.text;
+    const correctValue = isMeaningQuestion ? sentence.meaning : sentence.text;
+
+    if (currentValue === correctValue) {
+      // Correct answer
+      return "bg-green-500";
+    } else if (currentValue === selectedValue) {
+      // Selected but incorrect answer
+      return "bg-red-500";
+    } else {
+      // Unselected option
+      return "bg-gray-300 text-gray-700 cursor-not-allowed";
+    }
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">
-        {isMeaningQuestion ? `${sentence.text} (${sentence.pronunciation})` : sentence.meaning}
+        {getDisplayValue(sentence, false)}
       </h1>
       <p className="mb-4">
         {isMeaningQuestion ? "Select the correct meaning:" : "Select the correct sentence:"}
@@ -31,14 +60,9 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
             key={index}
             onClick={() => handleOptionClick(option)}
             disabled={selectedOption !== null}
-            className={`w-full p-2 rounded ${selectedOption === option
-              ? selectedOption === (isMeaningQuestion ? sentence.meaning : sentence.text)
-                ? "bg-green-500"
-                : "bg-red-500"
-              : "bg-blue-500 hover:bg-blue-700"
-              } text-white`}
+            className={`w-full p-2 rounded text-white ${getStyle(option)}`}
           >
-            {option}
+            {getDisplayValue(option, true)}
           </button>
         ))}
       </div>

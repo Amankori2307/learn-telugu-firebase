@@ -36,7 +36,6 @@ export const fetchSentences = async (
     querySnapshot.forEach((doc) => {
       sentencesData.push({ id: doc.id, ...doc.data() } as Sentence);
     });
-    console.log(sentencesData);
     return sentencesData;
   } catch (error) {
     console.error("Error fetching sentences: ", error);
@@ -50,7 +49,6 @@ export const saveVocab = async (vocabData: Sentence) => {
       ...vocabData,
       isReviewed: false, // Set isReviewed to false by default
     });
-    console.log("Vocab saved with ID: ", docRef.id);
     return docRef.id; // Return the document ID (optional)
   } catch (error) {
     console.error("Error saving vocab: ", error);
@@ -63,7 +61,6 @@ export const markAsReviewed = async (id: string) => {
   try {
     const sentenceRef = doc(db, "sentences", id);
     await updateDoc(sentenceRef, { isReviewed: true });
-    console.log(`Sentence ${id} marked as reviewed.`);
   } catch (error) {
     console.error("Error marking sentence as reviewed: ", error);
     throw error;
@@ -75,7 +72,6 @@ export const deleteSentence = async (id: string) => {
   try {
     const sentenceRef = doc(db, "sentences", id);
     await deleteDoc(sentenceRef);
-    console.log(`Sentence ${id} deleted.`);
   } catch (error) {
     console.error("Error deleting sentence: ", error);
     throw error;

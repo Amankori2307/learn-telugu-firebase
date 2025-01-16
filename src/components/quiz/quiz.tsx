@@ -7,8 +7,8 @@ import QuizResult from "./quiz-result";
 const Quiz: React.FC = () => {
   const [sentences, setSentences] = useState<Sentence[]>([]);
   const [currentSentence, setCurrentSentence] = useState<Sentence | null>(null);
-  const [options, setOptions] = useState<string[]>([]);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [options, setOptions] = useState<Sentence[]>([]);
+  const [selectedOption, setSelectedOption] = useState<Sentence | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showExamples, setShowExamples] = useState<boolean>(false);
   const [isMeaningQuestion, setIsMeaningQuestion] = useState<boolean>(false);
@@ -22,6 +22,12 @@ const Quiz: React.FC = () => {
     loadSentences();
   }, []);
 
+  const checkIsCorrect = (option: Sentence) => {
+    if (!currentSentence) return null;
+    if (isMeaningQuestion) return currentSentence.meaning === option.meaning;
+    else return currentSentence.text === option.text;
+  }
+
   const loadRandomQuestion = (sentencesData: Sentence[]) => {
     const randomIndex = Math.floor(Math.random() * sentencesData.length);
     const randomSentence = sentencesData[randomIndex];
@@ -29,15 +35,14 @@ const Quiz: React.FC = () => {
     const isMeaningQuestion = Math.random() < 0.5;
     setIsMeaningQuestion(isMeaningQuestion);
 
-    const correctAnswer = isMeaningQuestion ? randomSentence.meaning : randomSentence.text;
+
 
     const incorrectOptions = sentencesData
       .filter((s) => s.id !== randomSentence.id)
       .sort(() => Math.random() - 0.5)
       .slice(0, 3)
-      .map((s) => (isMeaningQuestion ? s.meaning : s.text));
 
-    const allOptions = [correctAnswer, ...incorrectOptions].sort(() => Math.random() - 0.5);
+    const allOptions = [randomSentence, ...incorrectOptions].sort(() => Math.random() - 0.5);
 
     setCurrentSentence(randomSentence);
     setOptions(allOptions);
@@ -46,10 +51,9 @@ const Quiz: React.FC = () => {
     setShowExamples(false);
   };
 
-  const handleOptionClick = (option: string) => {
+  const handleOptionClick = (option: Sentence) => {
     setSelectedOption(option);
-    const correctAnswer = isMeaningQuestion ? currentSentence?.meaning : currentSentence?.text;
-    setIsCorrect(option === correctAnswer);
+    setIsCorrect(checkIsCorrect(option));
     setShowExamples(true);
   };
 

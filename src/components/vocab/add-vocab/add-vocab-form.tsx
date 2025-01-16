@@ -25,7 +25,6 @@ const AddVocabForm = () => {
         onSubmit: async (values) => {
             try {
                 // Save the vocab data to Firebase
-                console.log(values)
                 await saveVocab({
                     ...values as Sentence,
                     isReviewed: false, // Set isReviewed to false by default
