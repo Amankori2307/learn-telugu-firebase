@@ -20,7 +20,7 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">
-        {isMeaningQuestion ? sentence.text : sentence.meaning}
+        {isMeaningQuestion ? `${sentence.text} (${sentence.pronunciation})` : sentence.meaning}
       </h1>
       <p className="mb-4">
         {isMeaningQuestion ? "Select the correct meaning:" : "Select the correct sentence:"}
@@ -32,10 +32,10 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
             onClick={() => handleOptionClick(option)}
             disabled={selectedOption !== null}
             className={`w-full p-2 rounded ${selectedOption === option
-                ? selectedOption === (isMeaningQuestion ? sentence.meaning : sentence.text)
-                  ? "bg-green-500"
-                  : "bg-red-500"
-                : "bg-blue-500 hover:bg-blue-700"
+              ? selectedOption === (isMeaningQuestion ? sentence.meaning : sentence.text)
+                ? "bg-green-500"
+                : "bg-red-500"
+              : "bg-blue-500 hover:bg-blue-700"
               } text-white`}
           >
             {option}

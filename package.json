@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "@types/file-saver": "^2.0.7",
+    "file-saver": "^2.0.5",
     "firebase": "^11.1.0",
     "formik": "^2.4.6",
     "react": "^18.3.1",
