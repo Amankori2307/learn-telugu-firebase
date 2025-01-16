@@ -1,6 +1,7 @@
 const admin = require("firebase-admin");
 const serviceAccount = require("../env/service-account-key.json");
-const data = require("./assets/data.js");
+// const data = require("./assets/data.js");
+const data = require("./assets/raw-data2.json");
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -77,8 +78,8 @@ async function updateExistingEntries() {
 
 // Run both functions
 async function run() {
-  // await uploadData(); // Upload new data
-  await updateExistingEntries(); // Update existing entries
+  await uploadData(); // Upload new data
+  // await updateExistingEntries(); // Update existing entries
 }
 
 run();

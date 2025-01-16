@@ -1,0 +1,532 @@
+[
+    {
+      "type": "word",
+      "text": "Manasu",
+      "meaning": "Heart / Mind",
+      "pronunciation": "Ma-na-su",
+      "examples": [
+        "Manasu anandamga undi (The heart is happy)",
+        "Manasu nammakam (Trust in the heart)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Bhayam",
+      "meaning": "Fear",
+      "pronunciation": "Bha-yam",
+      "examples": [
+        "Naku bhayam vesthundi (I am feeling scared)",
+        "Bhayam padaku (Don’t be afraid)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Prema",
+      "meaning": "Love",
+      "pronunciation": "Pre-ma",
+      "examples": [
+        "Prema anubhavinchandi (Experience love)",
+        "Prema chupinchandi (Show love)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Santhosham",
+      "meaning": "Happiness",
+      "pronunciation": "San-tho-sham",
+      "examples": [
+        "Naku santhosham ga undi (I am happy)",
+        "Santhosham tho undandi (Be happy)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Dukham",
+      "meaning": "Sadness",
+      "pronunciation": "Du-kham",
+      "examples": [
+        "Naku dukham ga undi (I am sad)",
+        "Dukham padaku (Don’t be sad)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Aasha",
+      "meaning": "Hope",
+      "pronunciation": "Aa-sha",
+      "examples": [
+        "Aasha tho undandi (Be hopeful)",
+        "Aasha chupinchandi (Show hope)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Nirasha",
+      "meaning": "Despair",
+      "pronunciation": "Ni-ra-sha",
+      "examples": [
+        "Nirasha padaku (Don’t despair)",
+        "Nirasha tho undi (He is in despair)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Snehitulu",
+      "meaning": "Friends",
+      "pronunciation": "Sne-hi-tu-lu",
+      "examples": [
+        "Snehitulu kalisi undali (Friends should stay together)",
+        "Snehitulu chala important (Friends are very important)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Sahayam",
+      "meaning": "Help",
+      "pronunciation": "Sa-ha-yam",
+      "examples": [
+        "Sahayam cheyyandi (Please help)",
+        "Sahayam kavali (I need help)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Sankalpam",
+      "meaning": "Decision",
+      "pronunciation": "San-kal-pam",
+      "examples": [
+        "Sankalpam teesukondi (Make a decision)",
+        "Sankalpam important (Decision is important)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Prayatnam",
+      "meaning": "Effort",
+      "pronunciation": "Pra-yat-nam",
+      "examples": [
+        "Prayatnam cheyyandi (Please put in effort)",
+        "Prayatnam chala important (Effort is very important)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Vijayam",
+      "meaning": "Victory",
+      "pronunciation": "Vi-ja-yam",
+      "examples": [
+        "Vijayam kosam prayatnam cheyyali (Effort is needed for victory)",
+        "Vijayam maku vastundi (We will achieve victory)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Parajayam",
+      "meaning": "Defeat",
+      "pronunciation": "Pa-ra-ja-yam",
+      "examples": [
+        "Parajayam naku ledu (I don’t accept defeat)",
+        "Parajayam tho undaku (Don’t stay defeated)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Swaram",
+      "meaning": "Voice / Tone",
+      "pronunciation": "Swa-ram",
+      "examples": [
+        "Swaram bagundi (Your voice is nice)",
+        "Swaram tho matladu (Speak with tone)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Gurtu",
+      "meaning": "Memory",
+      "pronunciation": "Gur-tu",
+      "examples": [
+        "Naku gurtu undi (I remember)",
+        "Gurtu pettukondi (Remember it)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Maro",
+      "meaning": "Another",
+      "pronunciation": "Ma-ro",
+      "examples": [
+        "Maro okati kavali (I need another one)",
+        "Maro chance ivvandi (Give another chance)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Malli",
+      "meaning": "Again",
+      "pronunciation": "Mal-li",
+      "examples": [
+        "Malli cheyyandi (Do it again)",
+        "Malli kaludham (Let’s meet again)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Modalu",
+      "meaning": "First",
+      "pronunciation": "Mo-da-lu",
+      "examples": [
+        "Modalu nenu (Me first)",
+        "Modalu cheyyandi (Do it first)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Taruvatha",
+      "meaning": "Later",
+      "pronunciation": "Ta-ru-vaa-tha",
+      "examples": [
+        "Taruvatha matladukundam (Let’s talk later)",
+        "Taruvatha vellu (Go later)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Ippatiki",
+      "meaning": "Until now",
+      "pronunciation": "Ip-pa-ti-ki",
+      "examples": [
+        "Ippatiki em jarigindi? (What happened until now?)",
+        "Ippatiki undi (It is there until now)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Appudu",
+      "meaning": "Then",
+      "pronunciation": "Ap-pu-du",
+      "examples": [
+        "Appudu em jarigindi? (What happened then?)",
+        "Appudu nenu ledu (I wasn’t there then)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Ila",
+      "meaning": "Like this",
+      "pronunciation": "I-la",
+      "examples": [
+        "Ila cheyyi (Do it like this)",
+        "Ila undi (It is like this)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Ala",
+      "meaning": "Like that",
+      "pronunciation": "A-la",
+      "examples": [
+        "Ala cheyyi (Do it like that)",
+        "Ala undi (It is like that)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Ela",
+      "meaning": "How",
+      "pronunciation": "E-la",
+      "examples": [
+        "Ela undi? (How is it?)",
+        "Ela cheyyali? (How to do it?)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Ante",
+      "meaning": "Means / That is",
+      "pronunciation": "An-te",
+      "examples": [
+        "Ante emiti? (What does that mean?)",
+        "Ante ala (That is how)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Kotha",
+      "meaning": "New",
+      "pronunciation": "Ko-tha",
+      "examples": [
+        "Kotha dress (New dress)",
+        "Kotha illu (New house)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Prati",
+      "meaning": "Every",
+      "pronunciation": "Pra-ti",
+      "examples": [
+        "Prati roju (Every day)",
+        "Prati manishi (Every person)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Okati",
+      "meaning": "One",
+      "pronunciation": "O-ka-ti",
+      "examples": [
+        "Okati ivvu (Give one)",
+        "Okati teesuko (Take one)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Rendu",
+      "meaning": "Two",
+      "pronunciation": "Ren-du",
+      "examples": [
+        "Rendu ivvu (Give two)",
+        "Rendu teesuko (Take two)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Mudhu",
+      "meaning": "Three",
+      "pronunciation": "Mu-dhu",
+      "examples": [
+        "Mudhu ivvu (Give three)",
+        "Mudhu teesuko (Take three)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Nalugu",
+      "meaning": "Four",
+      "pronunciation": "Na-lu-gu",
+      "examples": [
+        "Nalugu ivvu (Give four)",
+        "Nalugu teesuko (Take four)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Aidu",
+      "meaning": "Five",
+      "pronunciation": "A-yi-du",
+      "examples": [
+        "Aidu ivvu (Give five)",
+        "Aidu teesuko (Take five)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Aaru",
+      "meaning": "Six",
+      "pronunciation": "Aa-ru",
+      "examples": [
+        "Aaru ivvu (Give six)",
+        "Aaru teesuko (Take six)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Edu",
+      "meaning": "Seven",
+      "pronunciation": "E-du",
+      "examples": [
+        "Edu ivvu (Give seven)",
+        "Edu teesuko (Take seven)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Enimidi",
+      "meaning": "Eight",
+      "pronunciation": "E-ni-mi-di",
+      "examples": [
+        "Enimidi ivvu (Give eight)",
+        "Enimidi teesuko (Take eight)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Thommidi",
+      "meaning": "Nine",
+      "pronunciation": "Thom-mi-di",
+      "examples": [
+        "Thommidi ivvu (Give nine)",
+        "Thommidi teesuko (Take nine)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Padi",
+      "meaning": "Ten",
+      "pronunciation": "Pa-di",
+      "examples": [
+        "Padi ivvu (Give ten)",
+        "Padi teesuko (Take ten)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Vastadu",
+      "meaning": "Will come",
+      "pronunciation": "Vas-ta-du",
+      "examples": [
+        "Nenu vastanu (I will come)",
+        "Aayana vastadu (He will come)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Ravali",
+      "meaning": "Should come",
+      "pronunciation": "Ra-va-li",
+      "examples": [
+        "Meeru ravali (You should come)",
+        "Vallu ravali (They should come)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Vellali",
+      "meaning": "Should go",
+      "pronunciation": "Vel-la-li",
+      "examples": [
+        "Nenu vellali (I should go)",
+        "Meeru vellali (You should go)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Undi",
+      "meaning": "Is / Exists",
+      "pronunciation": "Un-di",
+      "examples": [
+        "Illu undi (The house exists)",
+        "Neeru undi (Water is there)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Ledu",
+      "meaning": "Is not / Does not exist",
+      "pronunciation": "Le-du",
+      "examples": [
+        "Illu ledu (The house does not exist)",
+        "Neeru ledu (Water is not there)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Ikkada",
+      "meaning": "Here",
+      "pronunciation": "Ik-ka-da",
+      "examples": [
+        "Ikkada undi (It is here)",
+        "Ikkada ra (Come here)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Akkada",
+      "meaning": "There",
+      "pronunciation": "Ak-ka-da",
+      "examples": [
+        "Akkada undi (It is there)",
+        "Akkada vellu (Go there)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Evaru",
+      "meaning": "Who",
+      "pronunciation": "E-va-ru",
+      "examples": [
+        "Evaru meeru? (Who are you?)",
+        "Evaru vastaru? (Who will come?)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Emi",
+      "meaning": "What",
+      "pronunciation": "E-mi",
+      "examples": [
+        "Emi chestunnaru? (What are you doing?)",
+        "Emi undi? (What is there?)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Enduku",
+      "meaning": "Why",
+      "pronunciation": "En-du-ku",
+      "examples": [
+        "Enduku vastunnaru? (Why are you coming?)",
+        "Enduku ala chesaru? (Why did you do that?)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Eppatiki",
+      "meaning": "Until when",
+      "pronunciation": "Ep-pa-ti-ki",
+      "examples": [
+        "Eppatiki undi? (Until when is it?)",
+        "Eppatiki vellali? (Until when should I go?)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Evaraina",
+      "meaning": "Anyone",
+      "pronunciation": "E-va-rai-na",
+      "examples": [
+        "Evaraina vastara? (Will anyone come?)",
+        "Evaraina cheppara? (Will anyone tell?)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Evadaina",
+      "meaning": "Anyone (informal)",
+      "pronunciation": "E-va-dai-na",
+      "examples": [
+        "Evadaina vastada? (Will anyone come?)",
+        "Evadaina cheppada? (Will anyone tell?)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Emaina",
+      "meaning": "Anything",
+      "pronunciation": "E-mai-na",
+      "examples": [
+        "Emaina kavala? (Do you need anything?)",
+        "Emaina cheyyara? (Will you do anything?)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Ekkadaina",
+      "meaning": "Anywhere",
+      "pronunciation": "Ek-ka-dai-na",
+      "examples": [
+        "Ekkadaina vellacha? (Can we go anywhere?)",
+        "Ekkadaina unda? (Is it anywhere?)"
+      ]
+    },
+    {
+      "type": "word",
+      "text": "Eppudaina",
+      "meaning": "Anytime",
+      "pronunciation": "Ep-pu-dai-na",
+      "examples": [
+        "Eppudaina vastava? (Will you come anytime?)",
+        "Eppudaina cheyyacha? (Can we do it anytime?)"
+      ]
+    }
+  ]

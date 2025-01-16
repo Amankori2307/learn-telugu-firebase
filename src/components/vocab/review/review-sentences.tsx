@@ -5,7 +5,6 @@ import { deleteSentence, fetchSentences, markAsReviewed, Sentence } from "../../
 const ReviewSentences = () => {
   const [sentences, setSentences] = useState<Sentence[]>([]);
 
-  // Fetch un-reviewed sentences on component mount
   useEffect(() => {
     const loadSentences = async () => {
       try {
@@ -47,7 +46,7 @@ const ReviewSentences = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Un-reviewed Sentences</h1>
+      <h1 className="text-2xl font-bold mb-4">Un-reviewed Sentences ({sentences.length})</h1>
       {sentences.length === 0 ? (
         <p>No un-reviewed sentences found.</p>
       ) : (
