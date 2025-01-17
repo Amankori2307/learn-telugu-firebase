@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { deleteSentence, fetchSentences, markAsReviewed, Sentence } from "../../../services/sentence.service";
+import { ISentence } from "../../../interfaces/vocab.interfaces";
+import { deleteSentence, fetchSentences, markAsReviewed, } from "../../../services/sentence.service";
 
 
 const ReviewSentences = () => {
-  const [sentences, setSentences] = useState<Sentence[]>([]);
+  const [sentences, setSentences] = useState<ISentence[]>([]);
 
   useEffect(() => {
     const loadSentences = async () => {

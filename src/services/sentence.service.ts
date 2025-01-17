@@ -106,26 +106,35 @@ export const fetchSentencesInChapter = async (
 
 export const fetchOrphanSentences = async (): Promise<ISentence[]> => {
   try {
-    // Reference to the sentences collection
+    // Fetch all sentences
     const sentencesRef = collection(db, "sentences");
+    const sentencesSnapshot = await getDocs(sentencesRef);
 
-    // Query sentences where chapterId is null or does not exist
-    const q = query(
-      sentencesRef,
-      where("chapterId", "==", null) // Sentences without a chapterId
-    );
+    // Fetch all chapters and collect their sentenceIds
+    const chaptersRef = collection(db, "chapters");
+    const chaptersSnapshot = await getDocs(chaptersRef);
 
-    // Execute the query
-    const querySnapshot = await getDocs(q);
+    // Create a Set of all sentenceIds that belong to chapters
+    const sentenceIdsInChapters = new Set<string>();
+    chaptersSnapshot.forEach((chapterDoc) => {
+      const chapterData = chapterDoc.data();
+      if (chapterData.sentenceIds && Array.isArray(chapterData.sentenceIds)) {
+        chapterData.sentenceIds.forEach((sentenceId: string) => {
+          sentenceIdsInChapters.add(sentenceId);
+        });
+      }
+    });
 
-    // Map the results to ISentence objects
+    // Filter out sentences that are not in any chapter
     const orphanSentences: ISentence[] = [];
-    querySnapshot.forEach((doc) => {
-      const sentenceData = doc.data();
-      orphanSentences.push({
-        id: doc.id,
-        ...sentenceData,
-      } as ISentence);
+    sentencesSnapshot.forEach((sentenceDoc) => {
+      const sentenceData = sentenceDoc.data();
+      if (!sentenceIdsInChapters.has(sentenceDoc.id)) {
+        orphanSentences.push({
+          id: sentenceDoc.id,
+          ...sentenceData,
+        } as ISentence);
+      }
     });
 
     return orphanSentences;

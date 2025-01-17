@@ -1,7 +1,8 @@
 // src/components/AddVocabForm.tsx
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { saveVocab, Sentence } from "../../../services/sentence.service";
+import { saveVocab } from "../../../services/sentence.service";
+import { ISentence } from "../../../interfaces/vocab.interfaces";
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object({
@@ -26,7 +27,7 @@ const AddVocabForm = () => {
             try {
                 // Save the vocab data to Firebase
                 await saveVocab({
-                    ...values as Sentence,
+                    ...values as ISentence,
                     isReviewed: false, // Set isReviewed to false by default
                 });
 
