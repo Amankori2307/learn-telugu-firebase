@@ -56,6 +56,34 @@ const Header = () => {
                     >
                         Add Vocab
                     </NavLink>
+
+                    <NavLink
+                        to="/review"
+                        className={({ isActive }) =>
+                            `hover:underline ${isActive ? "font-bold underline" : ""}`
+                        }
+                        onClick={toggleMenu}
+                    >
+                        Review
+                    </NavLink>
+                    <NavLink
+                        to="/sentences"
+                        className={({ isActive }) =>
+                            `hover:underline ${isActive ? "font-bold underline" : ""}`
+                        }
+                        onClick={toggleMenu}
+                    >
+                        Sentences
+                    </NavLink>
+                    <NavLink
+                        to="/chapters"
+                        className={({ isActive }) =>
+                            `hover:underline ${isActive ? "font-bold underline" : ""}`
+                        }
+                        onClick={toggleMenu}
+                    >
+                        Chapters
+                    </NavLink>
                 </nav>
 
                 {/* Mobile Menu (Dropdown) */}
@@ -79,6 +107,33 @@ const Header = () => {
                                 onClick={toggleMenu}
                             >
                                 Add Vocab
+                            </NavLink>
+                            <NavLink
+                                to="/review"
+                                className={({ isActive }) =>
+                                    `hover:underline ${isActive ? "font-bold underline" : ""}`
+                                }
+                                onClick={toggleMenu}
+                            >
+                                Review
+                            </NavLink>
+                            <NavLink
+                                to="/sentences"
+                                className={({ isActive }) =>
+                                    `hover:underline ${isActive ? "font-bold underline" : ""}`
+                                }
+                                onClick={toggleMenu}
+                            >
+                                Sentences
+                            </NavLink>
+                            <NavLink
+                                to="/chapters"
+                                className={({ isActive }) =>
+                                    `hover:underline ${isActive ? "font-bold underline" : ""}`
+                                }
+                                onClick={toggleMenu}
+                            >
+                                Chapters
                             </NavLink>
                         </nav>
                     </div>
