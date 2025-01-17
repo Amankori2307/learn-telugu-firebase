@@ -11,6 +11,7 @@ export interface ISentenceBase {
   examples: string[];
   isReviewed?: boolean;
   meta?: string;
+  chapterId?: string;
 }
 export interface ISentence extends ISentenceBase {
   id: string;

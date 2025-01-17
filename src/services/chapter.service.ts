@@ -1,71 +1,24 @@
 import {
   addDoc,
   collection,
-  deleteDoc,
   doc,
   getDoc,
   getDocs,
-  query,
   updateDoc,
-  where,
 } from "firebase/firestore";
+import { IChapter } from "../interfaces/chapter.interfaces";
 import { db } from "./firebase";
-import { ISentence } from "../interfaces/vocab.interfaces";
 
-export const fetchSentences = async (
-  isReviewed = true
-): Promise<ISentence[]> => {
+export const createChapter = async (name: string): Promise<string> => {
   try {
-    // Create a query to fetch only reviewed sentences
-    const q = query(
-      collection(db, "sentences"),
-      where("isReviewed", "==", isReviewed) // Filter by isReviewed = true
-    );
-
-    const querySnapshot = await getDocs(q);
-    const sentencesData: ISentence[] = [];
-
-    querySnapshot.forEach((doc) => {
-      sentencesData.push({ id: doc.id, ...doc.data() } as ISentence);
+    const chapterRef = await addDoc(collection(db, "chapters"), {
+      name,
+      sentenceIds: [], // Start with an empty list of sentences
     });
-    return sentencesData;
+    console.log("Chapter created with ID: ", chapterRef.id);
+    return chapterRef.id;
   } catch (error) {
-    console.error("Error fetching sentences: ", error);
-    throw error;
-  }
-};
-
-export const saveVocab = async (vocabData: ISentence) => {
-  try {
-    const docRef = await addDoc(collection(db, "sentences"), {
-      ...vocabData,
-      isReviewed: false, // Set isReviewed to false by default
-    });
-    return docRef.id; // Return the document ID (optional)
-  } catch (error) {
-    console.error("Error saving vocab: ", error);
-    throw error;
-  }
-};
-
-// Mark a sentence as reviewed
-export const markAsReviewed = async (id: string) => {
-  try {
-    const sentenceRef = doc(db, "sentences", id);
-    await updateDoc(sentenceRef, { isReviewed: true });
-  } catch (error) {
-    console.error("Error marking sentence as reviewed: ", error);
-    throw error;
-  }
-};
-
-// Delete a sentence
-export const deleteSentence = async (id: string) => {
-  try {
-    const sentenceRef = doc(db, "sentences", id);
-    await deleteDoc(sentenceRef);
-  } catch (error) {
-    console.error("Error deleting sentence: ", error);
+    console.error("Error creating chapter: ", error);
     throw error;
   }
 };
@@ -102,6 +55,22 @@ export const addSentenceToChapter = async (
     console.log("Sentence added to chapter successfully");
   } catch (error) {
     console.error("Error adding sentence to chapter: ", error);
+    throw error;
+  }
+};
+
+export const fetchChapters = async (): Promise<IChapter[]> => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "chapters"));
+    const chapters: IChapter[] = [];
+
+    querySnapshot.forEach((doc) => {
+      chapters.push({ id: doc.id, ...doc.data() } as IChapter);
+    });
+
+    return chapters;
+  } catch (error) {
+    console.error("Error fetching chapters: ", error);
     throw error;
   }
 };

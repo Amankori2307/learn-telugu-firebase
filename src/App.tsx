@@ -4,6 +4,7 @@ import AddVocab from './components/vocab/add-vocab/add-vocab'
 import Header from './components/header/header'
 import ReviewSentences from './components/vocab/review/review-sentences'
 import SentencesPage from './components/pages/sentences/sentence-page'
+import ChapterPage from './components/pages/chapter/chapter-page'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/add-vocab" element={<AddVocab />} />
           <Route path="/review" element={<ReviewSentences />} />
           <Route path="/sentences" element={<SentencesPage />} />
+          <Route path="/chapters" element={<ChapterPage />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -9,8 +9,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../services/firebase";
 import { ISentence } from "../interfaces/vocab.interfaces";
+import { db } from "../services/firebase";
 
 export const fetchSentences = async (
   isReviewed = true
@@ -70,38 +70,38 @@ export const deleteSentence = async (id: string) => {
   }
 };
 
-export const addSentenceToChapter = async (
-  chapterId: string,
-  sentenceId: string
-): Promise<void> => {
+// src/services/chapterService.ts
+
+export const fetchSentencesInChapter = async (
+  chapterId: string
+): Promise<ISentence[]> => {
   try {
-    // Check if the sentence already belongs to another chapter
-    const sentenceRef = doc(db, "sentences", sentenceId);
-    const sentenceDoc = await getDoc(sentenceRef);
-
-    if (!sentenceDoc.exists()) {
-      throw new Error("Sentence not found");
-    }
-
-    const sentenceData = sentenceDoc.data();
-    if (sentenceData.chapterId) {
-      throw new Error("Sentence already belongs to another chapter");
-    }
-
-    // Add the sentence to the chapter
     const chapterRef = doc(db, "chapters", chapterId);
-    await updateDoc(chapterRef, {
-      sentenceIds: [...(sentenceData.sentenceIds || []), sentenceId],
-    });
+    const chapterDoc = await getDoc(chapterRef);
 
-    // Update the sentence to include the chapter ID
-    await updateDoc(sentenceRef, {
-      chapterId,
-    });
+    if (!chapterDoc.exists()) {
+      throw new Error("Chapter not found");
+    }
 
-    console.log("Sentence added to chapter successfully");
+    const chapterData = chapterDoc.data();
+    const sentenceIds = chapterData.sentenceIds || [];
+
+    const sentences: ISentence[] = [];
+    for (const sentenceId of sentenceIds) {
+      const sentenceRef = doc(db, "sentences", sentenceId);
+      const sentenceDoc = await getDoc(sentenceRef);
+
+      if (sentenceDoc.exists()) {
+        sentences.push({
+          id: sentenceDoc.id,
+          ...sentenceDoc.data(),
+        } as ISentence);
+      }
+    }
+
+    return sentences;
   } catch (error) {
-    console.error("Error adding sentence to chapter: ", error);
+    console.error("Error fetching sentences in chapter: ", error);
     throw error;
   }
 };
