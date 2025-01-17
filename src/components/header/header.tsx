@@ -1,13 +1,23 @@
-// src/components/Header.tsx
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
+    const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+    // Navigation links data
+    const navLinks = [
+        { to: "/", label: "Home" },
+        { to: "/add-vocab", label: "Add Vocab" },
+        { to: "/review", label: "Review" },
+        { to: "/sentences", label: "Sentences" },
+        { to: "/chapters", label: "Chapters" },
+    ];
+
+    // Common NavLink styling
+    const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+        `hover:underline ${isActive ? "font-bold underline" : ""}`;
 
     return (
         <header className="bg-blue-500 text-white shadow-lg">
@@ -18,10 +28,7 @@ const Header = () => {
                 </Link>
 
                 {/* Hamburger Menu (Mobile) */}
-                <button
-                    onClick={toggleMenu}
-                    className="md:hidden p-2 focus:outline-none"
-                >
+                <button onClick={toggleMenu} className="md:hidden p-2 focus:outline-none">
                     <svg
                         className="w-6 h-6"
                         fill="none"
@@ -34,107 +41,37 @@ const Header = () => {
                             strokeLinejoin="round"
                             strokeWidth="2"
                             d="M4 6h16M4 12h16m-7 6h7"
-                        ></path>
+                        />
                     </svg>
                 </button>
 
                 {/* Navigation Links (Desktop) */}
                 <nav className="hidden md:flex space-x-4">
-                    <NavLink
-                        to="/"
-                        className={({ isActive }) =>
-                            `hover:underline ${isActive ? "font-bold underline" : ""}`
-                        }
-                    >
-                        Home
-                    </NavLink>
-                    <NavLink
-                        to="/add-vocab"
-                        className={({ isActive }) =>
-                            `hover:underline ${isActive ? "font-bold underline" : ""}`
-                        }
-                    >
-                        Add Vocab
-                    </NavLink>
-
-                    <NavLink
-                        to="/review"
-                        className={({ isActive }) =>
-                            `hover:underline ${isActive ? "font-bold underline" : ""}`
-                        }
-                        onClick={toggleMenu}
-                    >
-                        Review
-                    </NavLink>
-                    <NavLink
-                        to="/sentences"
-                        className={({ isActive }) =>
-                            `hover:underline ${isActive ? "font-bold underline" : ""}`
-                        }
-                        onClick={toggleMenu}
-                    >
-                        Sentences
-                    </NavLink>
-                    <NavLink
-                        to="/chapters"
-                        className={({ isActive }) =>
-                            `hover:underline ${isActive ? "font-bold underline" : ""}`
-                        }
-                        onClick={toggleMenu}
-                    >
-                        Chapters
-                    </NavLink>
+                    {navLinks.map((link) => (
+                        <NavLink
+                            key={link.to}
+                            to={link.to}
+                            className={navLinkClass}
+                        >
+                            {link.label}
+                        </NavLink>
+                    ))}
                 </nav>
 
                 {/* Mobile Menu (Dropdown) */}
                 {isMenuOpen && (
                     <div className="md:hidden absolute top-16 right-0 bg-blue-500 w-full shadow-lg">
                         <nav className="flex flex-col space-y-2 p-4">
-                            <NavLink
-                                to="/"
-                                className={({ isActive }) =>
-                                    `hover:underline ${isActive ? "font-bold underline" : ""}`
-                                }
-                                onClick={toggleMenu}
-                            >
-                                Home
-                            </NavLink>
-                            <NavLink
-                                to="/add-vocab"
-                                className={({ isActive }) =>
-                                    `hover:underline ${isActive ? "font-bold underline" : ""}`
-                                }
-                                onClick={toggleMenu}
-                            >
-                                Add Vocab
-                            </NavLink>
-                            <NavLink
-                                to="/review"
-                                className={({ isActive }) =>
-                                    `hover:underline ${isActive ? "font-bold underline" : ""}`
-                                }
-                                onClick={toggleMenu}
-                            >
-                                Review
-                            </NavLink>
-                            <NavLink
-                                to="/sentences"
-                                className={({ isActive }) =>
-                                    `hover:underline ${isActive ? "font-bold underline" : ""}`
-                                }
-                                onClick={toggleMenu}
-                            >
-                                Sentences
-                            </NavLink>
-                            <NavLink
-                                to="/chapters"
-                                className={({ isActive }) =>
-                                    `hover:underline ${isActive ? "font-bold underline" : ""}`
-                                }
-                                onClick={toggleMenu}
-                            >
-                                Chapters
-                            </NavLink>
+                            {navLinks.map((link) => (
+                                <NavLink
+                                    key={link.to}
+                                    to={link.to}
+                                    className={navLinkClass}
+                                    onClick={toggleMenu}
+                                >
+                                    {link.label}
+                                </NavLink>
+                            ))}
                         </nav>
                     </div>
                 )}
