@@ -70,8 +70,6 @@ export const deleteSentence = async (id: string) => {
   }
 };
 
-// src/services/chapterService.ts
-
 export const fetchSentencesInChapter = async (
   chapterId: string
 ): Promise<ISentence[]> => {

@@ -1,11 +1,12 @@
 // src/pages/SentencesPage.tsx
 import { useEffect, useState } from "react";
-import { fetchSentences, Sentence } from "../../../services/sentence.service";
-import SentenceTable from "../../sub-components/sentences-table";
+import { ISentence } from "../../../interfaces/vocab.interfaces";
+import { fetchSentences } from "../../../services/sentence.service";
 import DownloadButton from "../../sub-components/download-button";
+import SentenceTable from "../../sub-components/sentences-table";
 
 const SentencesPage = () => {
-    const [sentences, setSentences] = useState<Sentence[]>([]);
+    const [sentences, setSentences] = useState<ISentence[]>([]);
 
     useEffect(() => {
         const loadSentences = async () => {

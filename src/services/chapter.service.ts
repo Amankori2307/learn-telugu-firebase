@@ -1,5 +1,6 @@
 import {
   addDoc,
+  arrayRemove,
   collection,
   doc,
   getDoc,
@@ -71,6 +72,28 @@ export const fetchChapters = async (): Promise<IChapter[]> => {
     return chapters;
   } catch (error) {
     console.error("Error fetching chapters: ", error);
+    throw error;
+  }
+};
+
+export const removeSentenceFromChapter = async (
+  chapterId: string,
+  sentenceId: string
+): Promise<void> => {
+  try {
+    const chapterRef = doc(db, "chapters", chapterId);
+    await updateDoc(chapterRef, {
+      sentenceIds: arrayRemove(sentenceId),
+    });
+
+    const sentenceRef = doc(db, "sentences", sentenceId);
+    await updateDoc(sentenceRef, {
+      chapterId: null,
+    });
+
+    console.log("Sentence removed from chapter successfully");
+  } catch (error) {
+    console.error("Error removing sentence from chapter: ", error);
     throw error;
   }
 };
