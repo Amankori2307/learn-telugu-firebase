@@ -1,40 +1,34 @@
-// src/components/ChapterList.tsx
-import { useNavigate } from "react-router-dom";
-import { IChapter } from "../../../interfaces/chapter.interfaces";
+// src/components/SentenceList.tsx
+import { ISentence } from "../../../interfaces/vocab.interfaces";
 
-interface ChapterListProps {
-    chapters: IChapter[];
-    onDeleteChapter: (chapterId: string) => void;
+interface SentenceListProps {
+    sentences: ISentence[];
+    onRemoveSentence: (sentenceId: string) => void;
     loading: boolean;
 }
 
-const ChapterList = ({ chapters, onDeleteChapter, loading }: ChapterListProps) => {
-    const navigate = useNavigate();
-
+const SentenceList = ({ sentences, onRemoveSentence, loading }: SentenceListProps) => {
     return (
-        <div className="w-full bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">Chapters</h2>
+        <div className="w-3/4 p-6 ml-6 bg-white rounded-lg shadow-md relative">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">Sentences</h2>
             {loading ? (
                 <div className="flex justify-center items-center h-40">
                     <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
                 </div>
-            ) : chapters.length === 0 ? (
-                <p className="text-gray-500">No chapters found.</p>
+            ) : sentences.length === 0 ? (
+                <p className="text-gray-500">No sentences found.</p>
             ) : (
                 <ul className="space-y-3">
-                    {chapters.map((chapter) => (
+                    {sentences.map((sentence) => (
                         <li
-                            key={chapter.id}
-                            className="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all"
+                            key={sentence.id}
+                            className="flex justify-between items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all"
                         >
-                            <span
-                                onClick={() => navigate(`/chapters/${chapter.id}`)}
-                                className="cursor-pointer font-medium text-blue-500 hover:text-blue-700"
-                            >
-                                {chapter.name}
+                            <span className="text-gray-700">
+                                {sentence.text} ({sentence.pronunciation})
                             </span>
                             <button
-                                onClick={() => onDeleteChapter(chapter.id)}
+                                onClick={() => onRemoveSentence(sentence.id!)}
                                 className="p-2 text-red-500 hover:text-red-700 transition-colors"
                             >
                                 <svg
@@ -58,4 +52,4 @@ const ChapterList = ({ chapters, onDeleteChapter, loading }: ChapterListProps) =
     );
 };
 
-export default ChapterList;
+export default SentenceList;

@@ -2,6 +2,7 @@ import {
   addDoc,
   arrayRemove,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -94,6 +95,37 @@ export const removeSentenceFromChapter = async (
     console.log("Sentence removed from chapter successfully");
   } catch (error) {
     console.error("Error removing sentence from chapter: ", error);
+    throw error;
+  }
+};
+
+export const deleteChapter = async (chapterId: string): Promise<void> => {
+  try {
+    // Step 1: Fetch the chapter to get its sentenceIds
+    const chapterRef = doc(db, "chapters", chapterId);
+    const chapterDoc = await getDoc(chapterRef);
+
+    if (!chapterDoc.exists()) {
+      throw new Error("Chapter not found");
+    }
+
+    const chapterData = chapterDoc.data();
+    const sentenceIds = chapterData.sentenceIds || [];
+
+    // Step 2: Remove the chapterId from all associated sentences
+    for (const sentenceId of sentenceIds) {
+      const sentenceRef = doc(db, "sentences", sentenceId);
+      await updateDoc(sentenceRef, {
+        chapterId: null, // Remove the chapterId association
+      });
+    }
+
+    // Step 3: Delete the chapter
+    await deleteDoc(chapterRef);
+
+    console.log("Chapter and its associations deleted successfully");
+  } catch (error) {
+    console.error("Error deleting chapter: ", error);
     throw error;
   }
 };
