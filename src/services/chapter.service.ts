@@ -1,6 +1,7 @@
 import {
   addDoc,
   arrayRemove,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -43,10 +44,22 @@ export const addSentenceToChapter = async (
       throw new Error("Sentence already belongs to another chapter");
     }
 
-    // Add the sentence to the chapter
+    // Check if the sentence is already in the chapter
     const chapterRef = doc(db, "chapters", chapterId);
+    const chapterDoc = await getDoc(chapterRef);
+
+    if (!chapterDoc.exists()) {
+      throw new Error("Chapter not found");
+    }
+
+    const chapterData = chapterDoc.data();
+    if (chapterData.sentenceIds?.includes(sentenceId)) {
+      throw new Error("Sentence already exists in this chapter");
+    }
+
+    // Add the sentence to the chapter's sentenceIds array (using arrayUnion to avoid duplicates)
     await updateDoc(chapterRef, {
-      sentenceIds: [...(sentenceData.sentenceIds || []), sentenceId],
+      sentenceIds: arrayUnion(sentenceId),
     });
 
     // Update the sentence to include the chapter ID
@@ -126,6 +139,24 @@ export const deleteChapter = async (chapterId: string): Promise<void> => {
     console.log("Chapter and its associations deleted successfully");
   } catch (error) {
     console.error("Error deleting chapter: ", error);
+    throw error;
+  }
+};
+
+export const fetchChapterDetails = async (
+  chapterId: string
+): Promise<IChapter | null> => {
+  try {
+    const chapterRef = doc(db, "chapters", chapterId);
+    const chapterDoc = await getDoc(chapterRef);
+
+    if (!chapterDoc.exists()) {
+      throw new Error("Chapter not found");
+    }
+
+    return { id: chapterDoc.id, ...chapterDoc.data() } as IChapter;
+  } catch (error) {
+    console.error("Error fetching chapter details: ", error);
     throw error;
   }
 };

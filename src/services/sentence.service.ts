@@ -103,3 +103,34 @@ export const fetchSentencesInChapter = async (
     throw error;
   }
 };
+
+export const fetchOrphanSentences = async (): Promise<ISentence[]> => {
+  try {
+    // Reference to the sentences collection
+    const sentencesRef = collection(db, "sentences");
+
+    // Query sentences where chapterId is null or does not exist
+    const q = query(
+      sentencesRef,
+      where("chapterId", "==", null) // Sentences without a chapterId
+    );
+
+    // Execute the query
+    const querySnapshot = await getDocs(q);
+
+    // Map the results to ISentence objects
+    const orphanSentences: ISentence[] = [];
+    querySnapshot.forEach((doc) => {
+      const sentenceData = doc.data();
+      orphanSentences.push({
+        id: doc.id,
+        ...sentenceData,
+      } as ISentence);
+    });
+
+    return orphanSentences;
+  } catch (error) {
+    console.error("Error fetching orphan sentences: ", error);
+    throw error;
+  }
+};

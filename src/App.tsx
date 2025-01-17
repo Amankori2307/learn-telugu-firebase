@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Header from './components/header/header'
+import ChapterDetailsPage from './components/pages/chapter/chapter-detail-page'
 import ChaptersPage from './components/pages/chapter/chapters-page'
 import SentencesPage from './components/pages/sentences/sentence-page'
 import Quiz from './components/quiz/quiz'
@@ -19,6 +20,7 @@ function App() {
           <Route path="/review" element={<ReviewSentences />} />
           <Route path="/sentences" element={<SentencesPage />} />
           <Route path="/chapters" element={<ChaptersPage />} />
+          <Route path="/chapters/:chapterId" element={<ChapterDetailsPage />} />
         </Routes>
       </div>
     </BrowserRouter>
