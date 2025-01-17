@@ -1,7 +1,7 @@
-import { Sentence } from "../../services/sentence.service";
+import { ISentence } from "../../interfaces/vocab.interfaces";
 
 interface SentenceTableProps {
-    sentences: Sentence[];
+    sentences: ISentence[];
 }
 
 const SentenceTable = ({ sentences }: SentenceTableProps) => {

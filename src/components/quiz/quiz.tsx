@@ -1,14 +1,15 @@
 // components/Quiz.tsx
 import { useEffect, useState } from "react";
-import { fetchSentences, Sentence } from "../../services/sentence.service";
+import { fetchSentences } from "../../services/sentence.service";
 import QuizQuestion from "./quiz-question";
 import QuizResult from "./quiz-result";
+import { ISentence } from "../../interfaces/vocab.interfaces";
 
 const Quiz: React.FC = () => {
-  const [sentences, setSentences] = useState<Sentence[]>([]);
-  const [currentSentence, setCurrentSentence] = useState<Sentence | null>(null);
-  const [options, setOptions] = useState<Sentence[]>([]);
-  const [selectedOption, setSelectedOption] = useState<Sentence | null>(null);
+  const [sentences, setSentences] = useState<ISentence[]>([]);
+  const [currentSentence, setCurrentSentence] = useState<ISentence | null>(null);
+  const [options, setOptions] = useState<ISentence[]>([]);
+  const [selectedOption, setSelectedOption] = useState<ISentence | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showExamples, setShowExamples] = useState<boolean>(false);
   const [isMeaningQuestion, setIsMeaningQuestion] = useState<boolean>(false);
@@ -22,13 +23,13 @@ const Quiz: React.FC = () => {
     loadSentences();
   }, []);
 
-  const checkIsCorrect = (option: Sentence) => {
+  const checkIsCorrect = (option: ISentence) => {
     if (!currentSentence) return null;
     if (isMeaningQuestion) return currentSentence.meaning === option.meaning;
     else return currentSentence.text === option.text;
   }
 
-  const loadRandomQuestion = (sentencesData: Sentence[]) => {
+  const loadRandomQuestion = (sentencesData: ISentence[]) => {
     const randomIndex = Math.floor(Math.random() * sentencesData.length);
     const randomSentence = sentencesData[randomIndex];
 
@@ -51,7 +52,7 @@ const Quiz: React.FC = () => {
     setShowExamples(false);
   };
 
-  const handleOptionClick = (option: Sentence) => {
+  const handleOptionClick = (option: ISentence) => {
     setSelectedOption(option);
     setIsCorrect(checkIsCorrect(option));
     setShowExamples(true);

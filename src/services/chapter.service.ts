@@ -9,7 +9,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { db } from "../services/firebase";
+import { db } from "./firebase";
 import { ISentence } from "../interfaces/vocab.interfaces";
 
 export const fetchSentences = async (

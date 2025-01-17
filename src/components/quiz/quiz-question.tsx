@@ -1,12 +1,13 @@
 // components/QuizQuestion.tsx
-import { Sentence } from "../../services/sentence.service";
+
+import { ISentence } from "../../interfaces/vocab.interfaces";
 
 interface QuizQuestionProps {
-  sentence: Sentence;
+  sentence: ISentence;
   isMeaningQuestion: boolean;
-  options: Sentence[];
-  selectedOption: Sentence | null;
-  handleOptionClick: (option: Sentence) => void;
+  options: ISentence[];
+  selectedOption: ISentence | null;
+  handleOptionClick: (option: ISentence) => void;
 }
 
 const QuizQuestion: React.FC<QuizQuestionProps> = ({
@@ -17,18 +18,18 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   handleOptionClick,
 }) => {
   // Format the sentence text and pronunciation
-  const formattedQuestion = (value: Sentence) => {
+  const formattedQuestion = (value: ISentence) => {
     return `${value.text} (${value.pronunciation})`;
   };
 
   // Get the display value for the question or option
-  const getDisplayValue = (value: Sentence, isOption: boolean) => {
+  const getDisplayValue = (value: ISentence, isOption: boolean) => {
     if (isOption) return isMeaningQuestion ? value.meaning : formattedQuestion(value);
     else return isMeaningQuestion ? formattedQuestion(value) : value.meaning;
   };
 
   // Get the style for a specific option
-  const getStyle = (option: Sentence) => {
+  const getStyle = (option: ISentence) => {
     if (!selectedOption) return "bg-blue-500 hover:bg-blue-700";
     const currentValue = isMeaningQuestion ? option.meaning : option.text;
     const selectedValue = isMeaningQuestion ? selectedOption.meaning : selectedOption.text;
