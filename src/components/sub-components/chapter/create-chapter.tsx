@@ -1,8 +1,10 @@
 // src/components/CreateChapter.tsx
 import { useState } from "react";
 import { createChapter } from "../../../services/chapter.service";
-
-const CreateChapter = () => {
+interface CreateChapterProps {
+    onCreateChapter: () => void;
+}
+const CreateChapter = (props: CreateChapterProps) => {
     const [name, setName] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -11,6 +13,7 @@ const CreateChapter = () => {
             await createChapter(name);
             alert("Chapter created successfully!");
             setName("");
+            await props.onCreateChapter();
         } catch (error) {
             console.error("Failed to create chapter: ", error);
             alert("Failed to create chapter. Please try again.");
@@ -18,7 +21,7 @@ const CreateChapter = () => {
     };
 
     return (
-        <div className="p-4">
+        <div className="pb-10">
             <h2 className="text-xl font-bold mb-4">Create Chapter</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>

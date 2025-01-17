@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Header from './components/header/header'
-import AddChapterPage from './components/pages/chapter/add-chapter-page'
 import ChaptersPage from './components/pages/chapter/chapters-page'
 import SentencesPage from './components/pages/sentences/sentence-page'
 import Quiz from './components/quiz/quiz'
@@ -19,7 +18,6 @@ function App() {
           <Route path="/add-vocab" element={<AddVocab />} />
           <Route path="/review" element={<ReviewSentences />} />
           <Route path="/sentences" element={<SentencesPage />} />
-          <Route path="/chapters/add" element={<AddChapterPage />} />
           <Route path="/chapters" element={<ChaptersPage />} />
         </Routes>
       </div>
