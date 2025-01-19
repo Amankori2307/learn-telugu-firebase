@@ -1,0 +1,34 @@
+import React from "react";
+import { ISentence } from "../../../interfaces/vocab.interfaces";
+import SentenceItem from "./sentence";
+
+interface SentenceListProps {
+    sentences: ISentence[];
+    onMarkAsReviewed: (id: string) => void;
+    onDelete: (id: string) => void;
+}
+
+const SentenceList: React.FC<SentenceListProps> = ({
+    sentences,
+    onMarkAsReviewed,
+    onDelete,
+}) => {
+    if (sentences.length === 0) {
+        return <p>No un-reviewed sentences found.</p>;
+    }
+
+    return (
+        <ul className="space-y-4">
+            {sentences.map((sentence) => (
+                <SentenceItem
+                    key={sentence.id}
+                    sentence={sentence}
+                    onMarkAsReviewed={onMarkAsReviewed}
+                    onDelete={onDelete}
+                />
+            ))}
+        </ul>
+    );
+};
+
+export default SentenceList;
