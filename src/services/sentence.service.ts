@@ -144,7 +144,6 @@ export const fetchOrphanSentences = async (): Promise<ISentence[]> => {
   }
 };
 
-
 export const updateVocab = async (docId: string, vocabData: ISentence) => {
   try {
     // Reference the document to update
@@ -158,6 +157,22 @@ export const updateVocab = async (docId: string, vocabData: ISentence) => {
     console.log("Vocab updated successfully!");
   } catch (error) {
     console.error("Error updating vocab: ", error);
+    throw error;
+  }
+};
+
+export const fetchSentenceById = async (id: string): Promise<ISentence> => {
+  try {
+    const docRef = doc(db, "sentences", id);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      throw new Error("Sentence not found");
+    }
+
+    return { id: docSnap.id, ...docSnap.data() } as ISentence;
+  } catch (error) {
+    console.error("Error fetching sentence: ", error);
     throw error;
   }
 };
