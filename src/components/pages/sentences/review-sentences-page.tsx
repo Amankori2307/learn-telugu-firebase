@@ -1,8 +1,9 @@
 import useReviewSentences from "../../../hooks/use-review-sentences";
+import Loader from "../../shared/loader";
 import SentenceList from "../../sub-components/vocab/sentence-list";
 
 const ReviewSentencesPage = () => {
-  const { sentences, handleMarkAsReviewed, handleDeleteSentence } =
+  const { sentences, loading, handleMarkAsReviewed, handleDeleteSentence } =
     useReviewSentences();
 
   return (
@@ -10,11 +11,15 @@ const ReviewSentencesPage = () => {
       <h1 className="text-2xl font-bold mb-4">
         Un-reviewed Sentences ({sentences.length})
       </h1>
-      <SentenceList
-        sentences={sentences}
-        onMarkAsReviewed={handleMarkAsReviewed}
-        onDelete={handleDeleteSentence}
-      />
+      {loading ? (
+        <Loader />
+      ) : (
+        <SentenceList
+          sentences={sentences}
+          onMarkAsReviewed={handleMarkAsReviewed}
+          onDelete={handleDeleteSentence}
+        />
+      )}
     </div>
   );
 };

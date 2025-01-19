@@ -1,6 +1,7 @@
 // src/components/ChapterList.tsx
 import { useNavigate } from "react-router-dom";
 import { IChapter } from "../../../interfaces/chapter.interfaces";
+import Loader from "../../shared/loader";
 
 interface ChapterListProps {
     chapters: IChapter[];
@@ -15,9 +16,7 @@ const ChapterList = ({ chapters, onDeleteChapter, loading }: ChapterListProps) =
         <div className="w-full bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">Chapters</h2>
             {loading ? (
-                <div className="flex justify-center items-center h-40">
-                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-                </div>
+                <Loader />
             ) : chapters.length === 0 ? (
                 <p className="text-gray-500">No chapters found.</p>
             ) : (

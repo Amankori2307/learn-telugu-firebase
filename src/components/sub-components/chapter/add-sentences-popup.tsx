@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ISentence } from "../../../interfaces/vocab.interfaces";
 import { addSentenceToChapter } from "../../../services/chapter.service";
 import { fetchOrphanSentences } from "../../../services/sentence.service";
+import Loader from "../../shared/loader";
 
 interface AddSentencePopupProps {
     chapterId: string;
@@ -83,9 +84,7 @@ const AddSentencePopup = ({ chapterId, onClose, onSentencesAdded }: AddSentenceP
 
                 {/* Loading State */}
                 {loading ? (
-                    <div className="flex justify-center items-center h-40">
-                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-                    </div>
+                    <Loader />
                 ) : (
                     <>
                         {/* Sentence List */}

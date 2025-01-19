@@ -4,6 +4,7 @@ import { IChapter } from "../../../interfaces/chapter.interfaces";
 import { ISentence } from "../../../interfaces/vocab.interfaces";
 import { fetchChapterDetails, removeSentenceFromChapter } from "../../../services/chapter.service";
 import { fetchSentencesInChapter } from "../../../services/sentence.service";
+import Loader from "../../shared/loader";
 import AddSentencePopup from "../../sub-components/chapter/add-sentences-popup";
 
 const ChapterDetailsPage = () => {
@@ -75,9 +76,7 @@ const ChapterDetailsPage = () => {
 
                 {/* Sentences List */}
                 {loading ? (
-                    <div className="flex justify-center items-center h-40">
-                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-                    </div>
+                    <Loader />
                 ) : sentences.length === 0 ? (
                     <p className="text-gray-500">No sentences found in this chapter.</p>
                 ) : (

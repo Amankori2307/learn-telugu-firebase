@@ -8,6 +8,7 @@ import {
 
 const useReviewSentences = () => {
   const [sentences, setSentences] = useState<ISentence[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // Add loading state
 
   useEffect(() => {
     const loadSentences = async () => {
@@ -16,6 +17,8 @@ const useReviewSentences = () => {
         setSentences(unReviewedSentences);
       } catch (error) {
         console.error("Failed to fetch un-reviewed sentences: ", error);
+      } finally {
+        setLoading(false); // Set loading to false when done
       }
     };
 
@@ -46,6 +49,7 @@ const useReviewSentences = () => {
 
   return {
     sentences,
+    loading, // Return loading state
     handleMarkAsReviewed,
     handleDeleteSentence,
   };
