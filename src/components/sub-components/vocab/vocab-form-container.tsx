@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { ISentence } from "../../../interfaces/vocab.interfaces";
 import { saveVocab, updateVocab } from "../../../services/sentence.service";
-import VocabFormUI from "./vocab-form";
+import VocabFormUI from "./vocab-form-ui";
 
 // Define the validation schema using Yup
 const validationSchema = Yup.object({
