@@ -1,62 +1,61 @@
-// src/components/AddVocabForm.tsx
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { saveVocab } from "../../../services/sentence.service";
-import { ISentence } from "../../../interfaces/vocab.interfaces";
+import React from "react";
 
-// Define the validation schema using Yup
-const validationSchema = Yup.object({
-    type: Yup.string().required("Type is required"),
-    text: Yup.string().required("Text is required"),
-    meaning: Yup.string().required("Meaning is required"),
-    pronunciation: Yup.string().required("Pronunciation is required"),
-    examples: Yup.array().of(Yup.string().required("Example cannot be empty")),
-});
+interface VocabFormUIProps {
+    values: {
+        type: string;
+        text: string;
+        meaning: string;
+        pronunciation: string;
+        examples: string[];
+    };
+    errors: {
+        type?: string;
+        text?: string;
+        meaning?: string;
+        pronunciation?: string;
+        examples?: string | string[];
+    };
+    touched: {
+        type?: boolean;
+        text?: boolean;
+        meaning?: boolean;
+        pronunciation?: boolean;
+        examples?: boolean;
+    };
+    handleChange: (e: React.ChangeEvent<unknown>) => void;
+    handleBlur: (e: React.FocusEvent<unknown>) => void;
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+    setFieldValue: (field: string, value: unknown) => void;
+    isEditMode?: boolean;
+}
 
-const AddVocabForm = () => {
-    const formik = useFormik({
-        initialValues: {
-            type: "sentence",
-            text: "",
-            meaning: "",
-            pronunciation: "",
-            examples: [""], // Initialize with one empty example
-        },
-        validationSchema,
-        onSubmit: async (values) => {
-            try {
-                // Save the vocab data to Firebase
-                await saveVocab({
-                    ...values as ISentence,
-                    isReviewed: false, // Set isReviewed to false by default
-                });
-
-                alert("Vocab added successfully!");
-                formik.resetForm(); // Reset the form after submission
-            } catch (error) {
-                console.error("Error saving vocab: ", error);
-                alert("Failed to save vocab. Please try again.");
-            }
-        },
-    });
-
+const VocabFormUI: React.FC<VocabFormUIProps> = ({
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    setFieldValue,
+    isEditMode = false,
+}) => {
     return (
-        <form onSubmit={formik.handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
             {/* Type Field */}
             <div>
                 <label className="block text-sm font-medium text-gray-700">Type</label>
                 <select
                     name="type"
-                    value={formik.values.type}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    value={values.type}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 >
                     <option value="sentence">Sentence</option>
                     <option value="word">Word</option>
                 </select>
-                {formik.touched.type && formik.errors.type && (
-                    <p className="text-red-500 text-sm mt-1">{formik.errors.type}</p>
+                {touched.type && errors.type && (
+                    <p className="text-red-500 text-sm mt-1">{errors.type}</p>
                 )}
             </div>
 
@@ -66,14 +65,14 @@ const AddVocabForm = () => {
                 <input
                     type="text"
                     name="text"
-                    value={formik.values.text}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    value={values.text}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter the text"
                 />
-                {formik.touched.text && formik.errors.text && (
-                    <p className="text-red-500 text-sm mt-1">{formik.errors.text}</p>
+                {touched.text && errors.text && (
+                    <p className="text-red-500 text-sm mt-1">{errors.text}</p>
                 )}
             </div>
 
@@ -85,14 +84,14 @@ const AddVocabForm = () => {
                 <input
                     type="text"
                     name="meaning"
-                    value={formik.values.meaning}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    value={values.meaning}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter the meaning"
                 />
-                {formik.touched.meaning && formik.errors.meaning && (
-                    <p className="text-red-500 text-sm mt-1">{formik.errors.meaning}</p>
+                {touched.meaning && errors.meaning && (
+                    <p className="text-red-500 text-sm mt-1">{errors.meaning}</p>
                 )}
             </div>
 
@@ -104,16 +103,14 @@ const AddVocabForm = () => {
                 <input
                     type="text"
                     name="pronunciation"
-                    value={formik.values.pronunciation}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    value={values.pronunciation}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter the pronunciation"
                 />
-                {formik.touched.pronunciation && formik.errors.pronunciation && (
-                    <p className="text-red-500 text-sm mt-1">
-                        {formik.errors.pronunciation}
-                    </p>
+                {touched.pronunciation && errors.pronunciation && (
+                    <p className="text-red-500 text-sm mt-1">{errors.pronunciation}</p>
                 )}
             </div>
 
@@ -122,13 +119,13 @@ const AddVocabForm = () => {
                 <label className="block text-sm font-medium text-gray-700">
                     Examples
                 </label>
-                {formik.values.examples.map((example, index) => (
+                {values.examples.map((example, index) => (
                     <div key={index} className="flex space-x-2 mb-2">
                         <input
                             name={`examples[${index}]`}
                             value={example}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
                             className="flex-1 p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                             placeholder={`Example ${index + 1}`}
                         />
@@ -136,9 +133,9 @@ const AddVocabForm = () => {
                             <button
                                 type="button"
                                 onClick={() => {
-                                    const newExamples = [...formik.values.examples];
+                                    const newExamples = [...values.examples];
                                     newExamples.splice(index, 1);
-                                    formik.setFieldValue("examples", newExamples);
+                                    setFieldValue("examples", newExamples);
                                 }}
                                 className="p-2 bg-red-500 text-white rounded-md hover:bg-red-600"
                             >
@@ -150,14 +147,14 @@ const AddVocabForm = () => {
                 <button
                     type="button"
                     onClick={() => {
-                        formik.setFieldValue("examples", [...formik.values.examples, ""]);
+                        setFieldValue("examples", [...values.examples, ""]);
                     }}
                     className="mt-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 >
                     + Add Example
                 </button>
-                {formik.touched.examples && formik.errors.examples && (
-                    <p className="text-red-500 text-sm mt-1">{formik.errors.examples}</p>
+                {touched.examples && errors.examples && (
+                    <p className="text-red-500 text-sm mt-1">{errors.examples}</p>
                 )}
             </div>
 
@@ -167,11 +164,11 @@ const AddVocabForm = () => {
                     type="submit"
                     className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 >
-                    Add Vocab
+                    {isEditMode ? "Update Vocab" : "Add Vocab"}
                 </button>
             </div>
         </form>
     );
 };
 
-export default AddVocabForm;
+export default VocabFormUI;

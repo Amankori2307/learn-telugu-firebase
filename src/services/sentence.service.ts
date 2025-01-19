@@ -143,3 +143,21 @@ export const fetchOrphanSentences = async (): Promise<ISentence[]> => {
     throw error;
   }
 };
+
+
+export const updateVocab = async (docId: string, vocabData: ISentence) => {
+  try {
+    // Reference the document to update
+    const docRef = doc(db, "sentences", docId);
+
+    // Update the document with the new data
+    await updateDoc(docRef, {
+      ...vocabData,
+    });
+
+    console.log("Vocab updated successfully!");
+  } catch (error) {
+    console.error("Error updating vocab: ", error);
+    throw error;
+  }
+};
