@@ -1,6 +1,6 @@
 // components/QuizQuestion.tsx
 
-import { ISentence } from "../../interfaces/vocab.interfaces";
+import { ISentence } from "../../../interfaces/vocab.interfaces";
 
 interface QuizQuestionProps {
   sentence: ISentence;

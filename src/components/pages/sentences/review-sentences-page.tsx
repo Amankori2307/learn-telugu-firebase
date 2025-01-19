@@ -3,7 +3,7 @@ import { ISentence } from "../../../interfaces/vocab.interfaces";
 import { deleteSentence, fetchSentences, markAsReviewed, } from "../../../services/sentence.service";
 
 
-const ReviewSentences = () => {
+const ReviewSentencesPage = () => {
   const [sentences, setSentences] = useState<ISentence[]>([]);
 
   useEffect(() => {
@@ -95,4 +95,4 @@ const ReviewSentences = () => {
   );
 };
 
-export default ReviewSentences;
+export default ReviewSentencesPage;

@@ -1,4 +1,4 @@
-import QuizExamples from "../sub-components/quiz-examples";
+import QuizExamples from "../quiz-examples";
 
 // components/QuizResult.tsx
 interface QuizResultProps {

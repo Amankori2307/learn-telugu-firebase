@@ -1,11 +1,11 @@
 // components/Quiz.tsx
 import { useEffect, useState } from "react";
-import { fetchSentences } from "../../services/sentence.service";
-import QuizQuestion from "./quiz-question";
-import QuizResult from "./quiz-result";
-import { ISentence } from "../../interfaces/vocab.interfaces";
+import { ISentence } from "../../../interfaces/vocab.interfaces";
+import { fetchSentences } from "../../../services/sentence.service";
+import QuizQuestion from "../../sub-components/quiz/quiz-question";
+import QuizResult from "../../sub-components/quiz/quiz-result";
 
-const Quiz: React.FC = () => {
+const QuizPage: React.FC = () => {
   const [sentences, setSentences] = useState<ISentence[]>([]);
   const [currentSentence, setCurrentSentence] = useState<ISentence | null>(null);
   const [options, setOptions] = useState<ISentence[]>([]);
@@ -82,4 +82,4 @@ const Quiz: React.FC = () => {
   );
 };
 
-export default Quiz;
+export default QuizPage;

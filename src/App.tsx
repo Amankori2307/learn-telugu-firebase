@@ -2,10 +2,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Header from './components/header/header'
 import ChapterDetailsPage from './components/pages/chapter/chapter-detail-page'
 import ChaptersPage from './components/pages/chapter/chapters-page'
+import QuizPage from './components/pages/quiz/quiz-page'
+import ReviewSentencesPage from './components/pages/sentences/review-sentences-page'
 import SentencesPage from './components/pages/sentences/sentence-page'
-import Quiz from './components/quiz/quiz'
-import AddVocab from './components/vocab/add-vocab/add-vocab'
-import ReviewSentences from './components/vocab/review/review-sentences'
+import AddVocabPage from './components/pages/vocab/add-vocab-page'
 
 function App() {
 
@@ -15,9 +15,9 @@ function App() {
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <Routes>
 
-          <Route path="/" element={<Quiz />} />
-          <Route path="/add-vocab" element={<AddVocab />} />
-          <Route path="/review" element={<ReviewSentences />} />
+          <Route path="/" element={<QuizPage />} />
+          <Route path="/add-vocab" element={<AddVocabPage />} />
+          <Route path="/review" element={<ReviewSentencesPage />} />
           <Route path="/sentences" element={<SentencesPage />} />
           <Route path="/chapters" element={<ChaptersPage />} />
           <Route path="/chapters/:chapterId" element={<ChapterDetailsPage />} />
