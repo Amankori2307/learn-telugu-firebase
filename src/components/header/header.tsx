@@ -17,20 +17,27 @@ const Header = () => {
 
     // Common NavLink styling
     const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-        `hover:underline ${isActive ? "font-bold underline" : ""}`;
+        `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${isActive
+            ? "bg-blue-700 text-white"
+            : "text-white hover:bg-blue-600 hover:text-white"
+        }`;
 
     return (
-        <header className="bg-blue-500 text-white shadow-lg">
+        <header className="bg-blue-600 shadow-lg">
             <div className="container mx-auto px-4 py-3 flex justify-between items-center">
                 {/* Logo */}
-                <Link to="/" className="text-xl font-bold">
+                <Link to="/" className="text-xl font-bold text-white hover:text-blue-100 transition-colors duration-200">
                     Vocab App
                 </Link>
 
                 {/* Hamburger Menu (Mobile) */}
-                <button onClick={toggleMenu} className="md:hidden p-2 focus:outline-none">
+                <button
+                    onClick={toggleMenu}
+                    className="md:hidden p-2 focus:outline-none"
+                    aria-label="Toggle menu"
+                >
                     <svg
-                        className="w-6 h-6"
+                        className="w-6 h-6 text-white"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -46,7 +53,7 @@ const Header = () => {
                 </button>
 
                 {/* Navigation Links (Desktop) */}
-                <nav className="hidden md:flex space-x-4">
+                <nav className="hidden md:flex space-x-2">
                     {navLinks.map((link) => (
                         <NavLink
                             key={link.to}
@@ -59,8 +66,16 @@ const Header = () => {
                 </nav>
 
                 {/* Mobile Menu (Dropdown) */}
-                {isMenuOpen && (
-                    <div className="md:hidden absolute top-16 right-0 bg-blue-500 w-full shadow-lg">
+                <div
+                    className={`md:hidden fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity duration-200 ${isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+                        }`}
+                    onClick={toggleMenu}
+                >
+                    <div
+                        className={`bg-blue-600 w-64 h-full shadow-lg transform transition-transform duration-200 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
+                            }`}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <nav className="flex flex-col space-y-2 p-4">
                             {navLinks.map((link) => (
                                 <NavLink
@@ -74,7 +89,7 @@ const Header = () => {
                             ))}
                         </nav>
                     </div>
-                )}
+                </div>
             </div>
         </header>
     );
