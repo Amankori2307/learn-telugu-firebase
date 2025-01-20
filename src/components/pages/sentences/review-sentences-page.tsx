@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useReviewSentences from "../../../hooks/use-review-sentences";
 import useSearch from "../../../hooks/use-search";
+import vocabUtils from "../../../utils/vocab.utils";
 import Loader from "../../shared/loader";
 import SearchInput from "../../shared/search-input";
 import SentenceList from "../../sub-components/vocab/sentence-list";
@@ -11,7 +12,7 @@ const ReviewSentencesPage = () => {
     useReviewSentences();
   const { searchTerm, setSearchTerm, filteredData } = useSearch(sentences);
   const onEdit = (id: string) => {
-    navigate(`/vocab/edit/${id}`)
+    navigate(vocabUtils.getEditPageUrl(id))
   }
   return (
     <div className="p-4">

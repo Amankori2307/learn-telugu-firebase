@@ -21,14 +21,16 @@ const AddSentencePopup: React.FC<AddSentencePopupProps> = ({
 }) => {
     const { sentences, loading: fetchLoading, error: fetchError } = useFetchOrphanSentences();
     const { searchTerm, setSearchTerm, filteredData } = useSearch(sentences);
-    const { selectedSentenceIds, handleSentenceSelection } = useSentenceSelection();
+    const { selectedSentenceIds, handleSentenceSelection, selectAll, clearAll } = useSentenceSelection();
     const { submitLoading, submitError, handleSubmit } = useAddSentences(chapterId, onSentencesAdded);
 
     const onSubmit = async () => {
-        await handleSubmit(selectedSentenceIds)
+        await handleSubmit(selectedSentenceIds);
         onClose();
-    }
+    };
 
+    // Get all sentence IDs from the filtered data
+    const allSentenceIds = filteredData.map((sentence) => sentence.id);
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -53,6 +55,24 @@ const AddSentencePopup: React.FC<AddSentencePopupProps> = ({
                     <Loader />
                 ) : (
                     <>
+                        {/* Select All and Clear All Buttons */}
+                        <div className="flex space-x-2 mb-4">
+                            <button
+                                type="button"
+                                onClick={() => selectAll(allSentenceIds)}
+                                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+                            >
+                                Select All
+                            </button>
+                            <button
+                                type="button"
+                                onClick={clearAll}
+                                className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
+                            >
+                                Clear All
+                            </button>
+                        </div>
+
                         {/* Sentence List */}
                         <SentenceList2
                             sentences={filteredData}

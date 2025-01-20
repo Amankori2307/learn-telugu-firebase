@@ -12,7 +12,15 @@ const useSentenceSelection = () => {
     );
   };
 
-  return { selectedSentenceIds, handleSentenceSelection };
+  const selectAll = (sentenceIds: string[]) => {
+    setSelectedSentenceIds(sentenceIds);
+  };
+
+  const clearAll = () => {
+    setSelectedSentenceIds([]);
+  };
+
+  return { selectedSentenceIds, handleSentenceSelection, selectAll, clearAll };
 };
 
 export default useSentenceSelection;

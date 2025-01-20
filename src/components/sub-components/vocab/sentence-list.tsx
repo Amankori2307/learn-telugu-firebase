@@ -4,9 +4,9 @@ import SentenceItem from "./sentence";
 
 interface SentenceListProps {
     sentences: ISentence[];
-    onMarkAsReviewed: (id: string) => void;
-    onDelete: (id: string) => void;
-    onEdit: (id: string) => void;
+    onMarkAsReviewed?: (id: string) => void;
+    onDelete?: (id: string) => void;
+    onEdit?: (id: string) => void;
 }
 
 const SentenceList: React.FC<SentenceListProps> = ({

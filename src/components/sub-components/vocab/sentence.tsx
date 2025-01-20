@@ -1,12 +1,14 @@
 import React from "react";
 import { FaCheck, FaEdit, FaTrash } from "react-icons/fa"; // Import icons from React Icons
 import { ISentence } from "../../../interfaces/vocab.interfaces";
+import { useNavigate } from "react-router-dom";
+import vocabUtils from "../../../utils/vocab.utils";
 
 interface SentenceItemProps {
     sentence: ISentence;
-    onMarkAsReviewed: (id: string) => void;
-    onDelete: (id: string) => void;
-    onEdit: (id: string) => void;
+    onMarkAsReviewed?: (id: string) => void;
+    onDelete?: (id: string) => void;
+    onEdit?: (id: string) => void;
 }
 
 const SentenceItem: React.FC<SentenceItemProps> = ({
@@ -15,6 +17,11 @@ const SentenceItem: React.FC<SentenceItemProps> = ({
     onDelete,
     onEdit,
 }) => {
+    const navigate = useNavigate();
+    const handleEdit = (id: string) => {
+        navigate(vocabUtils.getEditPageUrl(id))
+        onEdit(id)
+    }
     return (
         <li className="p-6 border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-200">
             <div className="flex justify-between items-start">
@@ -56,7 +63,7 @@ const SentenceItem: React.FC<SentenceItemProps> = ({
                 {/* Action Buttons */}
                 <div className="flex space-x-3 ml-4">
                     <button
-                        onClick={() => onEdit(sentence.id)}
+                        onClick={() => handleEdit(sentence.id)}
                         className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200"
                         title="Edit"
                     >
