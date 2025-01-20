@@ -48,38 +48,56 @@ async function uploadData() {
   }
 }
 
-// Function to update existing entries where isReviewed is not set
+// Function to update existing entries where isReviewed or textLowercase is not set
+// Function to update existing entries where isReviewed or textLowercase is not set
 async function updateExistingEntries() {
   try {
     // Fetch all documents in the "sentences" collection
     const querySnapshot = await db.collection("sentences").get();
 
-    // Counter to track updated documents
+    // Initialize Firestore batch
+    const batch = db.batch();
     let updatedCount = 0;
 
     // Iterate through each document
-    querySnapshot.forEach(async (doc) => {
+    querySnapshot.forEach((doc) => {
       const data = doc.data();
+      const updates = {};
 
       // Check if isReviewed is not set
       if (data.isReviewed === undefined) {
-        // Update the document to set isReviewed to true
-        await doc.ref.update({ isReviewed: true });
-        console.log(`Updated document with ID: ${doc.id}`);
+        updates.isReviewed = true;
+      }
+
+      // Check if textLowercase is not set and text exists
+      if (data.textLowercase === undefined && data.text) {
+        updates.textLowercase = data.text.toLowerCase();
+      }
+
+      // If there are updates, add them to the batch
+      if (Object.keys(updates).length > 0) {
+        batch.update(doc.ref, updates);
         updatedCount++;
+        console.log(`Preparing update for document with ID: ${doc.id}`);
       }
     });
 
-    console.log(`Updated ${updatedCount} documents.`);
+    // Commit the batch update if there are updates
+    if (updatedCount > 0) {
+      await batch.commit();
+      console.log(`Successfully updated ${updatedCount} documents.`);
+    } else {
+      console.log("No documents required updates.");
+    }
   } catch (error) {
     console.error("Error updating existing entries:", error);
+    throw error; // Re-throw the error for further handling if needed
   }
 }
-
 // Run both functions
 async function run() {
-  await uploadData(); // Upload new data
-  // await updateExistingEntries(); // Update existing entries
+  // await uploadData(); // Upload new data
+  await updateExistingEntries(); // Update existing entries
 }
 
 run();
