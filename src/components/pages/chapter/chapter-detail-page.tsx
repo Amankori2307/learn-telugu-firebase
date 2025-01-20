@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useChapterDetails from "../../../hooks/use-chapter-details";
-import { removeSentenceFromChapter } from "../../../services/chapter.service";
-import vocabUtils from "../../../utils/vocab.utils";
 import Back from "../../shared/back";
 import Loader from "../../shared/loader";
 import AddSentencePopup from "../../sub-components/chapter/add-sentences-popup";
@@ -16,20 +14,6 @@ const ChapterDetailsPage = () => {
     const togglePopup = () => {
         setShowAddSentencePopup(!showAddSentencePopup);
     };
-
-    const handleRemoveSentence = async (sentenceId: string) => {
-        if (chapterId) {
-            try {
-                await removeSentenceFromChapter(chapterId, sentenceId);
-                alert("Sentence removed from chapter successfully!");
-            } catch (error) {
-                console.error("Failed to remove sentence: ", error);
-                alert("Failed to remove sentence. Please try again.");
-            }
-        }
-    };
-
-
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
@@ -59,9 +43,6 @@ const ChapterDetailsPage = () => {
                 ) : (
                     <SentenceList
                         sentences={sentences}
-                        onDelete={handleRemoveSentence}
-                        onEdit={onEdit}
-                        onMarkAsReviewed={() => { }}
                     />
                 )}
             </div>

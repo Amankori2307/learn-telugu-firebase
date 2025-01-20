@@ -1,27 +1,24 @@
 import React from "react";
-import { FaCheck, FaEdit, FaTrash } from "react-icons/fa"; // Import icons from React Icons
+import { FaCheck, FaEdit, FaTrash } from "react-icons/fa";
 import { ISentence } from "../../../interfaces/vocab.interfaces";
-import { useNavigate } from "react-router-dom";
-import vocabUtils from "../../../utils/vocab.utils";
 
-interface SentenceItemProps {
+interface SentenceItemUIProps {
     sentence: ISentence;
-    onMarkAsReviewed?: (id: string) => void;
-    onDelete?: (id: string) => void;
-    onEdit?: (id: string) => void;
+    onEdit: () => void;
+    onMarkAsReviewed: () => void;
+    onDelete: () => void;
+    isLoadingMarkAsReviewed: boolean;
+    isLoadingDelete: boolean;
 }
 
-const SentenceItem: React.FC<SentenceItemProps> = ({
+const SentenceItemUI: React.FC<SentenceItemUIProps> = ({
     sentence,
+    onEdit,
     onMarkAsReviewed,
     onDelete,
-    onEdit,
+    isLoadingMarkAsReviewed,
+    isLoadingDelete,
 }) => {
-    const navigate = useNavigate();
-    const handleEdit = (id: string) => {
-        navigate(vocabUtils.getEditPageUrl(id))
-        onEdit(id)
-    }
     return (
         <li className="p-6 border rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-200">
             <div className="flex justify-between items-start">
@@ -63,22 +60,24 @@ const SentenceItem: React.FC<SentenceItemProps> = ({
                 {/* Action Buttons */}
                 <div className="flex space-x-3 ml-4">
                     <button
-                        onClick={() => handleEdit(sentence.id)}
+                        onClick={onEdit}
                         className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200"
                         title="Edit"
                     >
                         <FaEdit className="h-4 w-4" /> {/* Smaller icon */}
                     </button>
-                    <button
-                        onClick={() => onMarkAsReviewed(sentence.id)}
-                        className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200"
+                    {!sentence.isReviewed && <button
+                        onClick={onMarkAsReviewed}
+                        disabled={isLoadingMarkAsReviewed}
+                        className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200 disabled:bg-green-300"
                         title="Mark as Reviewed"
                     >
                         <FaCheck className="h-4 w-4" /> {/* Smaller icon */}
-                    </button>
+                    </button>}
                     <button
-                        onClick={() => onDelete(sentence.id)}
-                        className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200"
+                        onClick={onDelete}
+                        disabled={isLoadingDelete}
+                        className="p-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-200 disabled:bg-red-300"
                         title="Delete"
                     >
                         <FaTrash className="h-4 w-4" /> {/* Smaller icon */}
@@ -89,4 +88,4 @@ const SentenceItem: React.FC<SentenceItemProps> = ({
     );
 };
 
-export default SentenceItem;
+export default SentenceItemUI;

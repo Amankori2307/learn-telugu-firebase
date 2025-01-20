@@ -1,23 +1,16 @@
-import { useNavigate } from "react-router-dom";
-import useReviewSentences from "../../../hooks/use-review-sentences";
+import useFetchSentences from "../../../hooks/use-fetch-sentences";
 import useSearch from "../../../hooks/use-search";
-import vocabUtils from "../../../utils/vocab.utils";
 import Loader from "../../shared/loader";
 import SearchInput from "../../shared/search-input";
 import SentenceList from "../../sub-components/vocab/sentence-list";
 
-const ReviewSentencesPage = () => {
-  const navigate = useNavigate();
-  const { sentences, loading, handleMarkAsReviewed, handleDeleteSentence } =
-    useReviewSentences();
+const ReviewedSentencesPage = () => {
+  const { sentences, loading, reloadSentences } = useFetchSentences(true);
   const { searchTerm, setSearchTerm, filteredData } = useSearch(sentences);
-  const onEdit = (id: string) => {
-    navigate(vocabUtils.getEditPageUrl(id))
-  }
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">
-        Un-reviewed Sentences ({filteredData.length}/{sentences.length})
+        Reviewed Sentences ({filteredData.length}/{sentences.length})
       </h1>
       {/* Search Input */}
       <div className="mb-4">
@@ -32,13 +25,12 @@ const ReviewSentencesPage = () => {
       ) : (
         <SentenceList
           sentences={filteredData}
-          onMarkAsReviewed={handleMarkAsReviewed}
-          onDelete={handleDeleteSentence}
-          onEdit={onEdit}
+          onDelete={reloadSentences}
+          onMarkAsReviewed={reloadSentences}
         />
       )}
     </div>
   );
 };
 
-export default ReviewSentencesPage;
+export default ReviewedSentencesPage;

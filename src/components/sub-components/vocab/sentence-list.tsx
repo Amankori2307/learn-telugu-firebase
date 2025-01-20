@@ -1,6 +1,6 @@
 import React from "react";
 import { ISentence } from "../../../interfaces/vocab.interfaces";
-import SentenceItem from "./sentence";
+import SentenceItem from "./sentence-item";
 
 interface SentenceListProps {
     sentences: ISentence[];
@@ -16,11 +16,12 @@ const SentenceList: React.FC<SentenceListProps> = ({
     onEdit,
 }) => {
     if (sentences.length === 0) {
-        return <p>No un-reviewed sentences found.</p>;
+        return <p className="text-gray-500 text-center">No sentences found.</p>;
     }
 
     return (
-        <div className="w-[600px] mx-auto"> {/* Set a fixed width */}
+        <div className="w-full sm:max-w-[400px] md:w-[500px] lg:w-[600px] xl:w-[700px] mx-auto px-4">
+            {/* Responsive widths with max-width for sm breakpoint */}
             <ul className="space-y-4">
                 {sentences.map((sentence) => (
                     <SentenceItem
