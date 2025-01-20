@@ -13,38 +13,41 @@ import { CollectionEnum } from "../enums/db.enums";
 import { VocabularyEntry } from "../interfaces/vocab.interfaces";
 import { db } from "../services/firebase";
 
-export const fetchSentences = async (
+export const fetchAllVocabularyEntries = async (
   isReviewed = true
 ): Promise<VocabularyEntry[]> => {
   try {
-    // Create a query to fetch only reviewed sentences
+    // Create a query to fetch only reviewed vocabulary
     const q = query(
       collection(db, CollectionEnum.Vocab),
       where("isReviewed", "==", isReviewed) // Filter by isReviewed = true
     );
 
     const querySnapshot = await getDocs(q);
-    const sentencesData: VocabularyEntry[] = [];
+    const vocabularyData: VocabularyEntry[] = [];
 
     querySnapshot.forEach((doc) => {
-      sentencesData.push({ id: doc.id, ...doc.data() } as VocabularyEntry);
+      vocabularyData.push({ id: doc.id, ...doc.data() } as VocabularyEntry);
     });
-    return sentencesData;
+    return vocabularyData;
   } catch (error) {
-    console.error("Error fetching sentences: ", error);
+    console.error("Error fetching vocabulary entries: ", error);
     throw error;
   }
 };
 
-export const saveVocab = async (vocabData: VocabularyEntry) => {
+export const createVocabularyEntry = async (vocabData: VocabularyEntry) => {
   try {
-    const sentencesRef = collection(db, CollectionEnum.Vocab);
+    const vocabularyEntryRef = collection(db, CollectionEnum.Vocab);
 
     // Create a lowercase version of the text for case-insensitive comparison
     const textLowercase = vocabData.text.toLowerCase();
 
     // Query for duplicates using the lowercase version
-    const q = query(sentencesRef, where("textLowercase", "==", textLowercase));
+    const q = query(
+      vocabularyEntryRef,
+      where("textLowercase", "==", textLowercase)
+    );
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
@@ -54,7 +57,7 @@ export const saveVocab = async (vocabData: VocabularyEntry) => {
     }
 
     // If no duplicate is found, add the new document
-    const docRef = await addDoc(sentencesRef, {
+    const docRef = await addDoc(vocabularyEntryRef, {
       ...vocabData,
       textLowercase: textLowercase, // Store the lowercase version
       isReviewed: false, // Set isReviewed to false by default
@@ -66,29 +69,29 @@ export const saveVocab = async (vocabData: VocabularyEntry) => {
     throw error;
   }
 };
-// Mark a sentence as reviewed
-export const markAsReviewed = async (id: string) => {
+// Mark a vocabulary entry as reviewed
+export const markVocabularyEntryAsReviewed = async (id: string) => {
   try {
-    const sentenceRef = doc(db, CollectionEnum.Vocab, id);
-    await updateDoc(sentenceRef, { isReviewed: true });
+    const vocabularyEntryRef = doc(db, CollectionEnum.Vocab, id);
+    await updateDoc(vocabularyEntryRef, { isReviewed: true });
   } catch (error) {
-    console.error("Error marking sentence as reviewed: ", error);
+    console.error("Error marking vocabulary entry as reviewed: ", error);
     throw error;
   }
 };
 
-// Delete a sentence
-export const deleteSentence = async (id: string) => {
+// Delete a vocabulary entry
+export const deleteVocabularyEntry = async (id: string) => {
   try {
-    const sentenceRef = doc(db, CollectionEnum.Vocab, id);
-    await deleteDoc(sentenceRef);
+    const vocabularyEntryRef = doc(db, CollectionEnum.Vocab, id);
+    await deleteDoc(vocabularyEntryRef);
   } catch (error) {
-    console.error("Error deleting sentence: ", error);
+    console.error("Error deleting vocabulary entry: ", error);
     throw error;
   }
 };
 
-export const fetchSentencesInChapter = async (
+export const fetchVocabularyEntriesByChapter = async (
   chapterId: string
 ): Promise<VocabularyEntry[]> => {
   try {
@@ -100,70 +103,79 @@ export const fetchSentencesInChapter = async (
     }
 
     const chapterData = chapterDoc.data();
-    const sentenceIds = chapterData.sentenceIds || [];
+    const vocabularyEntryIds = chapterData.sentenceIds || [];
 
-    const sentences: VocabularyEntry[] = [];
-    for (const sentenceId of sentenceIds) {
-      const sentenceRef = doc(db, CollectionEnum.Vocab, sentenceId);
-      const sentenceDoc = await getDoc(sentenceRef);
+    const vocabularyEntries: VocabularyEntry[] = [];
+    for (const vocabularyEntryId of vocabularyEntryIds) {
+      const vocabularyEntryRef = doc(
+        db,
+        CollectionEnum.Vocab,
+        vocabularyEntryId
+      );
+      const vocabularyEntryDoc = await getDoc(vocabularyEntryRef);
 
-      if (sentenceDoc.exists()) {
-        sentences.push({
-          id: sentenceDoc.id,
-          ...sentenceDoc.data(),
+      if (vocabularyEntryDoc.exists()) {
+        vocabularyEntries.push({
+          id: vocabularyEntryDoc.id,
+          ...vocabularyEntryDoc.data(),
         } as VocabularyEntry);
       }
     }
 
-    return sentences;
+    return vocabularyEntries;
   } catch (error) {
-    console.error("Error fetching sentences in chapter: ", error);
+    console.error("Error fetching vocabulary entries in chapter: ", error);
     throw error;
   }
 };
 
-export const fetchOrphanSentences = async (): Promise<VocabularyEntry[]> => {
+export const fetchOrphanedVocabularyEntries = async (): Promise<
+  VocabularyEntry[]
+> => {
   try {
-    // Fetch all sentences
-    const sentencesRef = collection(db, CollectionEnum.Vocab);
-    const sentencesQuery = query(sentencesRef, where("isReviewed", "==", true));
-    const sentencesSnapshot = await getDocs(sentencesQuery);
+    // Fetch all vocabulary entries
+    const vocabularyEntryRef = collection(db, CollectionEnum.Vocab);
+    const vocabularyEntryQuery = query(
+      vocabularyEntryRef,
+      where("isReviewed", "==", true)
+    );
+    const vocabularyEntrySnapshot = await getDocs(vocabularyEntryQuery);
 
-    // Fetch all chapters and collect their sentenceIds
+    // Fetch all chapters and collect their vocabulary entry ids
     const chaptersRef = collection(db, CollectionEnum.Chapter);
     const chaptersSnapshot = await getDocs(chaptersRef);
 
-    // Create a Set of all sentenceIds that belong to chapters
-    const sentenceIdsInChapters = new Set<string>();
+    // Create a Set of all vocabulary Entry ids that belong to chapters
+    const vocabularyEntryIdsInChapters = new Set<string>();
     chaptersSnapshot.forEach((chapterDoc) => {
       const chapterData = chapterDoc.data();
       if (chapterData.sentenceIds && Array.isArray(chapterData.sentenceIds)) {
         chapterData.sentenceIds.forEach((sentenceId: string) => {
-          sentenceIdsInChapters.add(sentenceId);
+          vocabularyEntryIdsInChapters.add(sentenceId);
         });
       }
     });
 
     // Filter out sentences that are not in any chapter
-    const orphanSentences: VocabularyEntry[] = [];
-    sentencesSnapshot.forEach((sentenceDoc) => {
-      const sentenceData = sentenceDoc.data();
-      if (!sentenceIdsInChapters.has(sentenceDoc.id)) {
-        orphanSentences.push({
-          id: sentenceDoc.id,
-          ...sentenceData,
+    const orphanVocabularyEntries: VocabularyEntry[] = [];
+    vocabularyEntrySnapshot.forEach((vocabularyEntryDoc) => {
+      const vocabularyEntryData = vocabularyEntryDoc.data();
+      if (!vocabularyEntryIdsInChapters.has(vocabularyEntryDoc.id)) {
+        orphanVocabularyEntries.push({
+          id: vocabularyEntryDoc.id,
+          ...vocabularyEntryData,
         } as VocabularyEntry);
       }
     });
 
-    return orphanSentences;
+    return orphanVocabularyEntries;
   } catch (error) {
-    console.error("Error fetching orphan sentences: ", error);
+    console.error("Error fetching orphan vocabulary entries: ", error);
     throw error;
   }
 };
 
-export const updateVocab = async (
+export const updateVocabularyEntry = async (
   docId: string,
   vocabData: VocabularyEntry
 ) => {
@@ -183,18 +195,20 @@ export const updateVocab = async (
   }
 };
 
-export const fetchVocabById = async (id: string): Promise<VocabularyEntry> => {
+export const fetchVocabularyEntryById = async (
+  id: string
+): Promise<VocabularyEntry> => {
   try {
     const docRef = doc(db, CollectionEnum.Vocab, id);
     const docSnap = await getDoc(docRef);
 
     if (!docSnap.exists()) {
-      throw new Error("Sentence not found");
+      throw new Error("Vocabulary Entry not found");
     }
 
     return { id: docSnap.id, ...docSnap.data() } as VocabularyEntry;
   } catch (error) {
-    console.error("Error fetching sentence: ", error);
+    console.error("Error fetching vocabulary entry: ", error);
     throw error;
   }
 };

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { VocabularyEntry } from "../interfaces/vocab.interfaces";
-import { fetchSentences } from "../services/sentence.service";
+import { fetchAllVocabularyEntries } from "../services/sentence.service";
 
 const useFetchSentences = (isReviewed: boolean) => {
   const [sentences, setSentences] = useState<VocabularyEntry[]>([]);
@@ -10,7 +10,7 @@ const useFetchSentences = (isReviewed: boolean) => {
   const fetchSentencesHelper = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await fetchSentences(isReviewed); // Pass isReviewed to the service
+      const data = await fetchAllVocabularyEntries(isReviewed); // Pass isReviewed to the service
       setSentences(data);
     } catch (err) {
       console.error("Failed to fetch sentences: ", err);

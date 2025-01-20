@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { IChapter } from "../interfaces/chapter.interfaces";
 import { VocabularyEntry } from "../interfaces/vocab.interfaces";
 import { fetchChapterDetails } from "../services/chapter.service";
-import { fetchSentencesInChapter } from "../services/sentence.service";
+import { fetchVocabularyEntriesByChapter } from "../services/sentence.service";
 
 const useChapterDetails = (chapterId: string | undefined) => {
   const [chapter, setChapter] = useState<IChapter | null>(null);
@@ -19,7 +19,7 @@ const useChapterDetails = (chapterId: string | undefined) => {
         setChapter(chapterData);
 
         // Fetch sentences in the chapter
-        const sentencesData = await fetchSentencesInChapter(chapterId);
+        const sentencesData = await fetchVocabularyEntriesByChapter(chapterId);
         setSentences(sentencesData);
       } catch (error) {
         console.error("Failed to fetch data: ", error);

@@ -1,7 +1,7 @@
 // components/Quiz.tsx
 import { useEffect, useState } from "react";
 import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
-import { fetchSentences } from "../../../services/sentence.service";
+import { fetchAllVocabularyEntries } from "../../../services/sentence.service";
 import QuizQuestion from "../../sub-components/quiz/quiz-question";
 import QuizResult from "../../sub-components/quiz/quiz-result";
 
@@ -16,7 +16,7 @@ const QuizPage: React.FC = () => {
 
   useEffect(() => {
     const loadSentences = async () => {
-      const sentencesData = await fetchSentences();
+      const sentencesData = await fetchAllVocabularyEntries();
       setSentences(sentencesData);
       loadRandomQuestion(sentencesData);
     };

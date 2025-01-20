@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
-import { fetchVocabById } from "../../../services/sentence.service";
+import { fetchVocabularyEntryById } from "../../../services/sentence.service";
 import Loader from "../../shared/loader";
 import VocabFormContainer from "../../sub-components/vocab/vocab-form-container";
 
@@ -20,7 +20,7 @@ const EditVocabPage: React.FC = () => {
                 if (!id) {
                     throw new Error("No ID provided");
                 }
-                const data = await fetchVocabById(id);
+                const data = await fetchVocabularyEntryById(id);
                 setSentence(data);
             } catch (err) {
                 console.error("Failed to fetch sentence: ", err);

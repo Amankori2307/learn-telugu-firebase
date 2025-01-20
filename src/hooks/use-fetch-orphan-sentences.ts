@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { VocabularyEntry } from "../interfaces/vocab.interfaces";
-import { fetchOrphanSentences } from "../services/sentence.service";
+import { fetchOrphanedVocabularyEntries } from "../services/sentence.service";
 
 const useFetchOrphanSentences = () => {
   const [sentences, setSentences] = useState<VocabularyEntry[]>([]);
@@ -11,7 +11,7 @@ const useFetchOrphanSentences = () => {
     const fetchSentences = async () => {
       setLoading(true);
       try {
-        const data = await fetchOrphanSentences();
+        const data = await fetchOrphanedVocabularyEntries();
         setSentences(data);
       } catch (err) {
         console.error("Failed to fetch sentences: ", err);

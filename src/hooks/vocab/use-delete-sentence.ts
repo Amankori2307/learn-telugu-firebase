@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteSentence } from "../../services/sentence.service";
+import { deleteVocabularyEntry } from "../../services/sentence.service";
 
 const useDeleteSentence = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -8,7 +8,7 @@ const useDeleteSentence = () => {
   const handleDeleteSentence = async (id: string) => {
     try {
       setLoading(true);
-      await deleteSentence(id);
+      await deleteVocabularyEntry(id);
       alert("Sentence deleted!");
       return true; // Indicate success
     } catch (error) {

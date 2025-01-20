@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { markAsReviewed } from "../../services/sentence.service";
+import { markVocabularyEntryAsReviewed } from "../../services/sentence.service";
 
 const useMarkSentenceReviewed = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -8,7 +8,7 @@ const useMarkSentenceReviewed = () => {
   const handleMarkAsReviewed = async (id: string) => {
     try {
       setLoading(true);
-      await markAsReviewed(id);
+      await markVocabularyEntryAsReviewed(id);
       alert("Sentence marked as reviewed!");
       return true; // Indicate success
     } catch (error) {
