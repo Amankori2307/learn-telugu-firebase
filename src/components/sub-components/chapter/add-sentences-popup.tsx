@@ -1,8 +1,10 @@
 import { useState } from "react";
 import useFetchOrphanSentences from "../../../hooks/use-fetch-orphan-sentences";
+import useSearch from "../../../hooks/use-search";
 import { addSentenceToChapter } from "../../../services/chapter.service";
 import Loader from "../../shared/loader";
 import PopupFooter from "../../shared/popup/pop-up-footer";
+import SearchInput from "../../shared/search-input";
 import SentenceList2 from "./add-sentence/sentence-list2";
 
 interface AddSentencePopupProps {
@@ -17,6 +19,7 @@ const AddSentencePopup: React.FC<AddSentencePopupProps> = ({
     onSentencesAdded,
 }) => {
     const { sentences, loading: fetchLoading, error: fetchError } = useFetchOrphanSentences();
+    const { searchTerm, setSearchTerm, filteredData } = useSearch(sentences);
     const [selectedSentenceIds, setSelectedSentenceIds] = useState<string[]>([]);
     const [submitLoading, setSubmitLoading] = useState<boolean>(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
@@ -65,7 +68,14 @@ const AddSentencePopup: React.FC<AddSentencePopupProps> = ({
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md">
                 <h2 className="text-xl font-bold mb-4">Add Sentences to Chapter</h2>
-
+                {/* Search Input */}
+                <div className="mb-4">
+                    <SearchInput
+                        value={searchTerm}
+                        onChange={setSearchTerm}
+                        placeholder="Search by text or meaning..."
+                    />
+                </div>
                 {/* Error Messages */}
                 {fetchError && <p className="text-red-500 mb-4">{fetchError}</p>}
                 {submitError && <p className="text-red-500 mb-4">{submitError}</p>}
@@ -77,7 +87,7 @@ const AddSentencePopup: React.FC<AddSentencePopupProps> = ({
                     <>
                         {/* Sentence List */}
                         <SentenceList2
-                            sentences={sentences}
+                            sentences={filteredData}
                             selectedSentenceIds={selectedSentenceIds}
                             onSentenceSelection={handleSentenceSelection}
                         />

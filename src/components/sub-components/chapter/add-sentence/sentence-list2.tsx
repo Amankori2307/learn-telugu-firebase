@@ -1,5 +1,6 @@
 import React from "react";
 import { ISentence } from "../../../../interfaces/vocab.interfaces";
+import SentenceList2Item from "./sentence-list2-item";
 
 interface SentenceListProps {
     sentences: ISentence[];
@@ -13,20 +14,14 @@ const SentenceList2: React.FC<SentenceListProps> = ({
     onSentenceSelection,
 }) => {
     return (
-        <ul className="space-y-2 max-h-60 overflow-y-auto">
+        <ul className="space-y-4 max-h-96 overflow-y-auto p-2">
             {sentences.map((sentence) => (
-                <li key={sentence.id} className="flex items-center">
-                    <input
-                        type="checkbox"
-                        id={sentence.id}
-                        checked={selectedSentenceIds.includes(sentence.id)}
-                        onChange={() => onSentenceSelection(sentence.id)}
-                        className="mr-2"
-                    />
-                    <label htmlFor={sentence.id} className="text-gray-700">
-                        {sentence.text} ({sentence.pronunciation})
-                    </label>
-                </li>
+                <SentenceList2Item
+                    key={sentence.id}
+                    sentence={sentence}
+                    isSelected={selectedSentenceIds.includes(sentence.id)}
+                    onSentenceSelection={onSentenceSelection}
+                />
             ))}
         </ul>
     );
