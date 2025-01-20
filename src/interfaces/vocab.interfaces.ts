@@ -11,8 +11,8 @@ export interface ISentenceBase {
   examples: string[];
   isReviewed?: boolean;
   meta?: string;
-  textLowercase: string;
 }
 export interface ISentence extends ISentenceBase {
+  textLowercase: string;
   id: string;
 }

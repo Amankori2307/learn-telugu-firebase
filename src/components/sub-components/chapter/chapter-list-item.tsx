@@ -21,13 +21,21 @@ const ChapterListItem: React.FC<ChapterListItemProps> = ({
     };
 
     return (
-        <li className="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all">
-            <span
-                onClick={onClick}
-                className="cursor-pointer font-medium text-blue-500 hover:text-blue-700"
-            >
-                {chapter.name}
-            </span>
+        <li className="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
+            {/* Chapter Name and Sentence Count */}
+            <div className="flex-1">
+                <span
+                    onClick={onClick}
+                    className="cursor-pointer font-medium text-blue-500 hover:text-blue-700"
+                >
+                    {chapter.name}
+                </span>
+                <p className="text-sm text-gray-500 mt-1">
+                    {chapter.sentenceIds?.length || 0} sentences
+                </p>
+            </div>
+
+            {/* Delete Button */}
             <button
                 onClick={handleDelete}
                 disabled={loading}

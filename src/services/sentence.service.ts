@@ -125,7 +125,8 @@ export const fetchOrphanSentences = async (): Promise<ISentence[]> => {
   try {
     // Fetch all sentences
     const sentencesRef = collection(db, "sentences");
-    const sentencesSnapshot = await getDocs(sentencesRef);
+    const sentencesQuery = query(sentencesRef, where("isReviewed", "==", true));
+    const sentencesSnapshot = await getDocs(sentencesQuery);
 
     // Fetch all chapters and collect their sentenceIds
     const chaptersRef = collection(db, "chapters");

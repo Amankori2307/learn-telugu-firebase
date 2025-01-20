@@ -35,7 +35,7 @@ const AddSentencePopup: React.FC<AddSentencePopupProps> = ({
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md">
-                <h2 className="text-xl font-bold mb-4">Add Sentences to Chapter</h2>
+                <h2 className="text-xl font-bold mb-4">Add Sentences to Chapter ({filteredData.length}/{sentences.length})</h2>
 
                 {/* Search Input */}
                 <div className="mb-4">
