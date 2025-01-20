@@ -12,7 +12,7 @@ const PopupFooter: React.FC<PopupFooterProps> = ({
   loading,
 }) => {
   return (
-    <div className="flex justify-end space-x-4">
+    <div className="flex justify-end space-x-4 pt-4">
       <button
         type="button"
         onClick={onClose}

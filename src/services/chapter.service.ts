@@ -39,11 +39,6 @@ export const addSentenceToChapter = async (
       throw new Error("Sentence not found");
     }
 
-    const sentenceData = sentenceDoc.data();
-    if (sentenceData.chapterId) {
-      throw new Error("Sentence already belongs to another chapter");
-    }
-
     // Check if the sentence is already in the chapter
     const chapterRef = doc(db, "chapters", chapterId);
     const chapterDoc = await getDoc(chapterRef);
