@@ -6,9 +6,11 @@ import SentenceList from "../../sub-components/vocab/sentence-list";
 interface ChapterContentProps {
   sentences: ISentence[];
   isLoading: boolean;
+  chapterId: string;
+  onRemoveSentence: (id: string) => void;
 }
 
-const ChapterContent: React.FC<ChapterContentProps> = ({ sentences, isLoading }) => {
+const ChapterContent: React.FC<ChapterContentProps> = ({ sentences, isLoading, chapterId, onRemoveSentence }) => {
   if (isLoading) {
     return <Loader />;
   }
@@ -17,7 +19,7 @@ const ChapterContent: React.FC<ChapterContentProps> = ({ sentences, isLoading })
     return <p className="text-gray-500">No sentences found in this chapter.</p>;
   }
 
-  return <SentenceList sentences={sentences} />;
+  return <SentenceList sentences={sentences} chapterId={chapterId} onRemoveSentence={onRemoveSentence} />;
 };
 
 export default ChapterContent;

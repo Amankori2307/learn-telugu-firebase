@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import useRemoveSentenceFromChapter from "../../../hooks/chapter/use-remove-sentence-from-chapter";
 import useDeleteSentence from "../../../hooks/vocab/use-delete-sentence";
 import useMarkSentenceReviewed from "../../../hooks/vocab/use-mark-sentence-reviewed";
 import { ISentence } from "../../../interfaces/vocab.interfaces";
@@ -11,6 +12,8 @@ interface SentenceItemProps {
     onMarkAsReviewed?: (id: string) => void;
     onDelete?: (id: string) => void;
     onEdit?: (id: string) => void;
+    onRemoveSentence?: (id: string) => void;
+    chapterId?: string;
 }
 
 const SentenceItem: React.FC<SentenceItemProps> = ({
@@ -18,12 +21,15 @@ const SentenceItem: React.FC<SentenceItemProps> = ({
     onMarkAsReviewed,
     onDelete,
     onEdit,
+    onRemoveSentence,
+    chapterId
 }) => {
     const navigate = useNavigate();
 
     // Hooks for handling actions
     const { handleDeleteSentence, loading: isLoadingDelete } = useDeleteSentence();
     const { handleMarkAsReviewed, loading: isLoadingMarkAsReviewed } = useMarkSentenceReviewed();
+    const { handleRemoveSentence, loading: isLoadingRemoveSentenceFromChapter } = useRemoveSentenceFromChapter();
 
     // Handle edit action
     const handleEdit = () => {
@@ -47,6 +53,15 @@ const SentenceItem: React.FC<SentenceItemProps> = ({
         }
     };
 
+    // Handle remove sentence from chapter
+    const handleRemoveSentenceFromChapter = async () => {
+        if (!chapterId) return;
+        const success = await handleRemoveSentence(chapterId, sentence.id);
+        if (success && onRemoveSentence) {
+            onRemoveSentence(sentence.id);
+        }
+    }
+
     return (
         <SentenceItemUI
             sentence={sentence}
@@ -55,6 +70,9 @@ const SentenceItem: React.FC<SentenceItemProps> = ({
             onDelete={handleDelete}
             isLoadingMarkAsReviewed={isLoadingMarkAsReviewed}
             isLoadingDelete={isLoadingDelete}
+            chapterId={chapterId}
+            onRemoveFromChapter={handleRemoveSentenceFromChapter}
+            isLoadingRemoveFromChapter={isLoadingRemoveSentenceFromChapter}
         />
     );
 };

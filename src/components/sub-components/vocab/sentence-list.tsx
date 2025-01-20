@@ -6,14 +6,18 @@ interface SentenceListProps {
     sentences: ISentence[];
     onMarkAsReviewed?: (id: string) => void;
     onDelete?: (id: string) => void;
+    onRemoveSentence?: (id: string) => void;
     onEdit?: (id: string) => void;
+    chapterId?: string;
 }
 
 const SentenceList: React.FC<SentenceListProps> = ({
     sentences,
     onMarkAsReviewed,
+    onRemoveSentence,
     onDelete,
     onEdit,
+    chapterId
 }) => {
     if (sentences.length === 0) {
         return <p className="text-gray-500 text-center">No sentences found.</p>;
@@ -30,6 +34,8 @@ const SentenceList: React.FC<SentenceListProps> = ({
                         onMarkAsReviewed={onMarkAsReviewed}
                         onDelete={onDelete}
                         onEdit={onEdit}
+                        chapterId={chapterId}
+                        onRemoveSentence={onRemoveSentence}
                     />
                 ))}
             </ul>

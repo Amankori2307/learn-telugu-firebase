@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IChapter } from "../interfaces/chapter.interfaces";
 import { ISentence } from "../interfaces/vocab.interfaces";
 import { fetchChapterDetails } from "../services/chapter.service";
@@ -9,31 +9,37 @@ const useChapterDetails = (chapterId: string | undefined) => {
   const [sentences, setSentences] = useState<ISentence[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const loadData = async () => {
-      if (chapterId) {
-        try {
-          setLoading(true);
+  const loadData = useCallback(async () => {
+    if (chapterId) {
+      try {
+        setLoading(true);
 
-          // Fetch chapter details
-          const chapterData = await fetchChapterDetails(chapterId);
-          setChapter(chapterData);
+        // Fetch chapter details
+        const chapterData = await fetchChapterDetails(chapterId);
+        setChapter(chapterData);
 
-          // Fetch sentences in the chapter
-          const sentencesData = await fetchSentencesInChapter(chapterId);
-          setSentences(sentencesData);
-        } catch (error) {
-          console.error("Failed to fetch data: ", error);
-        } finally {
-          setLoading(false);
-        }
+        // Fetch sentences in the chapter
+        const sentencesData = await fetchSentencesInChapter(chapterId);
+        setSentences(sentencesData);
+      } catch (error) {
+        console.error("Failed to fetch data: ", error);
+      } finally {
+        setLoading(false);
       }
-    };
-
-    loadData();
+    }
   }, [chapterId]);
 
-  return { chapter, sentences, loading };
+  // Automatically fetch data when chapterId changes
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  // Expose a reload function to manually refresh the data
+  const reloadChapter = async () => {
+    await loadData();
+  };
+
+  return { chapter, sentences, loading, reloadChapter };
 };
 
 export default useChapterDetails;

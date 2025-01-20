@@ -8,7 +8,7 @@ import ChapterHeader from "../../sub-components/chapter/chapter-header";
 
 const ChapterDetailsPage = () => {
     const { chapterId } = useParams<{ chapterId: string }>();
-    const { chapter, sentences, loading } = useChapterDetails(chapterId);
+    const { chapter, sentences, loading, reloadChapter } = useChapterDetails(chapterId);
     const [showAddSentencePopup, setShowAddSentencePopup] = useState(false);
 
     const togglePopup = () => {
@@ -29,7 +29,7 @@ const ChapterDetailsPage = () => {
                 )}
 
                 {/* Chapter Content */}
-                <ChapterContent sentences={sentences} isLoading={loading} />
+                <ChapterContent sentences={sentences} isLoading={loading} chapterId={chapterId as string} onRemoveSentence={reloadChapter} />
             </div>
 
             {/* Add Sentence Popup */}
@@ -38,6 +38,7 @@ const ChapterDetailsPage = () => {
                     chapterId={chapterId}
                     onClose={togglePopup}
                     onSentencesAdded={() => window.location.reload()} // Reload to reflect changes
+
                 />
             )}
         </div>
