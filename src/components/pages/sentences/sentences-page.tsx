@@ -4,7 +4,7 @@ import Loader from "../../shared/loader";
 import SearchInput from "../../shared/search-input";
 import SentenceList from "../../sub-components/vocab/sentence-list";
 
-const ReviewedSentencesPage = () => {
+const SentencesPage = () => {
   const { sentences, loading, reloadSentences } = useFetchSentences(true);
   const { searchTerm, setSearchTerm, filteredData } = useSearch(sentences);
   return (
@@ -33,4 +33,4 @@ const ReviewedSentencesPage = () => {
   );
 };
 
-export default ReviewedSentencesPage;
+export default SentencesPage;
