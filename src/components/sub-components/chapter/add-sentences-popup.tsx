@@ -1,38 +1,25 @@
-import { useEffect, useState } from "react";
-import { ISentence } from "../../../interfaces/vocab.interfaces";
+import { useState } from "react";
+import useFetchOrphanSentences from "../../../hooks/use-fetch-orphan-sentences";
 import { addSentenceToChapter } from "../../../services/chapter.service";
-import { fetchOrphanSentences } from "../../../services/sentence.service";
 import Loader from "../../shared/loader";
+import PopupFooter from "../../shared/popup/pop-up-footer";
+import SentenceList2 from "./add-sentence/sentence-list2";
 
 interface AddSentencePopupProps {
     chapterId: string;
-    onClose: () => void; // Callback to close the popup
-    onSentencesAdded: (sentenceIds: string[]) => void; // Callback to handle new sentence associations
+    onClose: () => void;
+    onSentencesAdded: (sentenceIds: string[]) => void;
 }
 
-const AddSentencePopup = ({ chapterId, onClose, onSentencesAdded }: AddSentencePopupProps) => {
-    const [allSentences, setAllSentences] = useState<ISentence[]>([]); // All sentences fetched from the DB
-    const [selectedSentenceIds, setSelectedSentenceIds] = useState<string[]>([]); // IDs of selected sentences
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-
-    // Fetch all sentences from the database
-    useEffect(() => {
-        const fetchSentencesHelper = async () => {
-            setLoading(true);
-            try {
-                const sentences = await fetchOrphanSentences();
-                setAllSentences(sentences);
-            } catch (err) {
-                console.error("Failed to fetch sentences: ", err);
-                setError("Failed to fetch sentences. Please try again.");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchSentencesHelper();
-    }, []);
+const AddSentencePopup: React.FC<AddSentencePopupProps> = ({
+    chapterId,
+    onClose,
+    onSentencesAdded,
+}) => {
+    const { sentences, loading: fetchLoading, error: fetchError } = useFetchOrphanSentences();
+    const [selectedSentenceIds, setSelectedSentenceIds] = useState<string[]>([]);
+    const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
 
     // Handle sentence selection
     const handleSentenceSelection = (sentenceId: string) => {
@@ -48,12 +35,12 @@ const AddSentencePopup = ({ chapterId, onClose, onSentencesAdded }: AddSentenceP
         e.preventDefault();
 
         if (selectedSentenceIds.length === 0) {
-            setError("Please select at least one sentence.");
+            setSubmitError("Please select at least one sentence.");
             return;
         }
 
-        setLoading(true);
-        setError(null);
+        setSubmitLoading(true);
+        setSubmitError(null);
 
         try {
             // Add selected sentences to the chapter
@@ -68,9 +55,9 @@ const AddSentencePopup = ({ chapterId, onClose, onSentencesAdded }: AddSentenceP
             onClose(); // Close the popup
         } catch (err) {
             console.error("Failed to add sentences to chapter: ", err);
-            setError("Failed to add sentences. Please try again.");
+            setSubmitError("Failed to add sentences. Please try again.");
         } finally {
-            setLoading(false);
+            setSubmitLoading(false);
         }
     };
 
@@ -79,50 +66,28 @@ const AddSentencePopup = ({ chapterId, onClose, onSentencesAdded }: AddSentenceP
             <div className="bg-white rounded-lg p-6 w-full max-w-md">
                 <h2 className="text-xl font-bold mb-4">Add Sentences to Chapter</h2>
 
-                {/* Error Message */}
-                {error && <p className="text-red-500 mb-4">{error}</p>}
+                {/* Error Messages */}
+                {fetchError && <p className="text-red-500 mb-4">{fetchError}</p>}
+                {submitError && <p className="text-red-500 mb-4">{submitError}</p>}
 
                 {/* Loading State */}
-                {loading ? (
+                {fetchLoading ? (
                     <Loader />
                 ) : (
                     <>
                         {/* Sentence List */}
-                        <ul className="space-y-2 mb-4 max-h-60 overflow-y-auto">
-                            {allSentences.map((sentence) => (
-                                <li key={sentence.id} className="flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        id={sentence.id}
-                                        checked={selectedSentenceIds.includes(sentence.id)}
-                                        onChange={() => handleSentenceSelection(sentence.id)}
-                                        className="mr-2"
-                                    />
-                                    <label htmlFor={sentence.id} className="text-gray-700">
-                                        {sentence.text} ({sentence.pronunciation})
-                                    </label>
-                                </li>
-                            ))}
-                        </ul>
+                        <SentenceList2
+                            sentences={sentences}
+                            selectedSentenceIds={selectedSentenceIds}
+                            onSentenceSelection={handleSentenceSelection}
+                        />
 
-                        {/* Buttons */}
-                        <div className="flex justify-end space-x-4">
-                            <button
-                                type="button"
-                                onClick={onClose}
-                                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                onClick={handleSubmit}
-                                disabled={loading}
-                                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:bg-blue-300"
-                            >
-                                {loading ? "Adding..." : "Add Sentences"}
-                            </button>
-                        </div>
+                        {/* Popup Footer */}
+                        <PopupFooter
+                            onClose={onClose}
+                            onSubmit={handleSubmit}
+                            loading={submitLoading}
+                        />
                     </>
                 )}
             </div>
