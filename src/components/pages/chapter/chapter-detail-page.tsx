@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import useChapterDetails from "../../../hooks/use-chapter-details";
-import Back from "../../shared/back";
 import AddSentencePopup from "../../sub-components/chapter/add-sentences-popup";
 import ChapterContent from "../../sub-components/chapter/chapter-content";
 import ChapterHeader from "../../sub-components/chapter/chapter-header";
@@ -17,7 +16,6 @@ const ChapterDetailsPage = () => {
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
-            <Back onClick={() => { }} className="pb-4" />
             <div className="max-w-4xl mx-auto">
                 {/* Chapter Header */}
                 {chapter && (

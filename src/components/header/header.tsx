@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaBars } from "react-icons/fa"; // Import the hamburger menu icon
 import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
@@ -23,10 +24,13 @@ const Header = () => {
         }`;
 
     return (
-        <header className="bg-blue-600 shadow-lg">
+        <header className="fixed top-0 left-0 w-full bg-blue-600 shadow-lg z-50">
             <div className="container mx-auto px-4 py-3 flex justify-between items-center">
                 {/* Logo */}
-                <Link to="/" className="text-xl font-bold text-white hover:text-blue-100 transition-colors duration-200">
+                <Link
+                    to="/"
+                    className="text-xl font-bold text-white hover:text-blue-100 transition-colors duration-200"
+                >
                     Vocab App
                 </Link>
 
@@ -36,30 +40,13 @@ const Header = () => {
                     className="md:hidden p-2 focus:outline-none"
                     aria-label="Toggle menu"
                 >
-                    <svg
-                        className="w-6 h-6 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M4 6h16M4 12h16m-7 6h7"
-                        />
-                    </svg>
+                    <FaBars className="w-6 h-6 text-white" /> {/* Use the FaBars icon */}
                 </button>
 
                 {/* Navigation Links (Desktop) */}
                 <nav className="hidden md:flex space-x-2">
                     {navLinks.map((link) => (
-                        <NavLink
-                            key={link.to}
-                            to={link.to}
-                            className={navLinkClass}
-                        >
+                        <NavLink key={link.to} to={link.to} className={navLinkClass}>
                             {link.label}
                         </NavLink>
                     ))}
