@@ -56,7 +56,7 @@ const VocabFormContainer: React.FC<VocabFormContainerProps> = ({
                 onSuccess?.(); // Call the onSuccess callback if provided
             } catch (error) {
                 console.error("Error saving vocab: ", error);
-                alert("Failed to save vocab. Please try again.");
+                alert(`Failed to save vocab. Please try again. (Error: ${error})`);
             }
         },
     });
