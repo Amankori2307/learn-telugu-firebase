@@ -1,9 +1,9 @@
 import React from "react";
-import { ISentence } from "../../../../interfaces/vocab.interfaces";
+import { VocabularyEntry } from "../../../../interfaces/vocab.interfaces";
 import SentenceList2Item from "./sentence-list2-item";
 
 interface SentenceListProps {
-    sentences: ISentence[];
+    sentences: VocabularyEntry[];
     selectedSentenceIds: string[];
     onSentenceSelection: (sentenceId: string) => void;
 }

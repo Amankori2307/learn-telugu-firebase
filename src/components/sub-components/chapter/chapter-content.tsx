@@ -1,10 +1,10 @@
 import React from "react";
-import { ISentence } from "../../../interfaces/vocab.interfaces";
+import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import Loader from "../../shared/loader";
 import SentenceList from "../../sub-components/vocab/sentence-list";
 
 interface ChapterContentProps {
-  sentences: ISentence[];
+  sentences: VocabularyEntry[];
   isLoading: boolean;
   chapterId: string;
   onRemoveSentence: (id: string) => void;

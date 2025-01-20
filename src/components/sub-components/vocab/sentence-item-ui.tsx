@@ -1,9 +1,9 @@
 import React from "react";
 import { FaCheck, FaEdit, FaTimes, FaTrash } from "react-icons/fa"; // Import the close icon
-import { ISentence } from "../../../interfaces/vocab.interfaces";
+import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
 
 interface SentenceItemUIProps {
-    sentence: ISentence;
+    sentence: VocabularyEntry;
     onEdit: () => void;
     onMarkAsReviewed: () => void;
     onDelete: () => void;

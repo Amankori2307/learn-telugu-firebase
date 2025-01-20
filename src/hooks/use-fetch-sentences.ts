@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { ISentence } from "../interfaces/vocab.interfaces";
+import { VocabularyEntry } from "../interfaces/vocab.interfaces";
 import { fetchSentences } from "../services/sentence.service";
 
 const useFetchSentences = (isReviewed: boolean) => {
-  const [sentences, setSentences] = useState<ISentence[]>([]);
+  const [sentences, setSentences] = useState<VocabularyEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 

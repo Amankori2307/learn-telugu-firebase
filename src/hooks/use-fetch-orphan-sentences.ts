@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { ISentence } from "../interfaces/vocab.interfaces";
+import { VocabularyEntry } from "../interfaces/vocab.interfaces";
 import { fetchOrphanSentences } from "../services/sentence.service";
 
 const useFetchOrphanSentences = () => {
-  const [sentences, setSentences] = useState<ISentence[]>([]);
+  const [sentences, setSentences] = useState<VocabularyEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 

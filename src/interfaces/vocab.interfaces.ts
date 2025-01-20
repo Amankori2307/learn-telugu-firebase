@@ -1,9 +1,9 @@
-export enum DataTypeEnum {
+export enum VocabularyType {
   Sentence = "sentence",
   Word = "word",
 }
 
-export interface ISentenceBase {
+export interface BaseVocabularyEntry {
   pronunciation: string;
   meaning: string;
   text: string;
@@ -12,7 +12,7 @@ export interface ISentenceBase {
   isReviewed?: boolean;
   meta?: string;
 }
-export interface ISentence extends ISentenceBase {
+export interface VocabularyEntry extends BaseVocabularyEntry {
   textLowercase: string;
   id: string;
 }

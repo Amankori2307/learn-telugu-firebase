@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
-import { ISentence } from "../../../interfaces/vocab.interfaces";
+import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import { saveVocab, updateVocab } from "../../../services/sentence.service";
 import VocabFormUI from "./vocab-form-ui";
 
@@ -15,7 +15,7 @@ const validationSchema = Yup.object({
 });
 
 interface VocabFormContainerProps {
-    initialValues?: ISentence;
+    initialValues?: VocabularyEntry;
     onSuccess?: () => void;
     isEditMode?: boolean;
 }
@@ -40,13 +40,13 @@ const VocabFormContainer: React.FC<VocabFormContainerProps> = ({
                 if (isEditMode && initialValues?.id) {
                     // Update the vocab data in Firebase
                     await updateVocab(initialValues.id, {
-                        ...values as ISentence,
+                        ...values as VocabularyEntry,
                     });
                     alert("Vocab updated successfully!");
                 } else {
                     // Save the vocab data to Firebase
                     await saveVocab({
-                        ...values as ISentence,
+                        ...values as VocabularyEntry,
                         isReviewed: false, // Set isReviewed to false by default
                     });
                     alert("Vocab added successfully!");

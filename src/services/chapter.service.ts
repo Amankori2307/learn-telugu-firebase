@@ -11,6 +11,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { CollectionEnum } from "../enums/db.enums";
 import { IChapter } from "../interfaces/chapter.interfaces";
 import { db } from "./firebase";
 
@@ -20,7 +21,7 @@ export const createChapter = async (name: string): Promise<string> => {
     const lowercaseName = name.toLowerCase();
 
     // Check if a chapter with the same lowercase name already exists
-    const chaptersRef = collection(db, "chapters");
+    const chaptersRef = collection(db, CollectionEnum.Chapter);
     const q = query(chaptersRef, where("nameLowercase", "==", lowercaseName));
     const querySnapshot = await getDocs(q);
 
@@ -49,7 +50,7 @@ export const addSentenceToChapter = async (
 ): Promise<void> => {
   try {
     // Check if the sentence already belongs to another chapter
-    const sentenceRef = doc(db, "sentences", sentenceId);
+    const sentenceRef = doc(db, CollectionEnum.Vocab, sentenceId);
     const sentenceDoc = await getDoc(sentenceRef);
 
     if (!sentenceDoc.exists()) {
@@ -57,7 +58,7 @@ export const addSentenceToChapter = async (
     }
 
     // Check if the sentence is already in the chapter
-    const chapterRef = doc(db, "chapters", chapterId);
+    const chapterRef = doc(db, CollectionEnum.Chapter, chapterId);
     const chapterDoc = await getDoc(chapterRef);
 
     if (!chapterDoc.exists()) {
@@ -88,7 +89,7 @@ export const addSentenceToChapter = async (
 
 export const fetchChapters = async (): Promise<IChapter[]> => {
   try {
-    const querySnapshot = await getDocs(collection(db, "chapters"));
+    const querySnapshot = await getDocs(collection(db, CollectionEnum.Chapter));
     const chapters: IChapter[] = [];
 
     querySnapshot.forEach((doc) => {
@@ -107,12 +108,12 @@ export const removeSentenceFromChapter = async (
   sentenceId: string
 ): Promise<void> => {
   try {
-    const chapterRef = doc(db, "chapters", chapterId);
+    const chapterRef = doc(db, CollectionEnum.Chapter, chapterId);
     await updateDoc(chapterRef, {
       sentenceIds: arrayRemove(sentenceId),
     });
 
-    const sentenceRef = doc(db, "sentences", sentenceId);
+    const sentenceRef = doc(db, CollectionEnum.Vocab, sentenceId);
     await updateDoc(sentenceRef, {
       chapterId: null,
     });
@@ -127,7 +128,7 @@ export const removeSentenceFromChapter = async (
 export const deleteChapter = async (chapterId: string): Promise<void> => {
   try {
     // Step 1: Fetch the chapter to get its sentenceIds
-    const chapterRef = doc(db, "chapters", chapterId);
+    const chapterRef = doc(db, CollectionEnum.Chapter, chapterId);
     const chapterDoc = await getDoc(chapterRef);
 
     if (!chapterDoc.exists()) {
@@ -139,7 +140,7 @@ export const deleteChapter = async (chapterId: string): Promise<void> => {
 
     // Step 2: Remove the chapterId from all associated sentences
     for (const sentenceId of sentenceIds) {
-      const sentenceRef = doc(db, "sentences", sentenceId);
+      const sentenceRef = doc(db, CollectionEnum.Vocab, sentenceId);
       await updateDoc(sentenceRef, {
         chapterId: null, // Remove the chapterId association
       });
@@ -159,7 +160,7 @@ export const fetchChapterDetails = async (
   chapterId: string
 ): Promise<IChapter | null> => {
   try {
-    const chapterRef = doc(db, "chapters", chapterId);
+    const chapterRef = doc(db, CollectionEnum.Chapter, chapterId);
     const chapterDoc = await getDoc(chapterRef);
 
     if (!chapterDoc.exists()) {

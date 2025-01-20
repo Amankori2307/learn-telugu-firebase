@@ -9,24 +9,25 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { ISentence } from "../interfaces/vocab.interfaces";
+import { CollectionEnum } from "../enums/db.enums";
+import { VocabularyEntry } from "../interfaces/vocab.interfaces";
 import { db } from "../services/firebase";
 
 export const fetchSentences = async (
   isReviewed = true
-): Promise<ISentence[]> => {
+): Promise<VocabularyEntry[]> => {
   try {
     // Create a query to fetch only reviewed sentences
     const q = query(
-      collection(db, "sentences"),
+      collection(db, CollectionEnum.Vocab),
       where("isReviewed", "==", isReviewed) // Filter by isReviewed = true
     );
 
     const querySnapshot = await getDocs(q);
-    const sentencesData: ISentence[] = [];
+    const sentencesData: VocabularyEntry[] = [];
 
     querySnapshot.forEach((doc) => {
-      sentencesData.push({ id: doc.id, ...doc.data() } as ISentence);
+      sentencesData.push({ id: doc.id, ...doc.data() } as VocabularyEntry);
     });
     return sentencesData;
   } catch (error) {
@@ -35,9 +36,9 @@ export const fetchSentences = async (
   }
 };
 
-export const saveVocab = async (vocabData: ISentence) => {
+export const saveVocab = async (vocabData: VocabularyEntry) => {
   try {
-    const sentencesRef = collection(db, "sentences");
+    const sentencesRef = collection(db, CollectionEnum.Vocab);
 
     // Create a lowercase version of the text for case-insensitive comparison
     const textLowercase = vocabData.text.toLowerCase();
@@ -68,7 +69,7 @@ export const saveVocab = async (vocabData: ISentence) => {
 // Mark a sentence as reviewed
 export const markAsReviewed = async (id: string) => {
   try {
-    const sentenceRef = doc(db, "sentences", id);
+    const sentenceRef = doc(db, CollectionEnum.Vocab, id);
     await updateDoc(sentenceRef, { isReviewed: true });
   } catch (error) {
     console.error("Error marking sentence as reviewed: ", error);
@@ -79,7 +80,7 @@ export const markAsReviewed = async (id: string) => {
 // Delete a sentence
 export const deleteSentence = async (id: string) => {
   try {
-    const sentenceRef = doc(db, "sentences", id);
+    const sentenceRef = doc(db, CollectionEnum.Vocab, id);
     await deleteDoc(sentenceRef);
   } catch (error) {
     console.error("Error deleting sentence: ", error);
@@ -89,9 +90,9 @@ export const deleteSentence = async (id: string) => {
 
 export const fetchSentencesInChapter = async (
   chapterId: string
-): Promise<ISentence[]> => {
+): Promise<VocabularyEntry[]> => {
   try {
-    const chapterRef = doc(db, "chapters", chapterId);
+    const chapterRef = doc(db, CollectionEnum.Chapter, chapterId);
     const chapterDoc = await getDoc(chapterRef);
 
     if (!chapterDoc.exists()) {
@@ -101,16 +102,16 @@ export const fetchSentencesInChapter = async (
     const chapterData = chapterDoc.data();
     const sentenceIds = chapterData.sentenceIds || [];
 
-    const sentences: ISentence[] = [];
+    const sentences: VocabularyEntry[] = [];
     for (const sentenceId of sentenceIds) {
-      const sentenceRef = doc(db, "sentences", sentenceId);
+      const sentenceRef = doc(db, CollectionEnum.Vocab, sentenceId);
       const sentenceDoc = await getDoc(sentenceRef);
 
       if (sentenceDoc.exists()) {
         sentences.push({
           id: sentenceDoc.id,
           ...sentenceDoc.data(),
-        } as ISentence);
+        } as VocabularyEntry);
       }
     }
 
@@ -121,15 +122,15 @@ export const fetchSentencesInChapter = async (
   }
 };
 
-export const fetchOrphanSentences = async (): Promise<ISentence[]> => {
+export const fetchOrphanSentences = async (): Promise<VocabularyEntry[]> => {
   try {
     // Fetch all sentences
-    const sentencesRef = collection(db, "sentences");
+    const sentencesRef = collection(db, CollectionEnum.Vocab);
     const sentencesQuery = query(sentencesRef, where("isReviewed", "==", true));
     const sentencesSnapshot = await getDocs(sentencesQuery);
 
     // Fetch all chapters and collect their sentenceIds
-    const chaptersRef = collection(db, "chapters");
+    const chaptersRef = collection(db, CollectionEnum.Chapter);
     const chaptersSnapshot = await getDocs(chaptersRef);
 
     // Create a Set of all sentenceIds that belong to chapters
@@ -144,14 +145,14 @@ export const fetchOrphanSentences = async (): Promise<ISentence[]> => {
     });
 
     // Filter out sentences that are not in any chapter
-    const orphanSentences: ISentence[] = [];
+    const orphanSentences: VocabularyEntry[] = [];
     sentencesSnapshot.forEach((sentenceDoc) => {
       const sentenceData = sentenceDoc.data();
       if (!sentenceIdsInChapters.has(sentenceDoc.id)) {
         orphanSentences.push({
           id: sentenceDoc.id,
           ...sentenceData,
-        } as ISentence);
+        } as VocabularyEntry);
       }
     });
 
@@ -162,10 +163,13 @@ export const fetchOrphanSentences = async (): Promise<ISentence[]> => {
   }
 };
 
-export const updateVocab = async (docId: string, vocabData: ISentence) => {
+export const updateVocab = async (
+  docId: string,
+  vocabData: VocabularyEntry
+) => {
   try {
     // Reference the document to update
-    const docRef = doc(db, "sentences", docId);
+    const docRef = doc(db, CollectionEnum.Vocab, docId);
 
     // Update the document with the new data
     await updateDoc(docRef, {
@@ -179,16 +183,16 @@ export const updateVocab = async (docId: string, vocabData: ISentence) => {
   }
 };
 
-export const fetchSentenceById = async (id: string): Promise<ISentence> => {
+export const fetchVocabById = async (id: string): Promise<VocabularyEntry> => {
   try {
-    const docRef = doc(db, "sentences", id);
+    const docRef = doc(db, CollectionEnum.Vocab, id);
     const docSnap = await getDoc(docRef);
 
     if (!docSnap.exists()) {
       throw new Error("Sentence not found");
     }
 
-    return { id: docSnap.id, ...docSnap.data() } as ISentence;
+    return { id: docSnap.id, ...docSnap.data() } as VocabularyEntry;
   } catch (error) {
     console.error("Error fetching sentence: ", error);
     throw error;

@@ -1,9 +1,9 @@
 import React from "react";
-import { ISentence } from "../../../interfaces/vocab.interfaces";
+import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import SentenceItem from "./sentence-item";
 
 interface SentenceListProps {
-    sentences: ISentence[];
+    sentences: VocabularyEntry[];
     onMarkAsReviewed?: (id: string) => void;
     onDelete?: (id: string) => void;
     onRemoveSentence?: (id: string) => void;

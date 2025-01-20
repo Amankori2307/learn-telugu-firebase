@@ -1,15 +1,15 @@
 // components/Quiz.tsx
 import { useEffect, useState } from "react";
-import { ISentence } from "../../../interfaces/vocab.interfaces";
+import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import { fetchSentences } from "../../../services/sentence.service";
 import QuizQuestion from "../../sub-components/quiz/quiz-question";
 import QuizResult from "../../sub-components/quiz/quiz-result";
 
 const QuizPage: React.FC = () => {
-  const [sentences, setSentences] = useState<ISentence[]>([]);
-  const [currentSentence, setCurrentSentence] = useState<ISentence | null>(null);
-  const [options, setOptions] = useState<ISentence[]>([]);
-  const [selectedOption, setSelectedOption] = useState<ISentence | null>(null);
+  const [sentences, setSentences] = useState<VocabularyEntry[]>([]);
+  const [currentSentence, setCurrentSentence] = useState<VocabularyEntry | null>(null);
+  const [options, setOptions] = useState<VocabularyEntry[]>([]);
+  const [selectedOption, setSelectedOption] = useState<VocabularyEntry | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showExamples, setShowExamples] = useState<boolean>(false);
   const [isMeaningQuestion, setIsMeaningQuestion] = useState<boolean>(false);
@@ -23,13 +23,13 @@ const QuizPage: React.FC = () => {
     loadSentences();
   }, []);
 
-  const checkIsCorrect = (option: ISentence) => {
+  const checkIsCorrect = (option: VocabularyEntry) => {
     if (!currentSentence) return null;
     if (isMeaningQuestion) return currentSentence.meaning === option.meaning;
     else return currentSentence.text === option.text;
   }
 
-  const loadRandomQuestion = (sentencesData: ISentence[]) => {
+  const loadRandomQuestion = (sentencesData: VocabularyEntry[]) => {
     const randomIndex = Math.floor(Math.random() * sentencesData.length);
     const randomSentence = sentencesData[randomIndex];
 
@@ -52,7 +52,7 @@ const QuizPage: React.FC = () => {
     setShowExamples(false);
   };
 
-  const handleOptionClick = (option: ISentence) => {
+  const handleOptionClick = (option: VocabularyEntry) => {
     setSelectedOption(option);
     setIsCorrect(checkIsCorrect(option));
     setShowExamples(true);

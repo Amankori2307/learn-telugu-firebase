@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { IChapter } from "../interfaces/chapter.interfaces";
-import { ISentence } from "../interfaces/vocab.interfaces";
+import { VocabularyEntry } from "../interfaces/vocab.interfaces";
 import { fetchChapterDetails } from "../services/chapter.service";
 import { fetchSentencesInChapter } from "../services/sentence.service";
 
 const useChapterDetails = (chapterId: string | undefined) => {
   const [chapter, setChapter] = useState<IChapter | null>(null);
-  const [sentences, setSentences] = useState<ISentence[]>([]);
+  const [sentences, setSentences] = useState<VocabularyEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const loadData = useCallback(async () => {

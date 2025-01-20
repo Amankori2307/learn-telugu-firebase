@@ -2,13 +2,13 @@ import { useNavigate } from "react-router-dom";
 import useRemoveSentenceFromChapter from "../../../hooks/chapter/use-remove-sentence-from-chapter";
 import useDeleteSentence from "../../../hooks/vocab/use-delete-sentence";
 import useMarkSentenceReviewed from "../../../hooks/vocab/use-mark-sentence-reviewed";
-import { ISentence } from "../../../interfaces/vocab.interfaces";
+import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import vocabUtils from "../../../utils/vocab.utils";
 import SentenceItemUI from "./sentence-item-ui";
 
 
 interface SentenceItemProps {
-    sentence: ISentence;
+    sentence: VocabularyEntry;
     onMarkAsReviewed?: (id: string) => void;
     onDelete?: (id: string) => void;
     onEdit?: (id: string) => void;
