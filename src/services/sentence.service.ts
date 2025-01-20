@@ -37,17 +37,34 @@ export const fetchSentences = async (
 
 export const saveVocab = async (vocabData: ISentence) => {
   try {
-    const docRef = await addDoc(collection(db, "sentences"), {
+    const sentencesRef = collection(db, "sentences");
+
+    // Create a lowercase version of the text for case-insensitive comparison
+    const textLowercase = vocabData.text.toLowerCase();
+
+    // Query for duplicates using the lowercase version
+    const q = query(sentencesRef, where("textLowercase", "==", textLowercase));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      throw new Error(
+        "Duplicate text found: A document with the same text already exists."
+      );
+    }
+
+    // If no duplicate is found, add the new document
+    const docRef = await addDoc(sentencesRef, {
       ...vocabData,
+      textLowercase: textLowercase, // Store the lowercase version
       isReviewed: false, // Set isReviewed to false by default
     });
+
     return docRef.id; // Return the document ID (optional)
   } catch (error) {
     console.error("Error saving vocab: ", error);
     throw error;
   }
 };
-
 // Mark a sentence as reviewed
 export const markAsReviewed = async (id: string) => {
   try {
