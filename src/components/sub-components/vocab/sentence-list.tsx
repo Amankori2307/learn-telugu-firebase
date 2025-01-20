@@ -13,24 +13,26 @@ const SentenceList: React.FC<SentenceListProps> = ({
     sentences,
     onMarkAsReviewed,
     onDelete,
-    onEdit
+    onEdit,
 }) => {
     if (sentences.length === 0) {
         return <p>No un-reviewed sentences found.</p>;
     }
 
     return (
-        <ul className="space-y-4">
-            {sentences.map((sentence) => (
-                <SentenceItem
-                    key={sentence.id}
-                    sentence={sentence}
-                    onMarkAsReviewed={onMarkAsReviewed}
-                    onDelete={onDelete}
-                    onEdit={onEdit}
-                />
-            ))}
-        </ul>
+        <div className="w-[600px] mx-auto"> {/* Set a fixed width */}
+            <ul className="space-y-4">
+                {sentences.map((sentence) => (
+                    <SentenceItem
+                        key={sentence.id}
+                        sentence={sentence}
+                        onMarkAsReviewed={onMarkAsReviewed}
+                        onDelete={onDelete}
+                        onEdit={onEdit}
+                    />
+                ))}
+            </ul>
+        </div>
     );
 };
 

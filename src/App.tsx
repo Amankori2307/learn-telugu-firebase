@@ -13,7 +13,7 @@ function App() {
   return (
     <BrowserRouter>
       <Header />
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 flex items-start justify-center py-2">
         <Routes>
 
           <Route path="/" element={<QuizPage />} />
