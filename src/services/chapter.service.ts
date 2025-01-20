@@ -7,17 +7,34 @@ import {
   doc,
   getDoc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { IChapter } from "../interfaces/chapter.interfaces";
 import { db } from "./firebase";
 
 export const createChapter = async (name: string): Promise<string> => {
   try {
-    const chapterRef = await addDoc(collection(db, "chapters"), {
-      name,
+    // Convert the chapter name to lowercase for comparison
+    const lowercaseName = name.toLowerCase();
+
+    // Check if a chapter with the same lowercase name already exists
+    const chaptersRef = collection(db, "chapters");
+    const q = query(chaptersRef, where("nameLowercase", "==", lowercaseName));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      throw new Error("A chapter with this name already exists.");
+    }
+
+    // Create the chapter with the original name and a lowercase version
+    const chapterRef = await addDoc(chaptersRef, {
+      name, // Store the original name
+      nameLowercase: lowercaseName, // Store the lowercase version for uniqueness checks
       sentenceIds: [], // Start with an empty list of sentences
     });
+
     console.log("Chapter created with ID: ", chapterRef.id);
     return chapterRef.id;
   } catch (error) {

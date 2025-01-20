@@ -1,29 +1,17 @@
-// src/components/CreateChapter.tsx
-import { useState } from "react";
-import { createChapter } from "../../../services/chapter.service";
+import React from "react";
+import useCreateChapter from "../../../hooks/chapter/use-create-chapter";
+
 interface CreateChapterProps {
     onCreateChapter: () => void;
 }
-const CreateChapter = (props: CreateChapterProps) => {
-    const [name, setName] = useState("");
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            await createChapter(name);
-            alert("Chapter created successfully!");
-            setName("");
-            await props.onCreateChapter();
-        } catch (error) {
-            console.error("Failed to create chapter: ", error);
-            alert("Failed to create chapter. Please try again.");
-        }
-    };
+const CreateChapter: React.FC<CreateChapterProps> = ({ onCreateChapter }) => {
+    const { name, setName, loading, error, handleSubmit } = useCreateChapter();
 
     return (
         <div className="pb-10">
             <h2 className="text-xl font-bold mb-4">Create Chapter</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={(e) => handleSubmit(e, onCreateChapter)} className="space-y-4">
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Chapter Name</label>
                     <input
@@ -34,11 +22,13 @@ const CreateChapter = (props: CreateChapterProps) => {
                         required
                     />
                 </div>
+                {error && <p className="text-red-500 text-sm whitespace-pre-wrap">{error}</p>}
                 <button
                     type="submit"
-                    className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    disabled={loading}
+                    className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-blue-300"
                 >
-                    Create Chapter
+                    {loading ? "Creating..." : "Create Chapter"}
                 </button>
             </form>
         </div>

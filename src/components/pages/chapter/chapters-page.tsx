@@ -1,7 +1,7 @@
 // src/pages/ChaptersListPage.tsx
 import { useEffect, useState } from "react";
 import { IChapter } from "../../../interfaces/chapter.interfaces";
-import { deleteChapter, fetchChapters } from "../../../services/chapter.service";
+import { fetchChapters } from "../../../services/chapter.service";
 import ChapterList from "../../sub-components/chapter/chapter-list";
 import CreateChapter from "../../sub-components/chapter/create-chapter";
 
@@ -23,11 +23,8 @@ const ChaptersListPage = () => {
         loadChapters();
     }, []);
 
-    const handleDeleteChapter = async (chapterId: string) => {
+    const handleDeleteChapter = async () => {
         try {
-            await deleteChapter(chapterId);
-            setChapters((prev) => prev.filter((chapter) => chapter.id !== chapterId));
-            alert("Chapter deleted successfully!");
             loadChapters();
         } catch (error) {
             console.error("Failed to delete chapter: ", error);
@@ -36,12 +33,12 @@ const ChaptersListPage = () => {
     };
 
     return (
-        <div className="p-6 bg-gray-100 min-h-screen">
+        <div className="p-6 bg-gray-100 min-h-screen ">
             <div className="max-w-4xl mx-auto">
-                <CreateChapter onCreateChapter={loadChapters}/>
+                <CreateChapter onCreateChapter={loadChapters} />
                 <ChapterList
                     chapters={chapters}
-                    onDeleteChapter={handleDeleteChapter}
+                    onDeleteSuccess={handleDeleteChapter}
                     loading={loading}
                 />
             </div>
