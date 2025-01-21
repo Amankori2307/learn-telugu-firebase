@@ -10,17 +10,22 @@ import {
   where,
 } from "firebase/firestore";
 import { CollectionEnum } from "../enums/db.enums";
+import { IChapter } from "../interfaces/chapter.interfaces";
 import { VocabularyEntry } from "../interfaces/vocab.interfaces";
-import { db } from "../services/firebase";
+import { db } from "./firebase";
 
+/**
+ * Fetch all vocabulary entries, optionally filtered by `isReviewed` status.
+ * @param isReviewed - Whether to fetch reviewed or unreviewed entries (default: true).
+ * @returns A promise resolving to an array of `VocabularyEntry` objects.
+ */
 export const fetchAllVocabularyEntries = async (
   isReviewed = true
 ): Promise<VocabularyEntry[]> => {
   try {
-    // Create a query to fetch only reviewed vocabulary
     const q = query(
       collection(db, CollectionEnum.Vocab),
-      where("isReviewed", "==", isReviewed) // Filter by isReviewed = true
+      where("isReviewed", "==", isReviewed)
     );
 
     const querySnapshot = await getDocs(q);
@@ -29,6 +34,7 @@ export const fetchAllVocabularyEntries = async (
     querySnapshot.forEach((doc) => {
       vocabularyData.push({ id: doc.id, ...doc.data() } as VocabularyEntry);
     });
+
     return vocabularyData;
   } catch (error) {
     console.error("Error fetching vocabulary entries: ", error);
@@ -36,14 +42,19 @@ export const fetchAllVocabularyEntries = async (
   }
 };
 
-export const createVocabularyEntry = async (vocabData: VocabularyEntry) => {
+/**
+ * Create a new vocabulary entry.
+ * @param vocabData - The vocabulary entry data to create.
+ * @returns A promise resolving to the ID of the newly created document.
+ */
+export const createVocabularyEntry = async (
+  vocabData: Omit<VocabularyEntry, "id">
+): Promise<string> => {
   try {
     const vocabularyEntryRef = collection(db, CollectionEnum.Vocab);
-
-    // Create a lowercase version of the text for case-insensitive comparison
     const textLowercase = vocabData.text.toLowerCase();
 
-    // Query for duplicates using the lowercase version
+    // Check for duplicates
     const q = query(
       vocabularyEntryRef,
       where("textLowercase", "==", textLowercase)
@@ -56,21 +67,27 @@ export const createVocabularyEntry = async (vocabData: VocabularyEntry) => {
       );
     }
 
-    // If no duplicate is found, add the new document
+    // Add the new document
     const docRef = await addDoc(vocabularyEntryRef, {
       ...vocabData,
-      textLowercase: textLowercase, // Store the lowercase version
-      isReviewed: false, // Set isReviewed to false by default
+      textLowercase,
+      isReviewed: false, // Default to unreviewed
     });
 
-    return docRef.id; // Return the document ID (optional)
+    return docRef.id;
   } catch (error) {
     console.error("Error saving vocab: ", error);
     throw error;
   }
 };
-// Mark a vocabulary entry as reviewed
-export const markVocabularyEntryAsReviewed = async (id: string) => {
+
+/**
+ * Mark a vocabulary entry as reviewed.
+ * @param id - The ID of the vocabulary entry to mark as reviewed.
+ */
+export const markVocabularyEntryAsReviewed = async (
+  id: string
+): Promise<void> => {
   try {
     const vocabularyEntryRef = doc(db, CollectionEnum.Vocab, id);
     await updateDoc(vocabularyEntryRef, { isReviewed: true });
@@ -80,8 +97,11 @@ export const markVocabularyEntryAsReviewed = async (id: string) => {
   }
 };
 
-// Delete a vocabulary entry
-export const deleteVocabularyEntry = async (id: string) => {
+/**
+ * Delete a vocabulary entry.
+ * @param id - The ID of the vocabulary entry to delete.
+ */
+export const deleteVocabularyEntry = async (id: string): Promise<void> => {
   try {
     const vocabularyEntryRef = doc(db, CollectionEnum.Vocab, id);
     await deleteDoc(vocabularyEntryRef);
@@ -91,6 +111,11 @@ export const deleteVocabularyEntry = async (id: string) => {
   }
 };
 
+/**
+ * Fetch vocabulary entries associated with a specific chapter.
+ * @param chapterId - The ID of the chapter to fetch vocabulary entries for.
+ * @returns A promise resolving to an array of `VocabularyEntry` objects.
+ */
 export const fetchVocabularyEntriesByChapter = async (
   chapterId: string
 ): Promise<VocabularyEntry[]> => {
@@ -102,7 +127,7 @@ export const fetchVocabularyEntriesByChapter = async (
       throw new Error("Chapter not found");
     }
 
-    const chapterData = chapterDoc.data();
+    const chapterData = chapterDoc.data() as IChapter;
     const vocabularyEntryIds = chapterData.sentenceIds || [];
 
     const vocabularyEntries: VocabularyEntry[] = [];
@@ -129,11 +154,14 @@ export const fetchVocabularyEntriesByChapter = async (
   }
 };
 
+/**
+ * Fetch orphaned vocabulary entries (not associated with any chapter).
+ * @returns A promise resolving to an array of `VocabularyEntry` objects.
+ */
 export const fetchOrphanedVocabularyEntries = async (): Promise<
   VocabularyEntry[]
 > => {
   try {
-    // Fetch all vocabulary entries
     const vocabularyEntryRef = collection(db, CollectionEnum.Vocab);
     const vocabularyEntryQuery = query(
       vocabularyEntryRef,
@@ -141,14 +169,12 @@ export const fetchOrphanedVocabularyEntries = async (): Promise<
     );
     const vocabularyEntrySnapshot = await getDocs(vocabularyEntryQuery);
 
-    // Fetch all chapters and collect their vocabulary entry ids
     const chaptersRef = collection(db, CollectionEnum.Chapter);
     const chaptersSnapshot = await getDocs(chaptersRef);
 
-    // Create a Set of all vocabulary Entry ids that belong to chapters
     const vocabularyEntryIdsInChapters = new Set<string>();
     chaptersSnapshot.forEach((chapterDoc) => {
-      const chapterData = chapterDoc.data();
+      const chapterData = chapterDoc.data() as IChapter;
       if (chapterData.sentenceIds && Array.isArray(chapterData.sentenceIds)) {
         chapterData.sentenceIds.forEach((sentenceId: string) => {
           vocabularyEntryIdsInChapters.add(sentenceId);
@@ -156,14 +182,12 @@ export const fetchOrphanedVocabularyEntries = async (): Promise<
       }
     });
 
-    // Filter out sentences that are not in any chapter
     const orphanVocabularyEntries: VocabularyEntry[] = [];
     vocabularyEntrySnapshot.forEach((vocabularyEntryDoc) => {
-      const vocabularyEntryData = vocabularyEntryDoc.data();
       if (!vocabularyEntryIdsInChapters.has(vocabularyEntryDoc.id)) {
         orphanVocabularyEntries.push({
           id: vocabularyEntryDoc.id,
-          ...vocabularyEntryData,
+          ...vocabularyEntryDoc.data(),
         } as VocabularyEntry);
       }
     });
@@ -175,19 +199,18 @@ export const fetchOrphanedVocabularyEntries = async (): Promise<
   }
 };
 
+/**
+ * Update a vocabulary entry.
+ * @param docId - The ID of the vocabulary entry to update.
+ * @param vocabData - The updated vocabulary entry data.
+ */
 export const updateVocabularyEntry = async (
   docId: string,
-  vocabData: VocabularyEntry
-) => {
+  vocabData: Partial<VocabularyEntry>
+): Promise<void> => {
   try {
-    // Reference the document to update
     const docRef = doc(db, CollectionEnum.Vocab, docId);
-
-    // Update the document with the new data
-    await updateDoc(docRef, {
-      ...vocabData,
-    });
-
+    await updateDoc(docRef, vocabData);
     console.log("Vocab updated successfully!");
   } catch (error) {
     console.error("Error updating vocab: ", error);
@@ -195,6 +218,11 @@ export const updateVocabularyEntry = async (
   }
 };
 
+/**
+ * Fetch a vocabulary entry by its ID.
+ * @param id - The ID of the vocabulary entry to fetch.
+ * @returns A promise resolving to the `VocabularyEntry` object.
+ */
 export const fetchVocabularyEntryById = async (
   id: string
 ): Promise<VocabularyEntry> => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
-import { fetchVocabularyEntryById } from "../../../services/sentence.service";
+import { fetchVocabularyEntryById } from "../../../services/vocuabulary.service";
 import Loader from "../../shared/loader";
 import VocabFormContainer from "../../sub-components/vocab/vocab-form-container";
 

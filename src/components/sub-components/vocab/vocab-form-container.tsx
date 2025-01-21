@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import * as Yup from "yup";
 import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
-import { createVocabularyEntry, updateVocabularyEntry } from "../../../services/sentence.service";
+import { createVocabularyEntry, updateVocabularyEntry } from "../../../services/vocuabulary.service";
 import VocabFormUI from "./vocab-form-ui";
 
 // Define the validation schema using Yup

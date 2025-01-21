@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { VocabularyEntry } from "../interfaces/vocab.interfaces";
-import { fetchAllVocabularyEntries } from "../services/sentence.service";
+import { fetchAllVocabularyEntries } from "../services/vocuabulary.service";
 
 const useFetchSentences = (isReviewed: boolean) => {
   const [sentences, setSentences] = useState<VocabularyEntry[]>([]);
