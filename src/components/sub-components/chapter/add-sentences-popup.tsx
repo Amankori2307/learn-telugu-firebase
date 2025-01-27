@@ -2,11 +2,11 @@ import React from "react";
 import useAddVocabulary from "../../../hooks/use-add-vocabulary";
 import useFetchOrphanVocabulary from "../../../hooks/use-fetch-orphan-vocabulary";
 import useSearch from "../../../hooks/use-search";
-import useSentenceSelection from "../../../hooks/use-sentence-selection";
+import useVocabularyEntrySelection from "../../../hooks/use-vocabulary-selection";
 import Loader from "../../shared/loader";
 import PopupFooter from "../../shared/popup/pop-up-footer";
 import SearchInput from "../../shared/search-input";
-import SentenceList2 from "./add-sentence/sentence-list2";
+import VocabList2 from "./add-vocab/vocab-list-2";
 
 interface AddSentencePopupProps {
     chapterId: string;
@@ -21,7 +21,7 @@ const AddSentencePopup: React.FC<AddSentencePopupProps> = ({
 }) => {
     const { vocabularyEntryList: sentences, loading: fetchLoading, error: fetchError } = useFetchOrphanVocabulary();
     const { searchTerm, setSearchTerm, filteredData } = useSearch(sentences);
-    const { selectedSentenceIds, handleSentenceSelection, selectAll, clearAll } = useSentenceSelection();
+    const { selectedVocabIds: selectedSentenceIds, handleVocabularySelection: handleSentenceSelection, selectAll, clearAll } = useVocabularyEntrySelection();
     const { submitLoading, submitError, handleSubmit } = useAddVocabulary(chapterId, onSentencesAdded);
 
     const onSubmit = async () => {
@@ -74,10 +74,10 @@ const AddSentencePopup: React.FC<AddSentencePopupProps> = ({
                         </div>
 
                         {/* Sentence List */}
-                        <SentenceList2
-                            sentences={filteredData}
-                            selectedSentenceIds={selectedSentenceIds}
-                            onSentenceSelection={handleSentenceSelection}
+                        <VocabList2
+                            vocabularyEntryList={filteredData}
+                            selectedVocabIds={selectedSentenceIds}
+                            onVocabularyEntrySelection={handleSentenceSelection}
                         />
 
                         {/* Popup Footer */}
