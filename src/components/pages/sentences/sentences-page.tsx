@@ -2,7 +2,7 @@ import useFetchVocabulary from "../../../hooks/use-fetch-sentences";
 import useSearch from "../../../hooks/use-search";
 import Loader from "../../shared/loader";
 import SearchInput from "../../shared/search-input";
-import VocabList from "../../sub-components/vocab/sentence-list";
+import VocabList from "../../sub-components/vocab/vocab-list";
 
 const VocabPage = () => {
   const { vocabularyEntries, loading, reloadVocabulary } = useFetchVocabulary(true);

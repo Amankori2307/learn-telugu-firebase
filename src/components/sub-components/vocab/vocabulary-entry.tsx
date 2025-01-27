@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
-import useRemoveSentenceFromChapter from "../../../hooks/chapter/use-remove-sentence-from-chapter";
-import useDeleteVocabularyEntry from "../../../hooks/vocab/use-delete-sentence";
-import useMarkVocabularyEntryReviewed from "../../../hooks/vocab/use-mark-sentence-reviewed";
+import useRemoveVocabularyEntryFromChapter from "../../../hooks/chapter/use-remove-vocabulary-entry-from-chapter";
+import useDeleteVocabularyEntry from "../../../hooks/vocab/use-delete-vocabulary-entry";
+import useMarkVocabularyEntryReviewed from "../../../hooks/vocab/use-mark-vocabulary-entry-reviewed";
 import { IVocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import vocabUtils from "../../../utils/vocab.utils";
-import VocabularyEntryUI from "./sentence-item-ui";
+import VocabularyEntryUI from "./vocabulary-entry-ui";
 
 
 interface VocabularyEntryProps {
@@ -29,7 +29,7 @@ const VocabularyEntry: React.FC<VocabularyEntryProps> = ({
     // Hooks for handling actions
     const { handleDeleteVocabularyEntry, loading: isLoadingDelete } = useDeleteVocabularyEntry();
     const { handleMarkAsReviewed, loading: isLoadingMarkAsReviewed } = useMarkVocabularyEntryReviewed();
-    const { handleRemoveSentence, loading: isLoadingRemoveSentenceFromChapter } = useRemoveSentenceFromChapter();
+    const { handleRemoveVocabularyEntry, loading: isLoadingRemoveVocabularyEntryFromChapter } = useRemoveVocabularyEntryFromChapter();
 
     // Handle edit action
     const handleEdit = () => {
@@ -53,10 +53,10 @@ const VocabularyEntry: React.FC<VocabularyEntryProps> = ({
         }
     };
 
-    // Handle remove sentence from chapter
-    const handleRemoveSentenceFromChapter = async () => {
+    // Handle remove vocabulary entry from chapter
+    const handleRemoveVocabularyEntryFromChapter = async () => {
         if (!chapterId) return;
-        const success = await handleRemoveSentence(chapterId, vocabularyEntry.id);
+        const success = await handleRemoveVocabularyEntry(chapterId, vocabularyEntry.id);
         if (success && onRemoveVocabularyEntry) {
             onRemoveVocabularyEntry(vocabularyEntry.id);
         }
@@ -71,8 +71,8 @@ const VocabularyEntry: React.FC<VocabularyEntryProps> = ({
             isLoadingMarkAsReviewed={isLoadingMarkAsReviewed}
             isLoadingDelete={isLoadingDelete}
             chapterId={chapterId}
-            onRemoveFromChapter={handleRemoveSentenceFromChapter}
-            isLoadingRemoveFromChapter={isLoadingRemoveSentenceFromChapter}
+            onRemoveFromChapter={handleRemoveVocabularyEntryFromChapter}
+            isLoadingRemoveFromChapter={isLoadingRemoveVocabularyEntryFromChapter}
         />
     );
 };

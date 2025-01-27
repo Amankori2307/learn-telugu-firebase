@@ -103,7 +103,7 @@ export const fetchChapters = async (): Promise<IChapter[]> => {
   }
 };
 
-export const removeSentenceFromChapter = async (
+export const removeVocabularyEntryFromChapter = async (
   chapterId: string,
   sentenceId: string
 ): Promise<void> => {

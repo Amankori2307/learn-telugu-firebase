@@ -1,7 +1,7 @@
 import React from "react";
 import { IVocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import Loader from "../../shared/loader";
-import VocabList from "../../sub-components/vocab/sentence-list";
+import VocabList from "../vocab/vocab-list";
 
 interface ChapterContentProps {
   sentences: IVocabularyEntry[];
