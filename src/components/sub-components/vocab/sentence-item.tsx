@@ -1,70 +1,70 @@
 import { useNavigate } from "react-router-dom";
 import useRemoveSentenceFromChapter from "../../../hooks/chapter/use-remove-sentence-from-chapter";
-import useDeleteSentence from "../../../hooks/vocab/use-delete-sentence";
-import useMarkSentenceReviewed from "../../../hooks/vocab/use-mark-sentence-reviewed";
-import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
+import useDeleteVocabularyEntry from "../../../hooks/vocab/use-delete-sentence";
+import useMarkVocabularyEntryReviewed from "../../../hooks/vocab/use-mark-sentence-reviewed";
+import { IVocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import vocabUtils from "../../../utils/vocab.utils";
-import SentenceItemUI from "./sentence-item-ui";
+import VocabularyEntryUI from "./sentence-item-ui";
 
 
-interface SentenceItemProps {
-    sentence: VocabularyEntry;
+interface VocabularyEntryProps {
+    vocabularyEntry: IVocabularyEntry;
     onMarkAsReviewed?: (id: string) => void;
     onDelete?: (id: string) => void;
     onEdit?: (id: string) => void;
-    onRemoveSentence?: (id: string) => void;
+    onRemoveVocabularyEntry?: (id: string) => void;
     chapterId?: string;
 }
 
-const SentenceItem: React.FC<SentenceItemProps> = ({
-    sentence,
+const VocabularyEntry: React.FC<VocabularyEntryProps> = ({
+    vocabularyEntry,
     onMarkAsReviewed,
     onDelete,
     onEdit,
-    onRemoveSentence,
+    onRemoveVocabularyEntry,
     chapterId
 }) => {
     const navigate = useNavigate();
 
     // Hooks for handling actions
-    const { handleDeleteSentence, loading: isLoadingDelete } = useDeleteSentence();
-    const { handleMarkAsReviewed, loading: isLoadingMarkAsReviewed } = useMarkSentenceReviewed();
+    const { handleDeleteVocabularyEntry, loading: isLoadingDelete } = useDeleteVocabularyEntry();
+    const { handleMarkAsReviewed, loading: isLoadingMarkAsReviewed } = useMarkVocabularyEntryReviewed();
     const { handleRemoveSentence, loading: isLoadingRemoveSentenceFromChapter } = useRemoveSentenceFromChapter();
 
     // Handle edit action
     const handleEdit = () => {
-        navigate(vocabUtils.getEditPageUrl(sentence.id));
-        if (onEdit) onEdit(sentence.id);
+        navigate(vocabUtils.getEditPageUrl(vocabularyEntry.id));
+        if (onEdit) onEdit(vocabularyEntry.id);
     };
 
     // Handle mark as reviewed action
     const handleMarkReviewed = async () => {
-        const success = await handleMarkAsReviewed(sentence.id);
+        const success = await handleMarkAsReviewed(vocabularyEntry.id);
         if (success && onMarkAsReviewed) {
-            onMarkAsReviewed(sentence.id);
+            onMarkAsReviewed(vocabularyEntry.id);
         }
     };
 
     // Handle delete action
     const handleDelete = async () => {
-        const success = await handleDeleteSentence(sentence.id);
+        const success = await handleDeleteVocabularyEntry(vocabularyEntry.id);
         if (success && onDelete) {
-            onDelete(sentence.id);
+            onDelete(vocabularyEntry.id);
         }
     };
 
     // Handle remove sentence from chapter
     const handleRemoveSentenceFromChapter = async () => {
         if (!chapterId) return;
-        const success = await handleRemoveSentence(chapterId, sentence.id);
-        if (success && onRemoveSentence) {
-            onRemoveSentence(sentence.id);
+        const success = await handleRemoveSentence(chapterId, vocabularyEntry.id);
+        if (success && onRemoveVocabularyEntry) {
+            onRemoveVocabularyEntry(vocabularyEntry.id);
         }
     }
 
     return (
-        <SentenceItemUI
-            sentence={sentence}
+        <VocabularyEntryUI
+            vocabularyEntry={vocabularyEntry}
             onEdit={handleEdit}
             onMarkAsReviewed={handleMarkReviewed}
             onDelete={handleDelete}
@@ -77,4 +77,4 @@ const SentenceItem: React.FC<SentenceItemProps> = ({
     );
 };
 
-export default SentenceItem;
+export default VocabularyEntry;

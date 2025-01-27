@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { VocabularyEntry } from "../interfaces/vocab.interfaces";
+import { IVocabularyEntry } from "../interfaces/vocab.interfaces";
 import { fetchAllVocabularyEntries } from "../services/vocabulary.service";
 
 const useFetchVocabulary = (isReviewed: boolean) => {
-  const [vocabularyEntries, setVocabularyEntries] = useState<VocabularyEntry[]>([]);
+  const [vocabularyEntries, setVocabularyEntries] = useState<IVocabularyEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 

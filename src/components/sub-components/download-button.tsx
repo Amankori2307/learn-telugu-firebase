@@ -1,9 +1,9 @@
 // src/components/DownloadButton.tsx
 import { saveAs } from "file-saver";
-import { VocabularyEntry } from "../../interfaces/vocab.interfaces";
+import { IVocabularyEntry } from "../../interfaces/vocab.interfaces";
 
 interface DownloadButtonProps {
-    data: Array<VocabularyEntry>; // The data to be downloaded
+    data: Array<IVocabularyEntry>; // The data to be downloaded
     fileName?: string; // Optional: Custom file name
 }
 

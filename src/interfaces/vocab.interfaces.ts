@@ -1,9 +1,9 @@
-export enum VocabularyType {
+export enum VocabularyTypeEnum {
   Sentence = "sentence",
   Word = "word",
 }
 
-export interface BaseVocabularyEntry {
+export interface IBaseVocabularyEntry {
   pronunciation: string;
   meaning: string;
   text: string;
@@ -12,7 +12,7 @@ export interface BaseVocabularyEntry {
   isReviewed?: boolean;
   meta?: string;
 }
-export interface VocabularyEntry extends BaseVocabularyEntry {
+export interface IVocabularyEntry extends IBaseVocabularyEntry {
   textLowercase: string;
   id: string;
 }

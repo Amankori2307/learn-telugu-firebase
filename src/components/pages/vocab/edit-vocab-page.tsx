@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
+import { IVocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import { fetchVocabularyEntryById } from "../../../services/vocabulary.service";
 import Loader from "../../shared/loader";
 import VocabFormContainer from "../../sub-components/vocab/vocab-form-container";
@@ -9,7 +9,7 @@ import VocabFormContainer from "../../sub-components/vocab/vocab-form-container"
 const EditVocabPage: React.FC = () => {
     const { id } = useParams<{ id: string }>(); // Get the ID from the URL
     const navigate = useNavigate();
-    const [sentence, setSentence] = useState<VocabularyEntry | null>(null);
+    const [sentence, setSentence] = useState<IVocabularyEntry | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 

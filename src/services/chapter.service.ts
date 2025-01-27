@@ -33,7 +33,7 @@ export const createChapter = async (name: string): Promise<string> => {
     const chapterRef = await addDoc(chaptersRef, {
       name, // Store the original name
       nameLowercase: lowercaseName, // Store the lowercase version for uniqueness checks
-      sentenceIds: [], // Start with an empty list of sentences
+      sentenceIds: [], // Start with an empty list of 
     });
 
     console.log("Chapter created with ID: ", chapterRef.id);
@@ -44,7 +44,7 @@ export const createChapter = async (name: string): Promise<string> => {
   }
 };
 
-export const addSentenceToChapter = async (
+export const addVocabularyEntryToChapter = async (
   chapterId: string,
   sentenceId: string
 ): Promise<void> => {

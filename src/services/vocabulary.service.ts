@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 import { CollectionEnum } from "../enums/db.enums";
 import { IChapter } from "../interfaces/chapter.interfaces";
-import { VocabularyEntry } from "../interfaces/vocab.interfaces";
+import { IVocabularyEntry } from "../interfaces/vocab.interfaces";
 import { db } from "./firebase";
 
 /**
@@ -21,7 +21,7 @@ import { db } from "./firebase";
  */
 export const fetchAllVocabularyEntries = async (
   isReviewed = true
-): Promise<VocabularyEntry[]> => {
+): Promise<IVocabularyEntry[]> => {
   try {
     const q = query(
       collection(db, CollectionEnum.Vocab),
@@ -29,10 +29,10 @@ export const fetchAllVocabularyEntries = async (
     );
 
     const querySnapshot = await getDocs(q);
-    const vocabularyData: VocabularyEntry[] = [];
+    const vocabularyData: IVocabularyEntry[] = [];
 
     querySnapshot.forEach((doc) => {
-      vocabularyData.push({ id: doc.id, ...doc.data() } as VocabularyEntry);
+      vocabularyData.push({ id: doc.id, ...doc.data() } as IVocabularyEntry);
     });
 
     return vocabularyData;
@@ -48,7 +48,7 @@ export const fetchAllVocabularyEntries = async (
  * @returns A promise resolving to the ID of the newly created document.
  */
 export const createVocabularyEntry = async (
-  vocabData: Omit<VocabularyEntry, "id">
+  vocabData: Omit<IVocabularyEntry, "id">
 ): Promise<string> => {
   try {
     const vocabularyEntryRef = collection(db, CollectionEnum.Vocab);
@@ -118,7 +118,7 @@ export const deleteVocabularyEntry = async (id: string): Promise<void> => {
  */
 export const fetchVocabularyEntriesByChapter = async (
   chapterId: string
-): Promise<VocabularyEntry[]> => {
+): Promise<IVocabularyEntry[]> => {
   try {
     const chapterRef = doc(db, CollectionEnum.Chapter, chapterId);
     const chapterDoc = await getDoc(chapterRef);
@@ -130,7 +130,7 @@ export const fetchVocabularyEntriesByChapter = async (
     const chapterData = chapterDoc.data() as IChapter;
     const vocabularyEntryIds = chapterData.sentenceIds || [];
 
-    const vocabularyEntries: VocabularyEntry[] = [];
+    const vocabularyEntries: IVocabularyEntry[] = [];
     for (const vocabularyEntryId of vocabularyEntryIds) {
       const vocabularyEntryRef = doc(
         db,
@@ -143,7 +143,7 @@ export const fetchVocabularyEntriesByChapter = async (
         vocabularyEntries.push({
           id: vocabularyEntryDoc.id,
           ...vocabularyEntryDoc.data(),
-        } as VocabularyEntry);
+        } as IVocabularyEntry);
       }
     }
 
@@ -159,7 +159,7 @@ export const fetchVocabularyEntriesByChapter = async (
  * @returns A promise resolving to an array of `VocabularyEntry` objects.
  */
 export const fetchOrphanedVocabularyEntries = async (): Promise<
-  VocabularyEntry[]
+  IVocabularyEntry[]
 > => {
   try {
     const vocabularyEntryRef = collection(db, CollectionEnum.Vocab);
@@ -182,13 +182,13 @@ export const fetchOrphanedVocabularyEntries = async (): Promise<
       }
     });
 
-    const orphanVocabularyEntries: VocabularyEntry[] = [];
+    const orphanVocabularyEntries: IVocabularyEntry[] = [];
     vocabularyEntrySnapshot.forEach((vocabularyEntryDoc) => {
       if (!vocabularyEntryIdsInChapters.has(vocabularyEntryDoc.id)) {
         orphanVocabularyEntries.push({
           id: vocabularyEntryDoc.id,
           ...vocabularyEntryDoc.data(),
-        } as VocabularyEntry);
+        } as IVocabularyEntry);
       }
     });
 
@@ -206,7 +206,7 @@ export const fetchOrphanedVocabularyEntries = async (): Promise<
  */
 export const updateVocabularyEntry = async (
   docId: string,
-  vocabData: Partial<VocabularyEntry>
+  vocabData: Partial<IVocabularyEntry>
 ): Promise<void> => {
   try {
     const docRef = doc(db, CollectionEnum.Vocab, docId);
@@ -225,7 +225,7 @@ export const updateVocabularyEntry = async (
  */
 export const fetchVocabularyEntryById = async (
   id: string
-): Promise<VocabularyEntry> => {
+): Promise<IVocabularyEntry> => {
   try {
     const docRef = doc(db, CollectionEnum.Vocab, id);
     const docSnap = await getDoc(docRef);
@@ -234,7 +234,7 @@ export const fetchVocabularyEntryById = async (
       throw new Error("Vocabulary Entry not found");
     }
 
-    return { id: docSnap.id, ...docSnap.data() } as VocabularyEntry;
+    return { id: docSnap.id, ...docSnap.data() } as IVocabularyEntry;
   } catch (error) {
     console.error("Error fetching vocabulary entry: ", error);
     throw error;

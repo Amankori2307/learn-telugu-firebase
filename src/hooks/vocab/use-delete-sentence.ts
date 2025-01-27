@@ -1,27 +1,27 @@
 import { useState } from "react";
 import { deleteVocabularyEntry } from "../../services/vocabulary.service";
 
-const useDeleteSentence = () => {
+const useDeleteVocabularyEntry = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleDeleteSentence = async (id: string) => {
+  const handleDeleteVocabularyEntry = async (id: string) => {
     try {
       setLoading(true);
       await deleteVocabularyEntry(id);
-      alert("Sentence deleted!");
+      alert("Vocabulary entry deleted!");
       return true; // Indicate success
     } catch (error) {
-      console.error("Failed to delete sentence: ", error);
-      setError("Failed to delete sentence. Please try again.");
-      alert("Failed to delete sentence. Please try again.");
+      console.error("Failed to delete vocabulary entry: ", error);
+      setError("Failed to delete vocabulary entry. Please try again.");
+      alert("Failed to delete vocabulary entry. Please try again.");
       return false; // Indicate failure
     } finally {
       setLoading(false);
     }
   };
 
-  return { handleDeleteSentence, loading, error };
+  return { handleDeleteVocabularyEntry, loading, error };
 };
 
-export default useDeleteSentence;
+export default useDeleteVocabularyEntry;

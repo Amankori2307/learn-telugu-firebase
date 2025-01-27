@@ -1,9 +1,8 @@
 import React from "react";
-import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
-import SentenceItem from "./sentence-item";
+import { IVocabularyEntry } from "../../../interfaces/vocab.interfaces";
 
-interface SentenceListProps {
-    sentences: VocabularyEntry[];
+interface VocabListProps {
+    sentences: IVocabularyEntry[];
     onMarkAsReviewed?: (id: string) => void;
     onDelete?: (id: string) => void;
     onRemoveSentence?: (id: string) => void;
@@ -11,7 +10,7 @@ interface SentenceListProps {
     chapterId?: string;
 }
 
-const SentenceList: React.FC<SentenceListProps> = ({
+const VocabList: React.FC<VocabListProps> = ({
     sentences,
     onMarkAsReviewed,
     onRemoveSentence,
@@ -28,7 +27,7 @@ const SentenceList: React.FC<SentenceListProps> = ({
             {/* Responsive widths with max-width for sm breakpoint */}
             <ul className="space-y-4">
                 {sentences.map((sentence) => (
-                    <SentenceItem
+                    <VocabularyEntry
                         key={sentence.id}
                         sentence={sentence}
                         onMarkAsReviewed={onMarkAsReviewed}
@@ -43,4 +42,4 @@ const SentenceList: React.FC<SentenceListProps> = ({
     );
 };
 
-export default SentenceList;
+export default VocabList;

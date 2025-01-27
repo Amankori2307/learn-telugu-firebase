@@ -2,7 +2,7 @@ import useFetchVocabulary from "../../../hooks/use-fetch-sentences";
 import useSearch from "../../../hooks/use-search";
 import Loader from "../../shared/loader";
 import SearchInput from "../../shared/search-input";
-import SentenceList from "../../sub-components/vocab/sentence-list";
+import VocabList from "../../sub-components/vocab/sentence-list";
 
 const ReviewVocabPage = () => {
   const { vocabularyEntries: sentences, loading, reloadVocabulary: reloadSentences } = useFetchVocabulary(false);
@@ -23,7 +23,7 @@ const ReviewVocabPage = () => {
       {loading ? (
         <Loader />
       ) : (
-        <SentenceList
+        <VocabList
           sentences={filteredData}
           onDelete={reloadSentences}
           onMarkAsReviewed={reloadSentences}

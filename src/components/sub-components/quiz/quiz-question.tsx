@@ -1,13 +1,13 @@
 // components/QuizQuestion.tsx
 
-import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
+import { IVocabularyEntry } from "../../../interfaces/vocab.interfaces";
 
 interface QuizQuestionProps {
-  sentence: VocabularyEntry;
+  sentence: IVocabularyEntry;
   isMeaningQuestion: boolean;
-  options: VocabularyEntry[];
-  selectedOption: VocabularyEntry | null;
-  handleOptionClick: (option: VocabularyEntry) => void;
+  options: IVocabularyEntry[];
+  selectedOption: IVocabularyEntry | null;
+  handleOptionClick: (option: IVocabularyEntry) => void;
 }
 
 const QuizQuestion: React.FC<QuizQuestionProps> = ({
@@ -18,18 +18,18 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   handleOptionClick,
 }) => {
   // Format the sentence text and pronunciation
-  const formattedQuestion = (value: VocabularyEntry) => {
+  const formattedQuestion = (value: IVocabularyEntry) => {
     return `${value.text} (${value.pronunciation})`;
   };
 
   // Get the display value for the question or option
-  const getDisplayValue = (value: VocabularyEntry, isOption: boolean) => {
+  const getDisplayValue = (value: IVocabularyEntry, isOption: boolean) => {
     if (isOption) return isMeaningQuestion ? value.meaning : formattedQuestion(value);
     else return isMeaningQuestion ? formattedQuestion(value) : value.meaning;
   };
 
   // Get the style for a specific option
-  const getStyle = (option: VocabularyEntry) => {
+  const getStyle = (option: IVocabularyEntry) => {
     if (!selectedOption) return "bg-blue-500 hover:bg-blue-700";
     const currentValue = isMeaningQuestion ? option.meaning : option.text;
     const selectedValue = isMeaningQuestion ? selectedOption.meaning : selectedOption.text;

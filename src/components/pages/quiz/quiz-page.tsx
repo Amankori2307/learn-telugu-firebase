@@ -1,15 +1,15 @@
 // components/Quiz.tsx
 import { useEffect, useState } from "react";
-import { VocabularyEntry } from "../../../interfaces/vocab.interfaces";
+import { IVocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import { fetchAllVocabularyEntries } from "../../../services/vocabulary.service";
 import QuizQuestion from "../../sub-components/quiz/quiz-question";
 import QuizResult from "../../sub-components/quiz/quiz-result";
 
 const QuizPage: React.FC = () => {
-  const [sentences, setSentences] = useState<VocabularyEntry[]>([]);
-  const [currentSentence, setCurrentSentence] = useState<VocabularyEntry | null>(null);
-  const [options, setOptions] = useState<VocabularyEntry[]>([]);
-  const [selectedOption, setSelectedOption] = useState<VocabularyEntry | null>(null);
+  const [sentences, setSentences] = useState<IVocabularyEntry[]>([]);
+  const [currentSentence, setCurrentSentence] = useState<IVocabularyEntry | null>(null);
+  const [options, setOptions] = useState<IVocabularyEntry[]>([]);
+  const [selectedOption, setSelectedOption] = useState<IVocabularyEntry | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showExamples, setShowExamples] = useState<boolean>(false);
   const [isMeaningQuestion, setIsMeaningQuestion] = useState<boolean>(false);
@@ -23,13 +23,13 @@ const QuizPage: React.FC = () => {
     loadSentences();
   }, []);
 
-  const checkIsCorrect = (option: VocabularyEntry) => {
+  const checkIsCorrect = (option: IVocabularyEntry) => {
     if (!currentSentence) return null;
     if (isMeaningQuestion) return currentSentence.meaning === option.meaning;
     else return currentSentence.text === option.text;
   }
 
-  const loadRandomQuestion = (sentencesData: VocabularyEntry[]) => {
+  const loadRandomQuestion = (sentencesData: IVocabularyEntry[]) => {
     const randomIndex = Math.floor(Math.random() * sentencesData.length);
     const randomSentence = sentencesData[randomIndex];
 
@@ -52,7 +52,7 @@ const QuizPage: React.FC = () => {
     setShowExamples(false);
   };
 
-  const handleOptionClick = (option: VocabularyEntry) => {
+  const handleOptionClick = (option: IVocabularyEntry) => {
     setSelectedOption(option);
     setIsCorrect(checkIsCorrect(option));
     setShowExamples(true);

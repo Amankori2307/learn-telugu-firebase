@@ -1,11 +1,11 @@
 import {
-  BaseVocabularyEntry,
-  VocabularyType,
+  IBaseVocabularyEntry,
+  VocabularyTypeEnum,
 } from "../interfaces/vocab.interfaces";
 
-const data: Array<BaseVocabularyEntry> = [
+const data: Array<IBaseVocabularyEntry> = [
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Em tinnav?",
     meaning: "What did you eat?",
     pronunciation: "em tee-nahv",
@@ -18,7 +18,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Nuvvu",
     meaning: "You",
     pronunciation: "noo-voo",
@@ -31,7 +31,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Meeru",
     meaning: "You (respectful, to address elders and all)",
     pronunciation: "mee-roo",
@@ -45,7 +45,7 @@ const data: Array<BaseVocabularyEntry> = [
   },
 
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Nenu",
     meaning: "Me/I",
     pronunciation: "neh-noo",
@@ -58,7 +58,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Neeku",
     meaning: "For you",
     pronunciation: "nee-koo",
@@ -71,7 +71,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Neeku enduku?",
     meaning: "Why for you?",
     pronunciation: "nee-koo en-doo-koo",
@@ -84,7 +84,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Naaku",
     meaning: "For me (for myself)",
     pronunciation: "naa-koo",
@@ -97,7 +97,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Kavali",
     meaning: "Want",
     pronunciation: "kaa-va-lee",
@@ -110,7 +110,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Naaku kavali",
     meaning: "I want",
     pronunciation: "naa-koo kaa-va-lee",
@@ -123,7 +123,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Kavala?",
     meaning: "Do you want?",
     pronunciation: "kaa-va-laa",
@@ -136,7 +136,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Oddhu",
     meaning: "No (to deny something you don’t want)",
     pronunciation: "odd-doo",
@@ -149,7 +149,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Cheppanu",
     meaning: "I did not say",
     pronunciation: "chep-pa-noo",
@@ -162,7 +162,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Naaku oddhu",
     meaning: "I don’t want",
     pronunciation: "naa-koo odd-doo",
@@ -175,7 +175,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Nachindha?",
     meaning: "Do you like it?",
     pronunciation: "naa-chin-dhaa",
@@ -188,7 +188,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Nachaledhu",
     meaning: "I don’t like it",
     pronunciation: "naa-cha-lay-dhoo",
@@ -201,7 +201,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Istam",
     meaning: "Like (used to express liking something)",
     pronunciation: "is-tam",
@@ -214,7 +214,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Idhi",
     meaning: "This one",
     pronunciation: "i-dhee",
@@ -228,7 +228,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Adhi",
     meaning: "That one",
     pronunciation: "a-dhee",
@@ -242,7 +242,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Mari?",
     meaning: "Then what?",
     pronunciation: "maa-ree",
@@ -255,7 +255,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Padukuntunna",
     meaning: "About to sleep",
     pronunciation: "pa-doo-koont-too-na",
@@ -268,7 +268,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Inka / inkenti",
     meaning: 'What else? (Like "aur kya?" in Hindi)',
     pronunciation: "in-kaa / in-ken-tee",
@@ -281,7 +281,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Matladali",
     meaning: "Should talk",
     pronunciation: "maat-la-daa-lee",
@@ -294,7 +294,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Ikkada",
     meaning: "Here",
     pronunciation: "ik-ka-da",
@@ -307,7 +307,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Akkada",
     meaning: "There",
     pronunciation: "ak-ka-da",
@@ -320,7 +320,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Ela",
     meaning: "How",
     pronunciation: "e-laa",
@@ -333,7 +333,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Enduku?",
     meaning: "Why?",
     pronunciation: "en-doo-koo",
@@ -346,7 +346,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Ekkada",
     meaning: "Where?",
     pronunciation: "ek-ka-da",
@@ -359,7 +359,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Entidhi/Enti",
     meaning: "What?",
     pronunciation: "en-ti-dhi / en-tee",
@@ -372,7 +372,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Evaru",
     meaning: "Who?",
     pronunciation: "e-va-roo",
@@ -385,7 +385,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Andaru",
     meaning: "Everyone (all the members there)",
     pronunciation: "an-da-roo",
@@ -398,7 +398,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Cheppu",
     meaning: "Tell",
     pronunciation: "chep-poo",
@@ -411,7 +411,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Cheppala?",
     meaning: "Should I say?",
     pronunciation: "chep-paa-laa",
@@ -424,7 +424,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Chepthunnava?",
     meaning: "Are you saying?",
     pronunciation: "chep-thoo-na-vaa",
@@ -437,7 +437,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Chepthunnava ledha?",
     meaning: "Are you gonna say or not?",
     pronunciation: "chep-thoo-na-vaa lay-dhaa",
@@ -450,7 +450,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Cheppindhi",
     meaning: "She told",
     pronunciation: "chep-pin-dhi",
@@ -463,7 +463,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Cheppadu",
     meaning: "He told",
     pronunciation: "chep-paa-doo",
@@ -476,14 +476,14 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Chepparu",
     meaning: "They told",
     pronunciation: "chep-paa-roo",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Cheppaledhu",
     meaning: "Didn’t tell",
     pronunciation: "chep-paa-lay-dhoo",
@@ -496,7 +496,7 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Vellipoyanu",
     meaning: "I left",
     pronunciation: "vell-ee-poy-ya-noo",
@@ -509,35 +509,35 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Unnava?",
     meaning: "Are you there?",
     pronunciation: "oon-naa-va",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Ela unnava?",
     meaning: "How are you?",
     pronunciation: "e-laa oon-naa-va",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Baagunna",
     meaning: "I’m good",
     pronunciation: "baa-goo-na",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Baalenu",
     meaning: "I’m not good",
     pronunciation: "baa-lay-noo",
     examples: [],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Eppudu",
     meaning: "When",
     pronunciation: "ep-poo-doo",
@@ -550,98 +550,98 @@ const data: Array<BaseVocabularyEntry> = [
     ],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Tinnava?",
     meaning: "Did you eat?",
     pronunciation: "tin-naa-va",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Tinnara?",
     meaning: "Did you eat? (More formal, especially when addressing elders)",
     pronunciation: "tin-na-raa",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Ekkada unnava?",
     meaning: "Where are you?",
     pronunciation: "ek-ka-da oon-naa-va",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Osthunnava?",
     meaning: "Are you coming?",
     pronunciation: "os-thoo-na-vaa",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Tindhama?",
     meaning: "Shall we eat?",
     pronunciation: "tin-dha-maa",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Padukunnava?",
     meaning: "Did you sleep?",
     pronunciation: "pa-doo-koon-naa-va",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Paduko",
     meaning: "Sleep now",
     pronunciation: "pa-doo-ko",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Thaagava?",
     meaning: "Did you drink?",
     pronunciation: "thaa-gaa-va",
     examples: [],
   },
   {
-    type: VocabularyType.Word,
+    type: VocabularyTypeEnum.Word,
     text: "Neellu",
     meaning: "Water",
     pronunciation: "neel-loo",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Neellu thaagu",
     meaning: "Drink water",
     pronunciation: "neel-loo thaa-goo",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Velthunna",
     meaning: "I am leaving",
     pronunciation: "wel-thoo-na",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Vellava?",
     meaning: "Did you leave?",
     pronunciation: "wel-laa-va",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Vellocha?",
     meaning: "Can I leave?",
     pronunciation: "wel-lo-cha",
     examples: [],
   },
   {
-    type: VocabularyType.Sentence,
+    type: VocabularyTypeEnum.Sentence,
     text: "Vellesi ocha",
     meaning: "I went and came",
     pronunciation: "wel-le-see o-cha",

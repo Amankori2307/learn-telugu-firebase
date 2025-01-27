@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addSentenceToChapter } from "../services/chapter.service";
+import { addVocabularyEntryToChapter } from "../services/chapter.service";
 
 const useAddSentences = (
   chapterId: string,
@@ -21,7 +21,7 @@ const useAddSentences = (
       // Add selected sentences to the chapter
       await Promise.all(
         selectedSentenceIds.map((sentenceId) =>
-          addSentenceToChapter(chapterId, sentenceId)
+          addVocabularyEntryToChapter(chapterId, sentenceId)
         )
       );
 
