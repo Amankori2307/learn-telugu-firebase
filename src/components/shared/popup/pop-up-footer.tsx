@@ -26,7 +26,7 @@ const PopupFooter: React.FC<PopupFooterProps> = ({
         disabled={loading}
         className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:bg-blue-300"
       >
-        {loading ? "Adding..." : "Add Sentences"}
+        {loading ? "Adding..." : "Add Vocabulary"}
       </button>
     </div>
   );
