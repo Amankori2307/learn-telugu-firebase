@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import useChapterDetails from "../../../hooks/use-chapter-details";
-import AddVocabularyPopup from "../../sub-components/chapter/add-sentences-popup";
+import AddVocabularyPopup from "../../sub-components/chapter/add-vocabulary-popup";
 import ChapterContent from "../../sub-components/chapter/chapter-content";
 import ChapterHeader from "../../sub-components/chapter/chapter-header";
 
 const ChapterDetailsPage = () => {
     const { chapterId } = useParams<{ chapterId: string }>();
-    const { chapter, sentences, loading, reloadChapter } = useChapterDetails(chapterId);
-    const [showAddSentencePopup, setShowAddSentencePopup] = useState(false);
+    const { chapter, vocabularyEntryList, loading, reloadChapter } = useChapterDetails(chapterId);
+    const [showAddVocabPopup, setShowAddVocabPopup] = useState(false);
 
     const togglePopup = () => {
-        setShowAddSentencePopup(!showAddSentencePopup);
+        setShowAddVocabPopup(!showAddVocabPopup);
     };
 
     return (
@@ -21,17 +21,17 @@ const ChapterDetailsPage = () => {
                 {chapter && (
                     <ChapterHeader
                         chapter={chapter}
-                        onAddSentences={togglePopup}
+                        onAddVocab={togglePopup}
                         isLoading={loading}
                     />
                 )}
 
                 {/* Chapter Content */}
-                <ChapterContent sentences={sentences} isLoading={loading} chapterId={chapterId as string} onRemoveSentence={reloadChapter} />
+                <ChapterContent vocabularyEntryList={vocabularyEntryList} isLoading={loading} chapterId={chapterId as string} onRemoveVocabulary={reloadChapter} />
             </div>
 
             {/* Add Sentence Popup */}
-            {chapterId && showAddSentencePopup && (
+            {chapterId && showAddVocabPopup && (
                 <AddVocabularyPopup
                     chapterId={chapterId}
                     onClose={togglePopup}

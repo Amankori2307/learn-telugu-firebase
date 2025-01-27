@@ -6,7 +6,7 @@ import { fetchVocabularyEntriesByChapter } from "../services/vocabulary.service"
 
 const useChapterDetails = (chapterId: string | undefined) => {
   const [chapter, setChapter] = useState<IChapter | null>(null);
-  const [sentences, setSentences] = useState<IVocabularyEntry[]>([]);
+  const [vocabularyEntryList, setVocabularyEntryList] = useState<IVocabularyEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const loadData = useCallback(async () => {
@@ -18,9 +18,9 @@ const useChapterDetails = (chapterId: string | undefined) => {
         const chapterData = await fetchChapterDetails(chapterId);
         setChapter(chapterData);
 
-        // Fetch sentences in the chapter
-        const sentencesData = await fetchVocabularyEntriesByChapter(chapterId);
-        setSentences(sentencesData);
+        // Fetch vocabulary in the chapter
+        const vocabularyData = await fetchVocabularyEntriesByChapter(chapterId);
+        setVocabularyEntryList(vocabularyData);
       } catch (error) {
         console.error("Failed to fetch data: ", error);
       } finally {
@@ -39,7 +39,7 @@ const useChapterDetails = (chapterId: string | undefined) => {
     await loadData();
   };
 
-  return { chapter, sentences, loading, reloadChapter };
+  return { chapter, vocabularyEntryList, loading, reloadChapter };
 };
 
 export default useChapterDetails;
