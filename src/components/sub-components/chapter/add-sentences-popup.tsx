@@ -1,6 +1,6 @@
 import React from "react";
-import useAddSentences from "../../../hooks/use-add-sentence";
-import useFetchOrphanSentences from "../../../hooks/use-fetch-orphan-sentences";
+import useAddVocabulary from "../../../hooks/use-add-vocabulary";
+import useFetchOrphanVocabulary from "../../../hooks/use-fetch-orphan-vocabulary";
 import useSearch from "../../../hooks/use-search";
 import useSentenceSelection from "../../../hooks/use-sentence-selection";
 import Loader from "../../shared/loader";
@@ -19,10 +19,10 @@ const AddSentencePopup: React.FC<AddSentencePopupProps> = ({
     onClose,
     onSentencesAdded,
 }) => {
-    const { sentences, loading: fetchLoading, error: fetchError } = useFetchOrphanSentences();
+    const { vocabularyEntryList: sentences, loading: fetchLoading, error: fetchError } = useFetchOrphanVocabulary();
     const { searchTerm, setSearchTerm, filteredData } = useSearch(sentences);
     const { selectedSentenceIds, handleSentenceSelection, selectAll, clearAll } = useSentenceSelection();
-    const { submitLoading, submitError, handleSubmit } = useAddSentences(chapterId, onSentencesAdded);
+    const { submitLoading, submitError, handleSubmit } = useAddVocabulary(chapterId, onSentencesAdded);
 
     const onSubmit = async () => {
         await handleSubmit(selectedSentenceIds);
