@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import useChapterDetails from "../../../hooks/use-chapter-details";
-import AddSentencePopup from "../../sub-components/chapter/add-sentences-popup";
+import AddVocabularyPopup from "../../sub-components/chapter/add-sentences-popup";
 import ChapterContent from "../../sub-components/chapter/chapter-content";
 import ChapterHeader from "../../sub-components/chapter/chapter-header";
 
@@ -32,10 +32,10 @@ const ChapterDetailsPage = () => {
 
             {/* Add Sentence Popup */}
             {chapterId && showAddSentencePopup && (
-                <AddSentencePopup
+                <AddVocabularyPopup
                     chapterId={chapterId}
                     onClose={togglePopup}
-                    onSentencesAdded={() => window.location.reload()} // Reload to reflect changes
+                    onVocabularyAdded={() => window.location.reload()} // Reload to reflect changes
 
                 />
             )}
