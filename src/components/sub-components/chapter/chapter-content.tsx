@@ -19,7 +19,7 @@ const ChapterContent: React.FC<ChapterContentProps> = ({ sentences, isLoading, c
     return <p className="text-gray-500">No sentences found in this chapter.</p>;
   }
 
-  return <VocabList sentences={sentences} chapterId={chapterId} onRemoveSentence={onRemoveSentence} />;
+  return <VocabList vocabularyEntryList={sentences} chapterId={chapterId} onRemoveVocabularyEntry={onRemoveSentence} />;
 };
 
 export default ChapterContent;

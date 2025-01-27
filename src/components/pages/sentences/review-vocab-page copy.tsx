@@ -24,7 +24,7 @@ const ReviewVocabPage = () => {
         <Loader />
       ) : (
         <VocabList
-          sentences={filteredData}
+          vocabularyEntryList={filteredData}
           onDelete={reloadSentences}
           onMarkAsReviewed={reloadSentences}
         />
