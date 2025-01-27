@@ -1,16 +1,16 @@
-import useFetchVocabulary from "../../../hooks/use-fetch-sentences";
+import useFetchVocabulary from "../../../hooks/use-fetch-vocabulary";
 import useSearch from "../../../hooks/use-search";
 import Loader from "../../shared/loader";
 import SearchInput from "../../shared/search-input";
 import VocabList from "../../sub-components/vocab/vocab-list";
 
-const ReviewVocabPage = () => {
-  const { vocabularyEntries: sentences, loading, reloadVocabulary: reloadSentences } = useFetchVocabulary(false);
-  const { searchTerm, setSearchTerm, filteredData } = useSearch(sentences);
+const VocabPage = () => {
+  const { vocabularyEntries, loading, reloadVocabulary } = useFetchVocabulary(true);
+  const { searchTerm, setSearchTerm, filteredData } = useSearch(vocabularyEntries);
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">
-        Un-reviewed Sentences ({filteredData.length}/{sentences.length})
+        Reviewed Vocabulary ({filteredData.length}/{vocabularyEntries.length})
       </h1>
       {/* Search Input */}
       <div className="mb-4">
@@ -25,12 +25,12 @@ const ReviewVocabPage = () => {
       ) : (
         <VocabList
           vocabularyEntryList={filteredData}
-          onDelete={reloadSentences}
-          onMarkAsReviewed={reloadSentences}
+          onDelete={reloadVocabulary}
+          onMarkAsReviewed={reloadVocabulary}
         />
       )}
     </div>
   );
 };
 
-export default ReviewVocabPage;
+export default VocabPage;
