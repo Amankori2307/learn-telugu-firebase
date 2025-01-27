@@ -3,7 +3,7 @@ import Header from './components/header/header'
 import ChapterDetailsPage from './components/pages/chapter/chapter-detail-page'
 import ChaptersPage from './components/pages/chapter/chapters-page'
 import QuizPage from './components/pages/quiz/quiz-page'
-import ReviewSentencesPage from './components/pages/sentences/review-sentences-page copy'
+import ReviewVocabPage from './components/pages/sentences/review-sentences-page copy'
 import SentencesPage from './components/pages/sentences/sentences-page'
 import AddVocabPage from './components/pages/vocab/add-vocab-page'
 import EditVocabPage from './components/pages/vocab/edit-vocab-page'
@@ -22,7 +22,7 @@ function App() {
           <Routes>
 
             <Route path="/" element={<QuizPage />} />
-            <Route path="/review" element={<ReviewSentencesPage />} />
+            <Route path="/review" element={<ReviewVocabPage />} />
             <Route path="/sentences" element={<SentencesPage />} />
             <Route path="/vocab/add" element={<AddVocabPage />} />
             <Route path="/vocab/edit/:id" element={<EditVocabPage />} />

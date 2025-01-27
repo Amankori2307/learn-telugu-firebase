@@ -1,36 +1,36 @@
 import { useCallback, useEffect, useState } from "react";
 import { VocabularyEntry } from "../interfaces/vocab.interfaces";
-import { fetchAllVocabularyEntries } from "../services/vocuabulary.service";
+import { fetchAllVocabularyEntries } from "../services/vocabulary.service";
 
-const useFetchSentences = (isReviewed: boolean) => {
-  const [sentences, setSentences] = useState<VocabularyEntry[]>([]);
+const useFetchVocabulary = (isReviewed: boolean) => {
+  const [vocabularyEntries, setVocabularyEntries] = useState<VocabularyEntry[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchSentencesHelper = useCallback(async () => {
+  const fetchVocabularyHelper = useCallback(async () => {
     setLoading(true);
     try {
       const data = await fetchAllVocabularyEntries(isReviewed); // Pass isReviewed to the service
-      setSentences(data);
+      setVocabularyEntries(data);
     } catch (err) {
-      console.error("Failed to fetch sentences: ", err);
-      setError("Failed to fetch sentences. Please try again.");
+      console.error("Failed to fetch vocabulary entries: ", err);
+      setError("Failed to fetch vocabulary entries. Please try again.");
     } finally {
       setLoading(false);
     }
   }, [isReviewed]);
 
-  // Automatically fetch sentences when isReviewed changes
+  // Automatically fetch vocabulary entries when isReviewed changes
   useEffect(() => {
-    fetchSentencesHelper();
-  }, [fetchSentencesHelper]);
+    fetchVocabularyHelper();
+  }, [fetchVocabularyHelper]);
 
-  // Expose a function to manually reload sentences
-  const reloadSentences = async () => {
-    await fetchSentencesHelper();
+  // Expose a function to manually reload vocabulary entries
+  const reloadVocabulary = async () => {
+    await fetchVocabularyHelper();
   };
 
-  return { sentences, loading, error, reloadSentences };
+  return { vocabularyEntries, loading, error, reloadVocabulary };
 };
 
-export default useFetchSentences;
+export default useFetchVocabulary;

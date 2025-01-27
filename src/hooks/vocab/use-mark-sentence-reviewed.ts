@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { markVocabularyEntryAsReviewed } from "../../services/vocuabulary.service";
+import { markVocabularyEntryAsReviewed } from "../../services/vocabulary.service";
 
 const useMarkSentenceReviewed = () => {
   const [loading, setLoading] = useState<boolean>(false);

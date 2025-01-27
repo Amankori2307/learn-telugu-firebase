@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteVocabularyEntry } from "../../services/vocuabulary.service";
+import { deleteVocabularyEntry } from "../../services/vocabulary.service";
 
 const useDeleteSentence = () => {
   const [loading, setLoading] = useState<boolean>(false);

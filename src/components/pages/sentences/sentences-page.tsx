@@ -1,11 +1,11 @@
-import useFetchSentences from "../../../hooks/use-fetch-sentences";
+import useFetchVocabulary from "../../../hooks/use-fetch-sentences";
 import useSearch from "../../../hooks/use-search";
 import Loader from "../../shared/loader";
 import SearchInput from "../../shared/search-input";
 import SentenceList from "../../sub-components/vocab/sentence-list";
 
 const SentencesPage = () => {
-  const { sentences, loading, reloadSentences } = useFetchSentences(true);
+  const { vocabularyEntries: sentences, loading, reloadVocabulary: reloadSentences } = useFetchVocabulary(true);
   const { searchTerm, setSearchTerm, filteredData } = useSearch(sentences);
   return (
     <div className="p-4">
