@@ -1,13 +1,13 @@
 import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
+    addDoc,
+    collection,
+    deleteDoc,
+    doc,
+    getDoc,
+    getDocs,
+    query,
+    updateDoc,
+    where,
 } from "firebase/firestore";
 import { CollectionEnum } from "../enums/db.enums";
 import { IChapter } from "../interfaces/chapter.interfaces";
@@ -128,7 +128,7 @@ export const fetchVocabularyEntriesByChapter = async (
     }
 
     const chapterData = chapterDoc.data() as IChapter;
-    const vocabularyEntryIds = chapterData.sentenceIds || [];
+    const vocabularyEntryIds = chapterData.vocabularyIds || [];
 
     const vocabularyEntries: IVocabularyEntry[] = [];
     for (const vocabularyEntryId of vocabularyEntryIds) {
@@ -175,8 +175,8 @@ export const fetchOrphanedVocabularyEntries = async (): Promise<
     const vocabularyEntryIdsInChapters = new Set<string>();
     chaptersSnapshot.forEach((chapterDoc) => {
       const chapterData = chapterDoc.data() as IChapter;
-      if (chapterData.sentenceIds && Array.isArray(chapterData.sentenceIds)) {
-        chapterData.sentenceIds.forEach((sentenceId: string) => {
+      if (chapterData.vocabularyIds && Array.isArray(chapterData.vocabularyIds)) {
+        chapterData.vocabularyIds.forEach((sentenceId: string) => {
           vocabularyEntryIdsInChapters.add(sentenceId);
         });
       }

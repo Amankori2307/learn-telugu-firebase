@@ -1,6 +1,5 @@
 const admin = require("firebase-admin");
 const serviceAccount = require("../env/service-account-key.json");
-// const data = require("./assets/data.js");
 const data = require("./assets/raw-data2.json");
 
 // Initialize Firebase Admin SDK
@@ -49,7 +48,6 @@ async function uploadData() {
 }
 
 // Function to update existing entries where isReviewed or textLowercase is not set
-// Function to update existing entries where isReviewed or textLowercase is not set
 async function updateExistingEntries() {
   try {
     // Fetch all documents in the "sentences" collection
@@ -94,10 +92,56 @@ async function updateExistingEntries() {
     throw error; // Re-throw the error for further handling if needed
   }
 }
-// Run both functions
+
+// Function to rename a field in the Firestore collection
+async function renameFieldInCollection(collectionName, oldField, newField) {
+  try {
+    // Fetch all documents in the collection
+    const querySnapshot = await db.collection(collectionName).get();
+
+    // Initialize Firestore batch
+    const batch = db.batch();
+    let updatedCount = 0;
+
+    // Iterate through each document
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      // Check if the old field exists
+      if (data[oldField] !== undefined) {
+        const updates = {
+          [newField]: data[oldField], // Copy old field value to new field
+          [oldField]: admin.firestore.FieldValue.delete(), // Delete the old field
+        };
+
+        batch.update(doc.ref, updates);
+        updatedCount++;
+        console.log(`Preparing rename for document with ID: ${doc.id}`);
+      }
+    });
+
+    // Commit the batch update if there are updates
+    if (updatedCount > 0) {
+      await batch.commit();
+      console.log(
+        `Successfully renamed field '${oldField}' to '${newField}' in ${updatedCount} documents.`
+      );
+    } else {
+      console.log(`No documents found with field '${oldField}' to rename.`);
+    }
+  } catch (error) {
+    console.error(
+      `Error renaming field '${oldField}' to '${newField}' in collection '${collectionName}':`,
+      error
+    );
+  }
+}
+
+// Run functions
 async function run() {
   // await uploadData(); // Upload new data
-  await updateExistingEntries(); // Update existing entries
+  // await updateExistingEntries(); // Update existing entries
+  await renameFieldInCollection("chapters", "sentenceIds", "vocabularyIds"); // Rename field
 }
 
 run();
