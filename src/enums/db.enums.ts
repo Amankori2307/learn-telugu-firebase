@@ -1,4 +1,4 @@
 export enum CollectionEnum {
-  Vocab = "sentences",
+  Vocab = "vocabulary_entries",
   Chapter = "chapters",
 }

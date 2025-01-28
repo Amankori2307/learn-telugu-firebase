@@ -13,7 +13,6 @@ const db = admin.firestore();
 async function uploadData() {
   try {
     for (const item of data) {
-      // Check if a document with the same `text` already exists
       const querySnapshot = await db
         .collection("sentences")
         .where("text", "==", item.text)
@@ -21,11 +20,10 @@ async function uploadData() {
 
       if (!querySnapshot.empty) {
         console.log(`Skipping duplicate text: ${item.text}`);
-        continue; // Skip this item if a duplicate is found
+        continue;
       }
 
-      // If no duplicate, upload the document with an auto-generated ID
-      const docRef = db.collection("sentences").doc(); // Auto-generate ID
+      const docRef = db.collection("sentences").doc();
       await docRef.set(
         {
           pronunciation: item.pronunciation,
@@ -33,7 +31,7 @@ async function uploadData() {
           text: item.text,
           type: item.type,
           examples: item.examples || [],
-          isReviewed: false, // Set isReviewed to true for new entries
+          isReviewed: false,
         },
         {
           ignoreUndefinedProperties: true,
@@ -50,29 +48,20 @@ async function uploadData() {
 // Function to update existing entries where isReviewed or textLowercase is not set
 async function updateExistingEntries() {
   try {
-    // Fetch all documents in the "sentences" collection
     const querySnapshot = await db.collection("sentences").get();
-
-    // Initialize Firestore batch
     const batch = db.batch();
     let updatedCount = 0;
 
-    // Iterate through each document
     querySnapshot.forEach((doc) => {
       const data = doc.data();
       const updates = {};
 
-      // Check if isReviewed is not set
       if (data.isReviewed === undefined) {
         updates.isReviewed = true;
       }
-
-      // Check if textLowercase is not set and text exists
       if (data.textLowercase === undefined && data.text) {
         updates.textLowercase = data.text.toLowerCase();
       }
-
-      // If there are updates, add them to the batch
       if (Object.keys(updates).length > 0) {
         batch.update(doc.ref, updates);
         updatedCount++;
@@ -80,7 +69,6 @@ async function updateExistingEntries() {
       }
     });
 
-    // Commit the batch update if there are updates
     if (updatedCount > 0) {
       await batch.commit();
       console.log(`Successfully updated ${updatedCount} documents.`);
@@ -89,29 +77,23 @@ async function updateExistingEntries() {
     }
   } catch (error) {
     console.error("Error updating existing entries:", error);
-    throw error; // Re-throw the error for further handling if needed
+    throw error;
   }
 }
 
 // Function to rename a field in the Firestore collection
 async function renameFieldInCollection(collectionName, oldField, newField) {
   try {
-    // Fetch all documents in the collection
     const querySnapshot = await db.collection(collectionName).get();
-
-    // Initialize Firestore batch
     const batch = db.batch();
     let updatedCount = 0;
 
-    // Iterate through each document
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-
-      // Check if the old field exists
       if (data[oldField] !== undefined) {
         const updates = {
-          [newField]: data[oldField], // Copy old field value to new field
-          [oldField]: admin.firestore.FieldValue.delete(), // Delete the old field
+          [newField]: data[oldField],
+          [oldField]: admin.firestore.FieldValue.delete(),
         };
 
         batch.update(doc.ref, updates);
@@ -120,7 +102,6 @@ async function renameFieldInCollection(collectionName, oldField, newField) {
       }
     });
 
-    // Commit the batch update if there are updates
     if (updatedCount > 0) {
       await batch.commit();
       console.log(
@@ -137,11 +118,46 @@ async function renameFieldInCollection(collectionName, oldField, newField) {
   }
 }
 
+// Function to rename a collection in Firestore
+async function renameCollection(oldCollectionName, newCollectionName) {
+  try {
+    const querySnapshot = await db.collection(oldCollectionName).get();
+    if (querySnapshot.empty) {
+      console.log(`Collection '${oldCollectionName}' is empty or does not exist.`);
+      return;
+    }
+
+    let copiedCount = 0;
+    for (const doc of querySnapshot.docs) {
+      const data = doc.data();
+      await db.collection(newCollectionName).doc(doc.id).set(data); // Copy to new collection
+      copiedCount++;
+      console.log(`Copied document with ID: ${doc.id} to '${newCollectionName}'`);
+    }
+
+    // Delete old collection documents
+    const batch = db.batch();
+    for (const doc of querySnapshot.docs) {
+      batch.delete(doc.ref);
+    }
+    await batch.commit();
+    console.log(
+      `Successfully renamed collection '${oldCollectionName}' to '${newCollectionName}' with ${copiedCount} documents.`
+    );
+  } catch (error) {
+    console.error(
+      `Error renaming collection '${oldCollectionName}' to '${newCollectionName}':`,
+      error
+    );
+  }
+}
+
 // Run functions
 async function run() {
   // await uploadData(); // Upload new data
   // await updateExistingEntries(); // Update existing entries
-  await renameFieldInCollection("chapters", "sentenceIds", "vocabularyIds"); // Rename field
+  // await renameFieldInCollection("chapters", "sentenceIds", "vocabularyIds"); // Rename field
+  await renameCollection("sentences", "vocabulary_entries"); // Rename collection
 }
 
 run();

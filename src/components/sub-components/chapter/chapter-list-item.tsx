@@ -22,7 +22,7 @@ const ChapterListItem: React.FC<ChapterListItemProps> = ({
 
   return (
     <li className="flex justify-between items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all">
-      {/* Chapter Name and Sentence Count */}
+      {/* Chapter Name and Vocabulary Count */}
       <div className="flex-1">
         <span
           onClick={onClick}
@@ -31,7 +31,7 @@ const ChapterListItem: React.FC<ChapterListItemProps> = ({
           {chapter.name}
         </span>
         <p className="text-sm text-gray-500 mt-1">
-          {chapter.vocabularyIds?.length || 0} sentences
+          {chapter.vocabularyIds?.length || 0} Vocabulary
         </p>
       </div>
 

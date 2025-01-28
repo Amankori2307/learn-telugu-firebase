@@ -6,46 +6,52 @@ import QuizQuestion from "../../sub-components/quiz/quiz-question";
 import QuizResult from "../../sub-components/quiz/quiz-result";
 
 const QuizPage: React.FC = () => {
-  const [sentences, setSentences] = useState<IVocabularyEntry[]>([]);
-  const [currentSentence, setCurrentSentence] = useState<IVocabularyEntry | null>(null);
+  const [vocabularyEntryList, setVocabularyEntryList] = useState<
+    IVocabularyEntry[]
+  >([]);
+  const [currentVocabularyEntry, setCurrentVocabularyEntry] =
+    useState<IVocabularyEntry | null>(null);
   const [options, setOptions] = useState<IVocabularyEntry[]>([]);
-  const [selectedOption, setSelectedOption] = useState<IVocabularyEntry | null>(null);
+  const [selectedOption, setSelectedOption] = useState<IVocabularyEntry | null>(
+    null
+  );
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showExamples, setShowExamples] = useState<boolean>(false);
   const [isMeaningQuestion, setIsMeaningQuestion] = useState<boolean>(false);
 
   useEffect(() => {
-    const loadSentences = async () => {
-      const sentencesData = await fetchAllVocabularyEntries();
-      setSentences(sentencesData);
-      loadRandomQuestion(sentencesData);
+    const loadVocabulary = async () => {
+      const vocabData = await fetchAllVocabularyEntries();
+      setVocabularyEntryList(vocabData);
+      loadRandomQuestion(vocabData);
     };
-    loadSentences();
+    loadVocabulary();
   }, []);
 
   const checkIsCorrect = (option: IVocabularyEntry) => {
-    if (!currentSentence) return null;
-    if (isMeaningQuestion) return currentSentence.meaning === option.meaning;
-    else return currentSentence.text === option.text;
-  }
+    if (!currentVocabularyEntry) return null;
+    if (isMeaningQuestion)
+      return currentVocabularyEntry.meaning === option.meaning;
+    else return currentVocabularyEntry.text === option.text;
+  };
 
-  const loadRandomQuestion = (sentencesData: IVocabularyEntry[]) => {
-    const randomIndex = Math.floor(Math.random() * sentencesData.length);
-    const randomSentence = sentencesData[randomIndex];
+  const loadRandomQuestion = (vocabData: IVocabularyEntry[]) => {
+    const randomIndex = Math.floor(Math.random() * vocabData.length);
+    const randomVocabularyEntry = vocabData[randomIndex];
 
     const isMeaningQuestion = Math.random() < 0.5;
     setIsMeaningQuestion(isMeaningQuestion);
 
-
-
-    const incorrectOptions = sentencesData
-      .filter((s) => s.id !== randomSentence.id)
+    const incorrectOptions = vocabData
+      .filter((s) => s.id !== randomVocabularyEntry.id)
       .sort(() => Math.random() - 0.5)
-      .slice(0, 3)
+      .slice(0, 3);
 
-    const allOptions = [randomSentence, ...incorrectOptions].sort(() => Math.random() - 0.5);
+    const allOptions = [randomVocabularyEntry, ...incorrectOptions].sort(
+      () => Math.random() - 0.5
+    );
 
-    setCurrentSentence(randomSentence);
+    setCurrentVocabularyEntry(randomVocabularyEntry);
     setOptions(allOptions);
     setSelectedOption(null);
     setIsCorrect(null);
@@ -58,12 +64,13 @@ const QuizPage: React.FC = () => {
     setShowExamples(true);
   };
 
-  if (!currentSentence) return <div className="text-center text-xl">Loading...</div>;
+  if (!currentVocabularyEntry)
+    return <div className="text-center text-xl">Loading...</div>;
 
   return (
     <div className="p-4 max-w-md mx-auto">
       <QuizQuestion
-        sentence={currentSentence}
+        vocabularyEntry={currentVocabularyEntry}
         isMeaningQuestion={isMeaningQuestion}
         options={options}
         selectedOption={selectedOption}
@@ -72,10 +79,14 @@ const QuizPage: React.FC = () => {
       {selectedOption !== null && (
         <QuizResult
           isCorrect={isCorrect}
-          correctAnswer={isMeaningQuestion ? currentSentence.meaning : currentSentence.text}
-          examples={currentSentence.examples}
+          correctAnswer={
+            isMeaningQuestion
+              ? currentVocabularyEntry.meaning
+              : currentVocabularyEntry.text
+          }
+          examples={currentVocabularyEntry.examples}
           showExamples={showExamples}
-          onNextQuestion={() => loadRandomQuestion(sentences)}
+          onNextQuestion={() => loadRandomQuestion(vocabularyEntryList)}
         />
       )}
     </div>

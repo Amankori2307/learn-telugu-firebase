@@ -3,7 +3,7 @@
 import { IVocabularyEntry } from "../../../interfaces/vocab.interfaces";
 
 interface QuizQuestionProps {
-  sentence: IVocabularyEntry;
+  vocabularyEntry: IVocabularyEntry;
   isMeaningQuestion: boolean;
   options: IVocabularyEntry[];
   selectedOption: IVocabularyEntry | null;
@@ -11,20 +11,21 @@ interface QuizQuestionProps {
 }
 
 const QuizQuestion: React.FC<QuizQuestionProps> = ({
-  sentence,
+  vocabularyEntry,
   isMeaningQuestion,
   options,
   selectedOption,
   handleOptionClick,
 }) => {
-  // Format the sentence text and pronunciation
+  // Format the vocabulary entry text and pronunciation
   const formattedQuestion = (value: IVocabularyEntry) => {
     return `${value.text} (${value.pronunciation})`;
   };
 
   // Get the display value for the question or option
   const getDisplayValue = (value: IVocabularyEntry, isOption: boolean) => {
-    if (isOption) return isMeaningQuestion ? value.meaning : formattedQuestion(value);
+    if (isOption)
+      return isMeaningQuestion ? value.meaning : formattedQuestion(value);
     else return isMeaningQuestion ? formattedQuestion(value) : value.meaning;
   };
 
@@ -32,8 +33,12 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   const getStyle = (option: IVocabularyEntry) => {
     if (!selectedOption) return "bg-blue-500 hover:bg-blue-700";
     const currentValue = isMeaningQuestion ? option.meaning : option.text;
-    const selectedValue = isMeaningQuestion ? selectedOption.meaning : selectedOption.text;
-    const correctValue = isMeaningQuestion ? sentence.meaning : sentence.text;
+    const selectedValue = isMeaningQuestion
+      ? selectedOption.meaning
+      : selectedOption.text;
+    const correctValue = isMeaningQuestion
+      ? vocabularyEntry.meaning
+      : vocabularyEntry.text;
 
     if (currentValue === correctValue) {
       // Correct answer
@@ -50,10 +55,12 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">
-        {getDisplayValue(sentence, false)}
+        {getDisplayValue(vocabularyEntry, false)}
       </h1>
       <p className="mb-4">
-        {isMeaningQuestion ? "Select the correct meaning:" : "Select the correct sentence:"}
+        {isMeaningQuestion
+          ? "Select the correct meaning:"
+          : `Select the correct ${vocabularyEntry.type}:`}
       </p>
       <div className="space-y-2">
         {options.map((option, index) => (

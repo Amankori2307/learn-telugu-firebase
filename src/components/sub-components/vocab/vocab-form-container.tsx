@@ -33,7 +33,7 @@ const VocabFormContainer: React.FC<VocabFormContainerProps> = ({
 }) => {
   const formik = useFormik({
     initialValues: {
-      type: "sentence",
+      type: VocabularyTypeEnum.Sentence,
       text: "",
       meaning: "",
       pronunciation: "",
