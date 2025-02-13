@@ -16,3 +16,10 @@ export interface IVocabularyEntry extends IBaseVocabularyEntry {
   textLowercase: string;
   id: string;
 }
+
+
+export interface IVocabularyMetrics {
+  timesShown: number;
+  timesCorrect: number;
+  timesIncorrect: number;
+}

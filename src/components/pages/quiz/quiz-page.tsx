@@ -1,7 +1,7 @@
-// components/Quiz.tsx
 import { useEffect, useState } from "react";
 import { IVocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import { fetchVocabularyEntriesByChapter } from "../../../services/vocabulary.service";
+import localStorageUtils from "../../../utils/localstorage.utils";
 import QuizContent from "../../sub-components/quiz/quiz-content";
 import QuizHeader from "../../sub-components/quiz/quiz-header";
 import QuizLoader from "../../sub-components/quiz/quiz-loader";
@@ -22,41 +22,23 @@ const QuizPage: React.FC = () => {
   const [isLoadingChapters, setIsLoadingChapters] = useState<boolean>(true);
   const [isLoadingVocab, setIsLoadingVocab] = useState<boolean>(false);
 
-  const handleChapterSelect = async (chapterId: string) => {
-    if (!chapterId) return;
-
-    setIsLoadingVocab(true);
-    try {
-      const vocabData = await fetchVocabularyEntriesByChapter(chapterId);
-      setVocabularyEntryList(vocabData);
-      loadRandomQuestion(vocabData);
-    } catch (error) {
-      console.error("Error loading vocabulary entries: ", error);
-    } finally {
-      setIsLoadingVocab(false);
-    }
-  };
-
-  const checkIsCorrect = (option: IVocabularyEntry) => {
-    if (!currentVocabularyEntry) return null;
-    if (isMeaningQuestion)
-      return currentVocabularyEntry.meaning === option.meaning;
-    else return currentVocabularyEntry.text === option.text;
-  };
-
-  const loadRandomQuestion = (vocabData: IVocabularyEntry[]) => {
-    if (vocabData.length === 0) {
+  // Load a random question with weighted selection
+  const loadRandomQuestion = (vocabList: IVocabularyEntry[]) => {
+    if (vocabList.length === 0) {
       console.error("No vocabulary entries available.");
       return;
     }
 
-    const randomIndex = Math.floor(Math.random() * vocabData.length);
-    const randomVocabularyEntry = vocabData[randomIndex];
+    const randomVocabularyEntry =
+      localStorageUtils.getWeightedRandomQuestion(vocabList);
+
+    // Update metrics for the selected question
+    localStorageUtils.updateMetrics(randomVocabularyEntry.id, false); // false because the question is being shown, not answered yet
 
     const isMeaningQuestion = Math.random() < 0.5;
     setIsMeaningQuestion(isMeaningQuestion);
 
-    const incorrectOptions = vocabData
+    const incorrectOptions = vocabList
       .filter((s) => s.id !== randomVocabularyEntry.id)
       .sort(() => Math.random() - 0.5)
       .slice(0, 3);
@@ -72,12 +54,48 @@ const QuizPage: React.FC = () => {
     setShowExamples(false);
   };
 
-  const handleOptionClick = (option: IVocabularyEntry) => {
-    setSelectedOption(option);
-    setIsCorrect(checkIsCorrect(option));
-    setShowExamples(true);
+  // Handle chapter selection
+  const handleChapterSelect = async (chapterId: string) => {
+    if (!chapterId) return;
+
+    setIsLoadingVocab(true);
+    try {
+      const vocabData = await fetchVocabularyEntriesByChapter(chapterId);
+      setVocabularyEntryList(vocabData);
+      localStorageUtils.initializeMetrics(vocabData); // Initialize metrics for all vocabulary entries
+      loadRandomQuestion(vocabData);
+    } catch (error) {
+      console.error("Error loading vocabulary entries: ", error);
+    } finally {
+      setIsLoadingVocab(false);
+    }
   };
 
+  // Handle option selection
+  const handleOptionClick = (option: IVocabularyEntry) => {
+    setSelectedOption(option);
+    const isCorrectAnswer = checkIsCorrect(option);
+    setIsCorrect(isCorrectAnswer);
+    setShowExamples(true);
+
+    // Update metrics for the current question
+    if (currentVocabularyEntry) {
+      localStorageUtils.updateMetrics(
+        currentVocabularyEntry.id,
+        isCorrectAnswer
+      );
+    }
+  };
+
+  // Check if the selected option is correct
+  const checkIsCorrect = (option: IVocabularyEntry) => {
+    if (!currentVocabularyEntry) return false;
+    if (isMeaningQuestion)
+      return currentVocabularyEntry.meaning === option.meaning;
+    else return currentVocabularyEntry.text === option.text;
+  };
+
+  // Load chapters and vocabulary entries
   useEffect(() => {
     const loadChapters = async () => {
       setIsLoadingChapters(true);
@@ -91,12 +109,8 @@ const QuizPage: React.FC = () => {
     loadChapters();
   }, []);
 
-
-
-
-  
   return (
-    <div className="p-4 w-full sm:w-80 md:w-96 lg:w-112 xl:w-128 2xl:w-144 mx-auto">
+    <div className="p-4 max-w-md mx-auto">
       <QuizHeader
         onChapterSelect={handleChapterSelect}
         isLoadingChapters={isLoadingChapters}
