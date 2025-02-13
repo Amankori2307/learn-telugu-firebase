@@ -1,7 +1,8 @@
 // components/Quiz.tsx
 import { useEffect, useState } from "react";
 import { IVocabularyEntry } from "../../../interfaces/vocab.interfaces";
-import { fetchAllVocabularyEntries } from "../../../services/vocabulary.service";
+import { fetchVocabularyEntriesByChapter } from "../../../services/vocabulary.service";
+import ChapterSelector from "../../sub-components/chapter/chapter-selector";
 import QuizQuestion from "../../sub-components/quiz/quiz-question";
 import QuizResult from "../../sub-components/quiz/quiz-result";
 
@@ -18,15 +19,23 @@ const QuizPage: React.FC = () => {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [showExamples, setShowExamples] = useState<boolean>(false);
   const [isMeaningQuestion, setIsMeaningQuestion] = useState<boolean>(false);
+  const [isLoadingChapters, setIsLoadingChapters] = useState<boolean>(true);
+  const [isLoadingVocab, setIsLoadingVocab] = useState<boolean>(false);
 
-  useEffect(() => {
-    const loadVocabulary = async () => {
-      const vocabData = await fetchAllVocabularyEntries();
+  const handleChapterSelect = async (chapterId: string) => {
+    if (!chapterId) return;
+
+    setIsLoadingVocab(true);
+    try {
+      const vocabData = await fetchVocabularyEntriesByChapter(chapterId);
       setVocabularyEntryList(vocabData);
       loadRandomQuestion(vocabData);
-    };
-    loadVocabulary();
-  }, []);
+    } catch (error) {
+      console.error("Error loading vocabulary entries: ", error);
+    } finally {
+      setIsLoadingVocab(false);
+    }
+  };
 
   const checkIsCorrect = (option: IVocabularyEntry) => {
     if (!currentVocabularyEntry) return null;
@@ -36,6 +45,11 @@ const QuizPage: React.FC = () => {
   };
 
   const loadRandomQuestion = (vocabData: IVocabularyEntry[]) => {
+    if (vocabData.length === 0) {
+      console.error("No vocabulary entries available.");
+      return;
+    }
+
     const randomIndex = Math.floor(Math.random() * vocabData.length);
     const randomVocabularyEntry = vocabData[randomIndex];
 
@@ -64,30 +78,53 @@ const QuizPage: React.FC = () => {
     setShowExamples(true);
   };
 
-  if (!currentVocabularyEntry)
-    return <div className="text-center text-xl">Loading...</div>;
+  useEffect(() => {
+    const loadChapters = async () => {
+      setIsLoadingChapters(true);
+      try {
+        // Simulate loading chapters (replace with actual fetch logic if needed)
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      } finally {
+        setIsLoadingChapters(false);
+      }
+    };
+    loadChapters();
+  }, []);
 
   return (
     <div className="p-4 max-w-md mx-auto">
-      <QuizQuestion
-        vocabularyEntry={currentVocabularyEntry}
-        isMeaningQuestion={isMeaningQuestion}
-        options={options}
-        selectedOption={selectedOption}
-        handleOptionClick={handleOptionClick}
+      <ChapterSelector
+        onChapterSelect={handleChapterSelect}
+        isLoading={isLoadingChapters}
       />
-      {selectedOption !== null && (
-        <QuizResult
-          isCorrect={isCorrect}
-          correctAnswer={
-            isMeaningQuestion
-              ? currentVocabularyEntry.meaning
-              : currentVocabularyEntry.text
-          }
-          examples={currentVocabularyEntry.examples}
-          showExamples={showExamples}
-          onNextQuestion={() => loadRandomQuestion(vocabularyEntryList)}
-        />
+
+      {isLoadingVocab && (
+        <div className="text-center text-xl">Loading vocabulary entries...</div>
+      )}
+
+      {!isLoadingVocab && currentVocabularyEntry && (
+        <>
+          <QuizQuestion
+            vocabularyEntry={currentVocabularyEntry}
+            isMeaningQuestion={isMeaningQuestion}
+            options={options}
+            selectedOption={selectedOption}
+            handleOptionClick={handleOptionClick}
+          />
+          {selectedOption !== null && (
+            <QuizResult
+              isCorrect={isCorrect}
+              correctAnswer={
+                isMeaningQuestion
+                  ? currentVocabularyEntry.meaning
+                  : currentVocabularyEntry.text
+              }
+              examples={currentVocabularyEntry.examples}
+              showExamples={showExamples}
+              onNextQuestion={() => loadRandomQuestion(vocabularyEntryList)}
+            />
+          )}
+        </>
       )}
     </div>
   );
