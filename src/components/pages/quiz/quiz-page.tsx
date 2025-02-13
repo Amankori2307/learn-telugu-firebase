@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 import { IVocabularyEntry } from "../../../interfaces/vocab.interfaces";
 import { fetchVocabularyEntriesByChapter } from "../../../services/vocabulary.service";
-import ChapterSelector from "../../sub-components/chapter/chapter-selector";
-import QuizQuestion from "../../sub-components/quiz/quiz-question";
-import QuizResult from "../../sub-components/quiz/quiz-result";
+import QuizContent from "../../sub-components/quiz/quiz-content";
+import QuizHeader from "../../sub-components/quiz/quiz-header";
+import QuizLoader from "../../sub-components/quiz/quiz-loader";
 
 const QuizPage: React.FC = () => {
   const [vocabularyEntryList, setVocabularyEntryList] = useState<
@@ -92,39 +92,31 @@ const QuizPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <ChapterSelector
+    <div className="p-4 w-full sm:w-80 md:w-96 lg:w-112 xl:w-128 2xl:w-144 mx-auto">
+      <QuizHeader
         onChapterSelect={handleChapterSelect}
-        isLoading={isLoadingChapters}
+        isLoadingChapters={isLoadingChapters}
       />
 
-      {isLoadingVocab && (
-        <div className="text-center text-xl">Loading vocabulary entries...</div>
-      )}
-
-      {!isLoadingVocab && currentVocabularyEntry && (
-        <>
-          <QuizQuestion
-            vocabularyEntry={currentVocabularyEntry}
-            isMeaningQuestion={isMeaningQuestion}
-            options={options}
-            selectedOption={selectedOption}
-            handleOptionClick={handleOptionClick}
-          />
-          {selectedOption !== null && (
-            <QuizResult
-              isCorrect={isCorrect}
-              correctAnswer={
-                isMeaningQuestion
-                  ? currentVocabularyEntry.meaning
-                  : currentVocabularyEntry.text
-              }
-              examples={currentVocabularyEntry.examples}
-              showExamples={showExamples}
-              onNextQuestion={() => loadRandomQuestion(vocabularyEntryList)}
-            />
-          )}
-        </>
+      {isLoadingVocab ? (
+        <QuizLoader message="Loading vocabulary entries..." />
+      ) : (
+        <QuizContent
+          currentVocabularyEntry={currentVocabularyEntry}
+          isMeaningQuestion={isMeaningQuestion}
+          options={options}
+          selectedOption={selectedOption}
+          handleOptionClick={handleOptionClick}
+          isCorrect={isCorrect}
+          correctAnswer={
+            isMeaningQuestion
+              ? currentVocabularyEntry?.meaning || ""
+              : currentVocabularyEntry?.text || ""
+          }
+          examples={currentVocabularyEntry?.examples || []}
+          showExamples={showExamples}
+          onNextQuestion={() => loadRandomQuestion(vocabularyEntryList)}
+        />
       )}
     </div>
   );

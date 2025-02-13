@@ -13,9 +13,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Header />
-      <div className="bg-gray-100">
+      <div className="bg-gray-100 relative">
         <div className="py-7"></div>
-        <Back className="px-3 pt-7 pb-2 sm:p-10 " />
+        <div className="absolute top-0 left-0 px-3 pt-7 pb-2 sm:p-10 z-10 mt-12">
+          <Back />
+        </div>
         <div className="min-h-screen  flex items-start justify-center py-2">
           <Routes>
             <Route path="/" element={<QuizPage />} />
