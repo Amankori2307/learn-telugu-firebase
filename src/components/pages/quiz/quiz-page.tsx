@@ -91,6 +91,10 @@ const QuizPage: React.FC = () => {
     loadChapters();
   }, []);
 
+
+
+
+  
   return (
     <div className="p-4 w-full sm:w-80 md:w-96 lg:w-112 xl:w-128 2xl:w-144 mx-auto">
       <QuizHeader
